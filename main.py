@@ -39,8 +39,6 @@ class MainWindow(QMainWindow):
                     lines[0] = lines[0].replace('\n', '')
                     lines[1] = lines[1].replace('\n', '')
                     print(lines)
-                    #11627
-                    #jfkuMglKmdsM58wMnlzAwwLrmps5A1qwhVCskDKn
                     if len(lines) == 2:
                         return lines[0], lines[1]
                     else:
