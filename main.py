@@ -6,9 +6,8 @@ from PyQt5.QtWidgets import QApplication, QMainWindow
 
 VERSION = "0.0.1"
 
-def status(statusbar, message):
-    statusbar.showMessage(message)
-    print(message)
+
+
 
 
 class MainWindow(QMainWindow):
@@ -19,49 +18,70 @@ class MainWindow(QMainWindow):
         window = self
         sb = self.statusBar()
 
-        config = {
-            "CLIENT_ID": "",
-            "CLIENT_SECRET": "",
-        }
+        def status(message):
+            sb.showMessage(message)
+            print(message)
 
-        def verify_token():
-            status(sb, "Verifying Credentials...")
-            config["CLIENT_ID"] = window.lineEdit.text()
-            config["CLIENT_SECRET"] = window.lineEdit_3.text()
+        def dump_configuration(configuration):
+            status('Saving Settings...')
+            with open('osustatqt.txt', 'w+') as cfg_file:
+                vals = []
+                for val in configuration.values():
+                    vals.append(val+'\n')
+                cfg_file.writelines(vals)
+            status('Settings Saved successfully...')
+
+        def load_configuration():
+            with open('osustatqt.txt', 'r') as cfg_file:
+                status("Reading Configuration file...")
+                lines = cfg_file.readlines()
+                if len(lines)!= 0:
+                    lines[0] = lines[0].replace('\n', '')
+                    lines[1] = lines[1].replace('\n', '')
+                    print(lines)
+                    #11627
+                    #jfkuMglKmdsM58wMnlzAwwLrmps5A1qwhVCskDKn
+                    if len(lines) == 2:
+                        return lines[0], lines[1]
+                    else:
+                        return "", ""
+                else:
+                    status('Configuration is blank')
+                    return "", ""
+
+        def verify_credentials(client_id, client_secret):
+            status("Verifying Credentials...")
             try:
-                api = OssapiV2(int(config["CLIENT_ID"]), config["CLIENT_SECRET"])
-            except:
-                status(sb, "Invalid Credentials!")
-            finally:
-                status(sb, "Credentials Verified")
-                with open("config.txt", "w+") as configfile:
-                    configfile.write(config["CLIENT_ID"]+"\n"+config["CLIENT_SECRET"])
-                    status(sb, "Config file dumped")
-                    status(sb, "Ready!")
-                    window.groupBox.setVisible(False)
-
-        def load_config():
-            if os.path.exists("config.txt"):
-                status(sb, "Config File Found, now parsing.")
-                with open("config.txt", "r") as config_file:
-                    line_configs = config_file.readlines()
-                    print(line_configs)
-                    config = {
-                        "CLIENT_ID": line_configs[0].replace("\n", ""),
-                        "CLIENT_SECRET": line_configs[1],
-                    }
-                    verify_token()
-                    return config
-
+                _api = OssapiV2(int(client_id), client_secret)
+            except APIException:
+                status("Invalid Credentials!")
+                return "error"
+            except ValueError:
+                status("Invalid Credentials!")
+                return "error"
             else:
-                return {
-                    "CLIENT_ID": "",
-                    "CLIENT_SECRET": "",
-                }, False
+                status("Credentials Verified")
+                return _api
 
-        # Init
-        config = load_config()
-        self.pushButton_2.clicked.connect(verify_token)
+        def submit_api_clicked():
+            client_id = window.lineEdit.text()
+            client_secret = window.lineEdit_3.text()
+
+            _api = verify_credentials(client_id, client_secret)
+            if _api != "error":
+                self.groupBox.setVisible(False)
+                dump_configuration({"client_id": client_id, "client_secret": client_secret})
+            return _api
+
+        # Loaded
+        if os.path.exists('osustatqt.txt'):
+            CLIENT_ID, CLIENT_SECRET = load_configuration()
+            if "" not in (CLIENT_ID, CLIENT_SECRET):
+                api = verify_credentials(CLIENT_ID, CLIENT_SECRET)
+                if api != "error":
+                    self.groupBox.setVisible(False)
+
+        self.pushButton_2.clicked.connect(submit_api_clicked)
 
 
 app = QApplication(sys.argv)
