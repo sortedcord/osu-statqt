@@ -7,3 +7,7 @@
     --panel-light: #392E33;
     
 }
+
+.settingsWindow {
+    --disabled-button: rgb(60,57,71);
+}

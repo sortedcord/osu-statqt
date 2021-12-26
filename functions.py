@@ -1,5 +1,32 @@
 import os
 from ossapi import *
+from PyQt5 import QtCore, QtWidgets
+
+class OsuStatUser():
+    """ IN CASE YOU ARE NOT USING THIS CLASS TO SEARCH FOR USERS:
+    Never initialize an object of this class with both the user and id 
+    as none as it will not work. One of the arguments needs to have the 
+    correct value.
+    """
+
+    def __init__(self, api, username= None, id= None):
+        self.username = username
+        self.id = id
+        self.api = api
+        
+        if self.username is not None and self.id is None:
+            self.id = self.search_user(self.username)
+        elif self.id is not None:
+            self.username = self.api.user(self.id).username
+
+
+    def search_user(self, query):
+        try:
+            print(f"Searching for {query}")
+            user = self.api.search(query=query).users.data[0]
+        except: return 0
+        else: 
+            return user.id
 
 
 def load_config():
@@ -32,3 +59,5 @@ def dump_config(configs):
     with open('config.osustat', 'w') as config_file:
         for config in configs:
             config_file.write(config+'\n')
+
+    

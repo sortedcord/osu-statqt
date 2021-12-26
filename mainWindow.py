@@ -4,7 +4,6 @@ from settings import SettingsWindow
 from functions import load_config, verify_credentials
 
 
-
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
