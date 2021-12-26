@@ -22,7 +22,6 @@ class OsuStatUser():
 
     def search_user(self, query):
         try:
-            print(f"Searching for {query}")
             user = self.api.search(query=query).users.data[0]
         except: return 0
         else: 
@@ -31,14 +30,12 @@ class OsuStatUser():
 
 def load_config():
     if os.path.exists('config.osustat'):
-        print("Config File Found")
         with open('config.osustat', 'r') as config_file:
             configs = []
             configfile = config_file.readlines()
             if len(configfile) > 0:
                 for config in configfile:
                     configs.append(config.replace('\n', ''))
-                print(configs)
                 return configs
             else:
                 return 0

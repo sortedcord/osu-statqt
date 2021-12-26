@@ -11,15 +11,18 @@ class SettingsWindow(QtWidgets.QMainWindow):
     
     def set_default_user_clicked(self, mainWindow):
         x = OsuStatUser(mainWindow.api).search_user(self.default_user_field.text())
-        print(x)
         msg = QtWidgets.QMessageBox()
         msg.setWindowTitle("OsuStatQt")
-        if x == 0: msg.setText("\
+        if x == 0: 
+            msg.setIcon(QtWidgets.QMessageBox.Critical)
+            msg.setText("\
 Could not find the specified default user in bancho. \
 Kindly set the default user again in the settings.\
         ")
         else: 
             mainWindow.default_user = OsuStatUser(mainWindow.api, id=x)
+            mainWindow.config[2] = (mainWindow.default_user.username)
+            msg.setIcon(QtWidgets.QMessageBox.Information)
             msg.setText(f"Default User has been set as {mainWindow.default_user.username}")
         x = msg.exec_()  # this will show our messagebox
         
@@ -34,12 +37,16 @@ Kindly set the default user again in the settings.\
             if mainWindow.api != 0:
                 self.client_id_field.setEnabled(False)
                 self.client_secret_field.setEnabled(False)
-                dump_config([self.client_id_field.text(),
-                            self.client_secret_field.text()])
+                mainWindow.config[0] = self.client_id_field.text()
+                mainWindow.config[1] = self.client_secret_field.text()
                 mainWindow.verticalLayout.removeWidget(self.alert_frame)
+                msg.setIcon(QtWidgets.QMessageBox.Information)
                 msg.setText(
                     "Authenticated Successfully, you may use this client now.")
+            else:
+                msg.setIcon(QtWidgets.QMessageBox.Critical)
         else:
+            msg.setIcon(QtWidgets.QMessageBox.Information)
             msg.setText("You are already authenticated!")
         x = msg.exec_()  # this will show our messagebox
 

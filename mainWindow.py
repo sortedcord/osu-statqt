@@ -1,7 +1,7 @@
 from PyQt5 import QtCore, QtWidgets
 
 from settings import SettingsWindow
-from functions import load_config, verify_credentials
+from functions import dump_config, load_config, verify_credentials
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -20,19 +20,16 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def setupConnections(self):
         self.actionSettings.triggered.connect(self.showSettings)
-        print("Action Connected")
         self.config = load_config()
         """
         l1 = client_id
         l2 = client_secret
         l3 = default_user
         """
-        print("Config Loaded")
         if self.config != 0:
             self.api = verify_credentials(self.config[0], self.config[1])
             if self.api != 0:
                 self.statusbar.showMessage("Credentials Successfully Setup.")
-                print(type(self.api))
                 self.verticalLayout.removeWidget(self.alert_frame)
         if self.config == 0:
             self.api = 0
@@ -235,11 +232,15 @@ class MainWindow(QtWidgets.QMainWindow):
                 background: #2a2327;
             }
         """)
-        
 
+    def closeEvent(self, event):
+        dump_config(self.config)
+        event.accept()
+        
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     ui = MainWindow()
     sys.exit(app.exec_())
+    
