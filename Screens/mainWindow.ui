@@ -6,325 +6,268 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>744</width>
-    <height>716</height>
+    <width>782</width>
+    <height>600</height>
    </rect>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>744</width>
-    <height>716</height>
-   </size>
-  </property>
-  <property name="maximumSize">
-   <size>
-    <width>744</width>
-    <height>716</height>
-   </size>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(28,23,25);</string>
+   <string notr="true">background-color: #1C1719;
+color:rgb(255,255,255);
+font: 63 9pt &quot;Torus Pro SemiBold&quot;;</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QFrame" name="frame">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>12</y>
-      <width>726</width>
-      <height>80</height>
-     </rect>
-    </property>
-    <property name="sizePolicy">
-     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-      <horstretch>0</horstretch>
-      <verstretch>0</verstretch>
-     </sizepolicy>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>726</width>
-      <height>0</height>
-     </size>
-    </property>
-    <property name="maximumSize">
-     <size>
-      <width>726</width>
-      <height>80</height>
-     </size>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(70,56,62);
-border-radius: 7px;</string>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
-    </property>
-    <widget class="QLineEdit" name="lineEdit">
-     <property name="geometry">
-      <rect>
-       <x>72</x>
-       <y>28</y>
-       <width>509</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Torus Pro SemiBold</family>
-       <pointsize>14</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: rgb(189,170,179);</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="placeholderText">
-      <string>type to search</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label">
-     <property name="geometry">
-      <rect>
-       <x>44</x>
-       <y>32</y>
-       <width>24</width>
-       <height>24</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="pixmap">
-      <pixmap resource="../Assets/Background.qrc">:/image/search.png</pixmap>
-     </property>
-     <property name="scaledContents">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_4">
-     <property name="geometry">
-      <rect>
-       <x>588</x>
-       <y>20</y>
-       <width>97</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton {
-font: 63 11pt &quot;Torus Pro SemiBold&quot;;
-color: white;
-border-radius: 15;
-background-color: rgb(172,57,109);
-}
-
-QPushButton:hover {
-background-color: rgb(255,102,171);
-
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QFrame" name="alert_frame">
+      <property name="minimumSize">
+       <size>
+        <width>100</width>
+        <height>80</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QFrame {
+background:rgba(135, 0, 0, 70);
+border-radius: 30px;
 }</string>
-     </property>
-     <property name="text">
-      <string>Search</string>
-     </property>
-    </widget>
-   </widget>
-   <widget class="QFrame" name="frame_2">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>160</y>
-      <width>751</width>
-      <height>509</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(42,35,39);
-color: rgb(255,255,255)</string>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout_2"/>
-   </widget>
-   <widget class="QFrame" name="frame_3">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>110</y>
-      <width>751</width>
-      <height>40</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QFrame {background-color: rgb(42,35,39);
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="maximumSize">
+          <size>
+           <width>200</width>
+           <height>50</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background: none;
+font: 63 10pt &quot;Torus Pro SemiBold&quot;;
 border-style: none;
+border-right-style: solid;
+border-color: rgb(236,18,32);
+border-width: 3px;
+padding-right: 12px;</string>
+         </property>
+         <property name="text">
+          <string>You haven't setup credentials</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background:none;</string>
+         </property>
+         <property name="text">
+          <string>In order for this application to work please go to the settings window (Preferences &gt; Settings and enter the API credentials.</string>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QFrame" name="search_box">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>80</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>90</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QFrame{
+background-color: #46383E;
+border-radius: 7px;
+
+}
+QLineEdit {
+background-color: #46383E;
+}</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <property name="spacing">
+        <number>20</number>
+       </property>
+       <property name="leftMargin">
+        <number>50</number>
+       </property>
+       <property name="rightMargin">
+        <number>50</number>
+       </property>
+       <item>
+        <widget class="QLineEdit" name="search_field">
+         <property name="styleSheet">
+          <string notr="true">border-style:none;
 border-bottom-style: solid;
+border-color: gray;
 border-width: 2px;
-border-bottom-color: rgb(255,102,171);
-border-top-style: none;
-color: #fff;}
-
-QPushButton {
-border: none;
-color: white;
-background-color: rgb(42,35,39);
-	font: 63 12pt &quot;Torus Pro SemiBold&quot;;
+font: 63 14pt &quot;Torus Pro SemiBold&quot;;
+padding-bottom: 5px</string>
+         </property>
+         <property name="placeholderText">
+          <string>type to search</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="searchButton">
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+background-color: #AC396D;
+border:none;
+border-radius: 20px;
+font: 63 12pt &quot;Torus Pro SemiBold&quot;;
+padding: 10px;
+min-width:80px
 }
 
 QPushButton:hover {
-border-style: none;
-border-bottom-style: solid;
-border-width: 7px;
-border-bottom-color:  rgb(255,102,171);
+background-color: #FF66AB;
 
-color: white;
-background-color:rgb(42,35,39);
-margin-top: 7px;
-	font: 63 12pt &quot;Torus Pro SemiBold&quot;;
 }</string>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <property name="leftMargin">
-      <number>129</number>
-     </property>
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <property name="rightMargin">
-      <number>129</number>
-     </property>
-     <property name="bottomMargin">
-      <number>0</number>
-     </property>
-     <item>
-      <widget class="QPushButton" name="pushButton_3">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
-       <property name="text">
+         </property>
+         <property name="text">
+          <string>Search</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="styleSheet">
+       <string notr="true">QTabWidget:pane {
+border:none;
+}
+
+QTabBar::tab {
+background: #392E33;
+padding:12px;
+min-width: 100px;
+}
+
+QTabBar::tab::selected {
+background: rgb(172, 57, 109);
+
+}</string>
+      </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="recent_tab">
+       <attribute name="title">
         <string>Recent</string>
-       </property>
+       </attribute>
       </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButton">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>Beatmap</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButton_2">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
+      <widget class="QWidget" name="user_tab">
+       <attribute name="title">
         <string>User</string>
-       </property>
+       </attribute>
       </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QPushButton" name="pushButton_5">
-    <property name="geometry">
-     <rect>
-      <x>8</x>
-      <y>584</y>
-      <width>729</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QPushButton {
-font: 63 11pt &quot;Torus Pro SemiBold&quot;;
-color: white;
-border-radius: 15;
-background-color: rgb(172,57,109);
-}
-
-QPushButton:hover {
-background-color: rgb(255,102,171);
-
-}</string>
-    </property>
-    <property name="text">
-     <string>Refresh</string>
-    </property>
-   </widget>
+      <widget class="QWidget" name="search_tab">
+       <attribute name="title">
+        <string>Search</string>
+       </attribute>
+      </widget>
+     </widget>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>744</width>
-     <height>62</height>
+     <width>782</width>
+     <height>38</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(172, 57, 109, 255), stop:1 rgba(255, 255, 255, 0));
+    <string notr="true">QMenuBar {
 font: 63 10pt &quot;Torus Pro SemiBold&quot;;
-padding: 20px;
-color: rgb(255,255,255);</string>
+padding: 8px;
+background-color: rgb(172, 57, 109);
+}
+QMenuBar::item {
+	color: rgb(223, 223, 223)
+}
+QMenuBar::item:selected {
+    color: rgb(255,255,255);
+	background-color: rgb(172, 57, 109);
+}
+
+QMenu {
+	background-color:rgb(172, 57, 109);
+}
+
+QMenu::item {
+	background-color: transparent;
+}
+
+QMenu::item::selected {
+	background: #2a2327;
+}</string>
    </property>
    <widget class="QMenu" name="menuPreferences">
     <property name="title">
      <string>Preferences</string>
     </property>
-    <addaction name="actionSettings"/>
+   </widget>
+   <widget class="QMenu" name="menuAbout">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionGithub"/>
+    <addaction name="separator"/>
+    <addaction name="actionAbout_OsuStatQt"/>
    </widget>
    <addaction name="menuPreferences"/>
+   <addaction name="menuAbout"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar">
-   <property name="styleSheet">
-    <string notr="true">background-color: rgb(42,35,39);
-font: 9pt &quot;Torus Pro&quot;;
-color: rgb(255, 255, 255);</string>
-   </property>
-  </widget>
-  <action name="actionSettings">
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionGithub">
    <property name="text">
-    <string>Settings</string>
+    <string>Github</string>
+   </property>
+  </action>
+  <action name="actionAbout_OsuStatQt">
+   <property name="text">
+    <string>About OsuStatQt</string>
    </property>
   </action>
  </widget>
- <resources>
-  <include location="../Assets/Background.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

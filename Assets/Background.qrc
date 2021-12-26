@@ -1,8 +1,0 @@
-<RCC>
-  <qresource prefix="image">
-    <file>anim.gif</file>
-    <file>search.png</file>
-    <file>C:/Users/Administrator/Downloads/avatar-guest.png</file>
-    <file>background.png</file>
-  </qresource>
-</RCC>

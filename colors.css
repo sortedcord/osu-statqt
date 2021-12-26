@@ -1,0 +1,9 @@
+.mainWindow {
+    --dark-bg-color: #1c1719;
+    --dark-pink: rgb(172, 57, 109);
+    --pink-hover: rgb(255, 102, 171);
+    --search-background: #46383E;
+    --panel-dark: #2a2327;
+    --panel-light: #392E33;
+    
+}
