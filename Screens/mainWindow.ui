@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>782</width>
-    <height>600</height>
+    <height>634</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -190,6 +190,7 @@ background: rgb(172, 57, 109);
        <attribute name="title">
         <string>Recent</string>
        </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_3"/>
       </widget>
       <widget class="QWidget" name="user_tab">
        <attribute name="title">

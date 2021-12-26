@@ -1,7 +1,8 @@
 from PyQt5 import QtCore, QtWidgets
 
 from settings import SettingsWindow
-from functions import dump_config, load_config, verify_credentials
+from functions import dump_config, load_config, verify_credentials, OsuStatUser
+from recent_tab import RecentTab
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -13,6 +14,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.show()
         self.setupStyle()
 
+    def refresh(self):
+        pass
 
     def showSettings(self):
         self.settingsWindow = SettingsWindow(self)
@@ -21,17 +24,27 @@ class MainWindow(QtWidgets.QMainWindow):
     def setupConnections(self):
         self.actionSettings.triggered.connect(self.showSettings)
         self.config = load_config()
-        """
-        l1 = client_id
-        l2 = client_secret
-        l3 = default_user
-        """
-        if self.config != 0:
+
+        if self.config != []:
             self.api = verify_credentials(self.config[0], self.config[1])
             if self.api != 0:
                 self.statusbar.showMessage("Credentials Successfully Setup.")
                 self.verticalLayout.removeWidget(self.alert_frame)
-        if self.config == 0:
+
+                try:
+                    validate_def = OsuStatUser(self.api).search_user(self.config[2])
+                    if validate_def != 0:
+                        self.default_user = OsuStatUser(self.api, id=validate_def)
+                        self.statusbar.showMessage(f"Default User Set as {self.default_user.username}")
+                        self.recent_tab_content = RecentTab()
+                        self.verticalLayout_3.addWidget(self.recent_tab_content)
+                    else:
+                        self.statusbar.showMessage("No valid default user was found.")
+                except:
+                    self.statusbar.showMessage("No valid default user was found.")
+                    self.config.append('')
+
+        if self.config == []:
             self.api = 0
         
 
@@ -93,6 +106,8 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.recent_tab = QtWidgets.QWidget()
         self.recent_tab.setObjectName("recent_tab")
+        self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.recent_tab)
+        self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.tabWidget.addTab(self.recent_tab, "")
 
         self.user_tab = QtWidgets.QWidget()

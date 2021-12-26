@@ -38,9 +38,9 @@ def load_config():
                     configs.append(config.replace('\n', ''))
                 return configs
             else:
-                return 0
+                return []
     else:
-        return 0
+        return []
 
 
 def verify_credentials(client_id, client_secret):
@@ -48,6 +48,7 @@ def verify_credentials(client_id, client_secret):
         api = OssapiV2(client_id, client_secret)
     except:
         api = 0
+        return api
     else:
         return api
 

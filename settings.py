@@ -31,20 +31,42 @@ Kindly set the default user again in the settings.\
     def submit_credentials_clicked(self, mainWindow):
         msg = QtWidgets.QMessageBox()
         msg.setWindowTitle("OsuStatQt")
+
+        # If not authenticated
         if mainWindow.api == 0:
-            mainWindow.api = verify_credentials(
+            api = verify_credentials(
                 self.client_id_field.text(), self.client_secret_field.text())
-            if mainWindow.api != 0:
+            
+            # If credentials are correct
+            if api != 0:
+                mainWindow.api = api
+
+                # Disable Text Fields
                 self.client_id_field.setEnabled(False)
                 self.client_secret_field.setEnabled(False)
-                mainWindow.config[0] = self.client_id_field.text()
-                mainWindow.config[1] = self.client_secret_field.text()
-                mainWindow.verticalLayout.removeWidget(self.alert_frame)
+
+                # Edit the existing the config
+                if len(mainWindow.config) != 0:
+                    mainWindow.config[0] = self.client_id_field.text()
+                    mainWindow.config[1] = self.client_secret_field.text()
+                
+                # Append to config if empty
+                else:
+                    mainWindow.config.append(self.client_id_field.text())
+                    mainWindow.config.append(self.client_secret_field.text())
+                
+                mainWindow.verticalLayout.removeWidget(mainWindow.alert_frame)
+
                 msg.setIcon(QtWidgets.QMessageBox.Information)
                 msg.setText(
                     "Authenticated Successfully, you may use this client now.")
+            
+            # If invalid credentials
             else:
                 msg.setIcon(QtWidgets.QMessageBox.Critical)
+                msg.setText("Invalid Credentials. Please Try Again.")
+        
+        #If already Authenticated
         else:
             msg.setIcon(QtWidgets.QMessageBox.Information)
             msg.setText("You are already authenticated!")
