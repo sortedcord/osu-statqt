@@ -204,6 +204,28 @@ background: rgb(172, 57, 109);
       </widget>
      </widget>
     </item>
+    <item>
+     <widget class="QPushButton" name="refresh_button">
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+background-color: #AC396D;
+border:none;
+border-radius: 7px;
+font: 63 12pt &quot;Torus Pro SemiBold&quot;;
+padding: 10px;
+min-width:80px
+}
+
+QPushButton:hover {
+background-color: #FF66AB;
+
+}</string>
+      </property>
+      <property name="text">
+       <string>Refresh</string>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">

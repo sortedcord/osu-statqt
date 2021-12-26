@@ -1,13 +1,13 @@
 .mainWindow {
-    --dark-bg-color: #1c1719;
-    --dark-pink: rgb(172, 57, 109);
-    --pink-hover: rgb(255, 102, 171);
-    --search-background: #46383E;
-    --panel-dark: #2a2327;
-    --panel-light: #392E33;
-    
+  --dark-bg-color: #1c1719;
+  --dark-pink: #ac396d;
+  --dark-pink-disabled: rgb(122, 86, 103);
+  --pink-hover: rgb(255, 102, 171);
+  --search-background: #46383e;
+  --panel-dark: #2a2327;
+  --panel-light: #392e33;
 }
 
 .settingsWindow {
-    --disabled-button: rgb(60,57,71);
+  --disabled-button: #3c3947;
 }

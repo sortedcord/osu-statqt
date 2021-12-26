@@ -10,12 +10,12 @@ class MainWindow(QtWidgets.QMainWindow):
         super().__init__()
         self.setupUi()
         self.setupText()
+        self.setupStyle()
         self.setupConnections()
         self.show()
-        self.setupStyle()
 
     def refresh(self):
-        pass
+        self.statusbar.showMessage("Refreshing")
 
     def showSettings(self):
         self.settingsWindow = SettingsWindow(self)
@@ -23,23 +23,54 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def setupConnections(self):
         self.actionSettings.triggered.connect(self.showSettings)
+
         self.config = load_config()
 
+        # If Configuration was loaded successfully
         if self.config != []:
+
+            # Verify API Credentials
             self.api = verify_credentials(self.config[0], self.config[1])
+
+            # Credentials were verified
             if self.api != 0:
                 self.statusbar.showMessage("Credentials Successfully Setup.")
                 self.verticalLayout.removeWidget(self.alert_frame)
 
+                # Load Default User
                 try:
                     validate_def = OsuStatUser(self.api).search_user(self.config[2])
+
+                    # If default user was found on bancho
                     if validate_def != 0:
                         self.default_user = OsuStatUser(self.api, id=validate_def)
+
                         self.statusbar.showMessage(f"Default User Set as {self.default_user.username}")
+
+                        # Show Recent Tab
                         self.recent_tab_content = RecentTab()
                         self.verticalLayout_3.addWidget(self.recent_tab_content)
+
+                        # Enable Refresh Button
+                        self.refresh_button.setStyleSheet("""
+                            QPushButton {
+                                background-color: #AC396D;
+                                border:none;
+                                border-radius: 7px;
+                                font: 63 12pt \"Torus Pro SemiBold\";
+                                padding: 10px;
+                                min-width:80px;
+                            }
+
+                            QPushButton:hover {
+                                background-color: #FF66AB;
+
+                            }
+                        """)
+                        self.refresh_button.clicked.connect(self.refresh)
                     else:
                         self.statusbar.showMessage("No valid default user was found.")
+                        self.refresh_button.setEnabled(False)
                 except:
                     self.statusbar.showMessage("No valid default user was found.")
                     self.config.append('')
@@ -121,6 +152,10 @@ class MainWindow(QtWidgets.QMainWindow):
         self.verticalLayout.addWidget(self.tabWidget)
         self.setCentralWidget(self.centralwidget)
 
+        self.refresh_button = QtWidgets.QPushButton(self.centralwidget)
+        self.refresh_button.setObjectName("refresh_button")
+        self.verticalLayout.addWidget(self.refresh_button)
+
         # Menubar
 
         self.menubar = QtWidgets.QMenuBar(self)
@@ -171,6 +206,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.menuAbout.setTitle("Help")
         self.actionGithub.setText("Github")
         self.actionAbout_OsuStatQt.setText("About OsuStatQt")
+        self.refresh_button.setText("Refresh")
     
     def setupStyle(self):
         self.setStyleSheet("""
@@ -265,6 +301,18 @@ class MainWindow(QtWidgets.QMainWindow):
 
             QMenu::item::selected {
                 background: #2a2327;
+            }
+        """)
+
+        self.refresh_button.setStyleSheet("""
+            QPushButton {
+                background-color: rgb(122, 86, 103);
+                color: rgb(200, 200, 200);
+                border:none;
+                border-radius: 7px;
+                font: 63 12pt \"Torus Pro SemiBold\";
+                padding: 10px;
+                min-width:80px
             }
         """)
 
