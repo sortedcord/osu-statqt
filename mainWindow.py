@@ -1,6 +1,8 @@
 from PyQt5 import QtCore, QtWidgets
 import time
 from settings import SettingsWindow
+from functions import load_config, verify_credentials
+
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -12,12 +14,22 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setupStyle()
         self.setupConnections()
 
+                
+
+
     def showSettings(self):
-        self.settingsWindow = SettingsWindow()
+        self.settingsWindow = SettingsWindow(self)
         self.settingsWindow.show()
 
     def setupConnections(self):
         self.actionSettings.triggered.connect(self.showSettings)
+
+        self.config = load_config()
+        if self.config is not 0:
+            self.api = verify_credentials(self.config[0], self.config[1])
+            if self.api is not 0:
+                self.statusbar.showMessage("Credentials Successfully Setup.")
+                self.verticalLayout.removeWidget(self.alert_frame)
 
     def setupUi(self):
         self.resize(782, 600)

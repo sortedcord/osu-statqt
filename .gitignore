@@ -2,6 +2,7 @@
 .sorted
 config.txt
 .txt
+config.osustat
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

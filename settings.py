@@ -2,13 +2,14 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class SettingsWindow(QtWidgets.QMainWindow):
-    def __init__(self):
+    def __init__(self, mainWindow):
         super().__init__()
         self.setupUi()
-        self.setupText()
+        self.setupText(mainWindow)
         # self.show()
         self.setupStyle()
         # self.setupConnections()
+
 
     def setupUi(self):
         self.resize(800, 466) 
@@ -82,14 +83,18 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.setCentralWidget(self.centralwidget)
 
-    def setupText(self):
-        self.setWindowTitle("MainWindow")
+    def setupText(self, mainWindow):
+        self.setWindowTitle("Settings")
         self.label_4.setText("      settings")
         self.label.setText("Credentials")
         self.label_2.setText("client id")
         self.label_3.setText("client secret")
         self.submit_credentials.setText("Submit")
         self.get_credentials.setText("Get Credentials")
+
+        if mainWindow.api != 0:
+            self.client_id_field.setText(mainWindow.config[0])
+            self.client_secret_field.setText(mainWindow.config[1])
     
     def setupStyle(self):
         self.setStyleSheet("""
