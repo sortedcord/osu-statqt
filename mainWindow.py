@@ -23,6 +23,11 @@ class MainWindow(QtWidgets.QMainWindow):
         self.actionSettings.triggered.connect(self.showSettings)
         print("Action Connected")
         self.config = load_config()
+        """
+        l1 = client_id
+        l2 = client_secret
+        l3 = default_user
+        """
         print("Config Loaded")
         if self.config != 0:
             self.api = verify_credentials(self.config[0], self.config[1])
