@@ -2,12 +2,26 @@ from PyQt5 import QtCore, QtWidgets
 
 from settings import SettingsWindow
 from functions import dump_config, load_config, verify_credentials, OsuStatUser
+
+# TODO: rename recent_tabs to tabs.py
 from recent_tab import RecentTab
 
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
+
+        """
+        I have broken down the initialization of MainWindow into 4 parts:
+        - Layout
+        - Meta (Text)
+        - Styling
+        - Signals and Slots
+
+        This makes the code much more readable and 
+        easy to navigate around, especially in vscode.
+        """
+
         self.setupUi()
         self.setupText()
         self.setupStyle()
@@ -22,7 +36,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.settingsWindow.show()
 
     def setupConnections(self):
-        self.actionSettings.triggered.connect(self.showSettings)
+        self.actionSettings.triggered.connect(
+            self.showSettings)  # Settings Menu
 
         self.config = load_config()
 
@@ -39,17 +54,21 @@ class MainWindow(QtWidgets.QMainWindow):
 
                 # Load Default User
                 try:
-                    validate_def = OsuStatUser(self.api).search_user(self.config[2])
+                    validate_def = OsuStatUser(
+                        self.api).search_user(self.config[2])
 
                     # If default user was found on bancho
                     if validate_def != 0:
-                        self.default_user = OsuStatUser(self.api, id=validate_def)
+                        self.default_user = OsuStatUser(
+                            self.api, id=validate_def)
 
-                        self.statusbar.showMessage(f"Default User Set as {self.default_user.username}")
+                        self.statusbar.showMessage(
+                            f"Default User Set as {self.default_user.username}")
 
                         # Show Recent Tab
                         self.recent_tab_content = RecentTab()
-                        self.verticalLayout_3.addWidget(self.recent_tab_content)
+                        self.verticalLayout_3.addWidget(
+                            self.recent_tab_content)
 
                         # Enable Refresh Button
                         self.refresh_button.setStyleSheet("""
@@ -68,16 +87,24 @@ class MainWindow(QtWidgets.QMainWindow):
                             }
                         """)
                         self.refresh_button.clicked.connect(self.refresh)
+
+                    # If default user was not found.
                     else:
-                        self.statusbar.showMessage("No valid default user was found.")
+                        self.statusbar.showMessage(
+                            "No valid default user was found.")
+                        # Disable Refresh Button
                         self.refresh_button.setEnabled(False)
+
+                # If there is no default user present in the config file.
                 except:
-                    self.statusbar.showMessage("No valid default user was found.")
+                    self.statusbar.showMessage(
+                        "No valid default user was found.")
+                    # Placeholder for the default user
                     self.config.append('')
 
+        # TODO: Set default value for api as None
         if self.config == []:
             self.api = 0
-        
 
     def setupUi(self):
         self.resize(782, 600)
@@ -92,7 +119,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.alert_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.alert_frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.alert_frame.setObjectName("alert_frame")
-        
+
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.alert_frame)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.label = QtWidgets.QLabel(self.alert_frame)
@@ -191,23 +218,26 @@ class MainWindow(QtWidgets.QMainWindow):
         self.statusbar.setObjectName("statusbar")
         self.setStatusBar(self.statusbar)
 
-
     def setupText(self):
         self.setWindowTitle("MainWindow")
         self.label.setText("You haven\'t setup credentials")
-        self.label_2.setText("In order for this application to work please go to the settings window (Preferences > Settings and enter the API credentials.")
+        self.label_2.setText(
+            "In order for this application to work please go to the settings window (Preferences > Settings and enter the API credentials.")
         self.search_field.setPlaceholderText("type to search")
         self.searchButton.setText("Search")
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.recent_tab), "Recent")
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.user_tab), "User")
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.search_tab), "Search")
+        self.tabWidget.setTabText(
+            self.tabWidget.indexOf(self.recent_tab), "Recent")
+        self.tabWidget.setTabText(
+            self.tabWidget.indexOf(self.user_tab), "User")
+        self.tabWidget.setTabText(
+            self.tabWidget.indexOf(self.search_tab), "Search")
         self.menuPreferences.setTitle("Preferences")
         self.actionSettings.setText("Settings")
         self.menuAbout.setTitle("Help")
         self.actionGithub.setText("Github")
         self.actionAbout_OsuStatQt.setText("About OsuStatQt")
         self.refresh_button.setText("Refresh")
-    
+
     def setupStyle(self):
         self.setStyleSheet("""
             background-color: #1C1719;
@@ -319,11 +349,10 @@ class MainWindow(QtWidgets.QMainWindow):
     def closeEvent(self, event):
         dump_config(self.config)
         event.accept()
-        
+
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     ui = MainWindow()
     sys.exit(app.exec_())
-    
