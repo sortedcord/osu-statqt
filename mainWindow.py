@@ -1,5 +1,6 @@
 from PyQt5 import QtCore, QtWidgets
 import time
+from settings import SettingsWindow
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -9,6 +10,14 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setupText()
         self.show()
         self.setupStyle()
+        self.setupConnections()
+
+    def showSettings(self):
+        self.settingsWindow = SettingsWindow()
+        self.settingsWindow.show()
+
+    def setupConnections(self):
+        self.actionSettings.triggered.connect(self.showSettings)
 
     def setupUi(self):
         self.resize(782, 600)
@@ -64,28 +73,37 @@ class MainWindow(QtWidgets.QMainWindow):
         self.tabWidget.addTab(self.search_tab, "")
         self.verticalLayout.addWidget(self.tabWidget)
         self.setCentralWidget(self.centralwidget)
+
         self.menubar = QtWidgets.QMenuBar(self)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 782, 38))
         self.menubar.setObjectName("menubar")
+
         self.menuPreferences = QtWidgets.QMenu(self.menubar)
         self.menuPreferences.setObjectName("menuPreferences")
+        self.actionSettings = QtWidgets.QAction(self)
+        self.actionSettings.setObjectName("actionSettings")
+        self.menuPreferences.addAction(self.actionSettings)
+
         self.menuAbout = QtWidgets.QMenu(self.menubar)
         self.menuAbout.setObjectName("menuAbout")
         self.setMenuBar(self.menubar)
-        self.statusbar = QtWidgets.QStatusBar(self)
-        self.statusbar.setObjectName("statusbar")
-        self.setStatusBar(self.statusbar)
         self.actionGithub = QtWidgets.QAction(self)
         self.actionGithub.setObjectName("actionGithub")
+
         self.actionAbout_OsuStatQt = QtWidgets.QAction(self)
         self.actionAbout_OsuStatQt.setObjectName("actionAbout_OsuStatQt")
+
         self.menuAbout.addAction(self.actionGithub)
         self.menuAbout.addSeparator()
         self.menuAbout.addAction(self.actionAbout_OsuStatQt)
+
         self.menubar.addAction(self.menuPreferences.menuAction())
         self.menubar.addAction(self.menuAbout.menuAction())
-
         self.tabWidget.setCurrentIndex(0)
+
+        self.statusbar = QtWidgets.QStatusBar(self)
+        self.statusbar.setObjectName("statusbar")
+        self.setStatusBar(self.statusbar)
 
 
     def setupText(self):
@@ -98,6 +116,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.user_tab), "User")
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.search_tab), "Search")
         self.menuPreferences.setTitle("Preferences")
+        self.actionSettings.setText("Settings")
         self.menuAbout.setTitle("Help")
         self.actionGithub.setText("Github")
         self.actionAbout_OsuStatQt.setText("About OsuStatQt")
