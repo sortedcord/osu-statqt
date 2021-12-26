@@ -39,26 +39,33 @@ class MainWindow(QtWidgets.QMainWindow):
         self.resize(782, 600)
         self.centralwidget = QtWidgets.QWidget(self)
         self.centralwidget.setObjectName("centralwidget")
+
         self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
         self.verticalLayout.setObjectName("verticalLayout")
+
         self.alert_frame = QtWidgets.QFrame(self.centralwidget)
         self.alert_frame.setMinimumSize(QtCore.QSize(100, 80))
         self.alert_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.alert_frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.alert_frame.setObjectName("alert_frame")
+        
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.alert_frame)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.label = QtWidgets.QLabel(self.alert_frame)
+
         self.label.setMaximumSize(QtCore.QSize(200, 50))
         self.label.setObjectName("label")
         self.horizontalLayout_2.addWidget(self.label)
+
         self.label_2 = QtWidgets.QLabel(self.alert_frame)
         self.label_2.setMinimumSize(QtCore.QSize(0, 0))
         self.label_2.setStyleSheet("background:none;")
         self.label_2.setWordWrap(True)
         self.label_2.setObjectName("label_2")
         self.horizontalLayout_2.addWidget(self.label_2)
+
         self.verticalLayout.addWidget(self.alert_frame)
+
         self.search_box = QtWidgets.QFrame(self.centralwidget)
         self.search_box.setMinimumSize(QtCore.QSize(0, 80))
         self.search_box.setMaximumSize(QtCore.QSize(16777215, 90))
@@ -66,29 +73,40 @@ class MainWindow(QtWidgets.QMainWindow):
         self.search_box.setFrameShadow(QtWidgets.QFrame.Raised)
         self.search_box.setObjectName("search_box")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.search_box)
+
         self.horizontalLayout.setContentsMargins(50, -1, 50, -1)
         self.horizontalLayout.setSpacing(20)
         self.horizontalLayout.setObjectName("horizontalLayout")
+
         self.search_field = QtWidgets.QLineEdit(self.search_box)
         self.search_field.setObjectName("search_field")
         self.horizontalLayout.addWidget(self.search_field)
+
         self.searchButton = QtWidgets.QPushButton(self.search_box)
         self.searchButton.setObjectName("searchButton")
         self.horizontalLayout.addWidget(self.searchButton)
+
         self.verticalLayout.addWidget(self.search_box)
+
         self.tabWidget = QtWidgets.QTabWidget(self.centralwidget)
         self.tabWidget.setObjectName("tabWidget")
+
         self.recent_tab = QtWidgets.QWidget()
         self.recent_tab.setObjectName("recent_tab")
         self.tabWidget.addTab(self.recent_tab, "")
+
         self.user_tab = QtWidgets.QWidget()
         self.user_tab.setObjectName("user_tab")
         self.tabWidget.addTab(self.user_tab, "")
+
         self.search_tab = QtWidgets.QWidget()
         self.search_tab.setObjectName("search_tab")
         self.tabWidget.addTab(self.search_tab, "")
+
         self.verticalLayout.addWidget(self.tabWidget)
         self.setCentralWidget(self.centralwidget)
+
+        # Menubar
 
         self.menubar = QtWidgets.QMenuBar(self)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 782, 38))
@@ -116,6 +134,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.menubar.addAction(self.menuPreferences.menuAction())
         self.menubar.addAction(self.menuAbout.menuAction())
         self.tabWidget.setCurrentIndex(0)
+
+        # Statusbar
 
         self.statusbar = QtWidgets.QStatusBar(self)
         self.statusbar.setObjectName("statusbar")
