@@ -1,4 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
+from functions import dump_config, verify_credentials
 
 
 class SettingsWindow(QtWidgets.QMainWindow):
@@ -8,11 +9,38 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.setupText(mainWindow)
         # self.show()
         self.setupStyle()
-        # self.setupConnections()
+        self.setupConnections(mainWindow)
 
+    def submit_credentials_clicked(self, mainWindow):
+        msg = QtWidgets.QMessageBox()
+        msg.setWindowTitle("OsuStatQt")
+        if mainWindow.api == 0:
+            mainWindow.api = verify_credentials(
+                self.client_id_field.text(), self.client_secret_field.text())
+            if mainWindow.api != 0:
+                self.client_id_field.setEnabled(False)
+                self.client_secret_field.setEnabled(False)
+                dump_config([self.client_id_field.text(),
+                            self.client_secret_field.text()])
+                mainWindow.verticalLayout.removeWidget(self.alert_frame)
+                msg.setText(
+                    "Authenticated Successfully, you may use this client now.")
+        else:
+            msg.setText("You are already authenticated!")
+        x = msg.exec_()  # this will show our messagebox
+
+    def setupConnections(self, mainWindow):
+        print(type(mainWindow.api))
+        if mainWindow.api != 0:
+            self.client_id_field.setText(mainWindow.config[0])
+            self.client_id_field.setEnabled(False)
+            self.client_secret_field.setText(mainWindow.config[1])
+            self.client_secret_field.setEnabled(False)
+        self.submit_credentials.clicked.connect(
+            lambda: self.submit_credentials_clicked(mainWindow))
 
     def setupUi(self):
-        self.resize(800, 466) 
+        self.resize(800, 466)
         self.centralwidget = QtWidgets.QWidget(self)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
@@ -38,7 +66,8 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setMinimumSize(QtCore.QSize(240, 0))
-        self.label.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.label.setAlignment(QtCore.Qt.AlignLeading |
+                                QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
         self.label.setObjectName("label")
         self.horizontalLayout.addWidget(self.label)
         self.frame = QtWidgets.QFrame(self.centralwidget)
@@ -50,34 +79,45 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.formLayout.setHorizontalSpacing(18)
         self.formLayout.setObjectName("formLayout")
         self.label_2 = QtWidgets.QLabel(self.frame)
-        self.label_2.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.label_2.setAlignment(
+            QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter)
         self.label_2.setObjectName("label_2")
-        self.formLayout.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.label_2)
+        self.formLayout.setWidget(
+            0, QtWidgets.QFormLayout.LabelRole, self.label_2)
         self.client_id_field = QtWidgets.QLineEdit(self.frame)
         self.client_id_field.setObjectName("client_id_field")
-        self.formLayout.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.client_id_field)
+        self.formLayout.setWidget(
+            0, QtWidgets.QFormLayout.FieldRole, self.client_id_field)
         self.label_3 = QtWidgets.QLabel(self.frame)
         self.label_3.setObjectName("label_3")
-        self.formLayout.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.label_3)
+        self.formLayout.setWidget(
+            1, QtWidgets.QFormLayout.LabelRole, self.label_3)
         self.client_secret_field = QtWidgets.QLineEdit(self.frame)
         self.client_secret_field.setObjectName("client_secret_field")
-        self.formLayout.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.client_secret_field)
+        self.formLayout.setWidget(
+            1, QtWidgets.QFormLayout.FieldRole, self.client_secret_field)
         self.submit_credentials = QtWidgets.QPushButton(self.frame)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(".\\Screens\\../Assets/check.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(".\\Screens\\../Assets/check.png"),
+                       QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.submit_credentials.setIcon(icon)
         self.submit_credentials.setObjectName("submit_credentials")
-        self.formLayout.setWidget(7, QtWidgets.QFormLayout.FieldRole, self.submit_credentials)
+        self.formLayout.setWidget(
+            7, QtWidgets.QFormLayout.FieldRole, self.submit_credentials)
         self.get_credentials = QtWidgets.QPushButton(self.frame)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.get_credentials.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.get_credentials.sizePolicy().hasHeightForWidth())
         self.get_credentials.setSizePolicy(sizePolicy)
         self.get_credentials.setMinimumSize(QtCore.QSize(160, 0))
         self.get_credentials.setObjectName("get_credentials")
-        self.formLayout.setWidget(8, QtWidgets.QFormLayout.FieldRole, self.get_credentials)
-        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.formLayout.setWidget(
+            8, QtWidgets.QFormLayout.FieldRole, self.get_credentials)
+        spacerItem = QtWidgets.QSpacerItem(
+            20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.formLayout.setItem(4, QtWidgets.QFormLayout.FieldRole, spacerItem)
         self.horizontalLayout.addWidget(self.frame)
         self.verticalLayout.addLayout(self.horizontalLayout)
@@ -92,10 +132,6 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.submit_credentials.setText("Submit")
         self.get_credentials.setText("Get Credentials")
 
-        if mainWindow.api != 0:
-            self.client_id_field.setText(mainWindow.config[0])
-            self.client_secret_field.setText(mainWindow.config[1])
-    
     def setupStyle(self):
         self.setStyleSheet("""
             background-color:rgb(24,22,29);

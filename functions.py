@@ -1,6 +1,7 @@
 import os
 from ossapi import *
 
+
 def load_config():
     if os.path.exists('config.osustat'):
         print("Config File Found")
@@ -12,8 +13,11 @@ def load_config():
                     configs.append(config.replace('\n', ''))
                 print(configs)
                 return configs
-            else: return 0
-    else: return 0
+            else:
+                return 0
+    else:
+        return 0
+
 
 def verify_credentials(client_id, client_secret):
     try:
@@ -22,3 +26,9 @@ def verify_credentials(client_id, client_secret):
         api = 0
     else:
         return api
+
+
+def dump_config(configs):
+    with open('config.osustat', 'w') as config_file:
+        for config in configs:
+            config_file.write(config+'\n')
