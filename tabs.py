@@ -6,34 +6,32 @@ class RecentActivityTab(QtWidgets.QWidget):
         super().__init__()
         self.setupUi()
         self.setupConnections(mainWindow)
-        
 
     def setupConnections(self, mainWindow):
-        # try:
         for recent_activity in mainWindow.api.user_recent_activity(user_id=mainWindow.default_user.id, limit=20):
             print(recent_activity)
             widget = QtWidgets.QLabel()
             if 'LostEvent' in str(type(recent_activity)):
-                widget.setText(f"{mainWindow.default_user.username} lost first place on {recent_activity.beatmap.title}")
+                widget.setText(
+                    f"{mainWindow.default_user.username} lost first place on {recent_activity.beatmap.title}")
             elif 'UserSupportAgain' in str(type(recent_activity)):
-                widget.setText(f"{mainWindow.default_user.username} Bought Supporter Again")
+                widget.setText(
+                    f"{mainWindow.default_user.username} Bought Supporter Again")
             elif 'BeatmapsetUpdate' in str(type(recent_activity)):
-                widget.setText(f"{mainWindow.default_user.username} updated beatmapset {recent_activity.beatmapset.title}")
+                widget.setText(
+                    f"{mainWindow.default_user.username} updated beatmapset {recent_activity.beatmapset.title}")
             elif 'BeatmapsetUpload' in str(type(recent_activity)):
-                widget.setText(f"{mainWindow.default_user.username} uploaded beatmapset {recent_activity.beatmapset.title}")
+                widget.setText(
+                    f"{mainWindow.default_user.username} uploaded beatmapset {recent_activity.beatmapset.title}")
             elif 'Achievement' in str(type(recent_activity)):
-                widget.setText(f"{mainWindow.default_user.username} got some achievement")
+                widget.setText(
+                    f"{mainWindow.default_user.username} got some achievement")
             elif 'RankEvent' in str(type(recent_activity)):
-                widget.setText(f"{recent_activity.scoreRank}   {mainWindow.default_user.username} achieved rank #{recent_activity.rank} on {recent_activity.beatmap.title}")
+                widget.setText(
+                    f"{recent_activity.scoreRank}   {mainWindow.default_user.username} achieved rank #{recent_activity.rank} on {recent_activity.beatmap.title}")
             else:
                 widget.setText("Unknown Event occured")
             self.verticalLayout_2.addWidget(widget)
-        # except ValueError:
-        #     widget = QtWidgets.QLabel()
-        #     widget.setText(f"Could not find any more recent activities for {mainWindow.default_user.username}")
-        #     self.verticalLayout_2.addWidget(widget)
-        
-
 
     def setupUi(self):
         self.setObjectName("self")
@@ -57,12 +55,13 @@ class RecentActivityTab(QtWidgets.QWidget):
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.verticalLayout.addWidget(self.scrollArea)
 
+
 class RecentScoreTab(QtWidgets.QWidget):
     def __init__(self, mainWindow):
         super().__init__()
         self.setupUi()
         self.setupConnections(mainWindow)
-    
+
     def setupConnections(self, mainWindow):
         try:
             for recent_score in mainWindow.api.user_scores(mainWindow.default_user.id, 'recent'):
@@ -71,10 +70,9 @@ class RecentScoreTab(QtWidgets.QWidget):
                 self.verticalLayout_2.addWidget(widget)
         except:
             widget = QtWidgets.QLabel()
-            widget.setText(f"Could not find any more recent scores for {mainWindow.default_user.username}")
+            widget.setText(
+                f"Could not find any more recent scores for {mainWindow.default_user.username}")
             self.verticalLayout_2.addWidget(widget)
-            
-
 
     def setupUi(self):
         self.setObjectName("self")
