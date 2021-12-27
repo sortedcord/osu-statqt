@@ -1,4 +1,5 @@
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets
+import os
 
 from functions import OsuStatUser
 from config import Config
@@ -228,7 +229,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setStatusBar(self.statusbar)
 
     def setupText(self):
-        self.setWindowTitle("MainWindow")
+        self.setWindowTitle("OsuStatQt")
         self.label.setText("You haven\'t setup credentials")
         self.label_2.setText(
             "In order for this application to work please go to the settings window (Preferences > Settings and enter the API credentials.")
@@ -365,5 +366,9 @@ class MainWindow(QtWidgets.QMainWindow):
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
+    if os.path.exists('icon48x.ico'):
+        app.setWindowIcon(QtGui.QIcon('icon48x.ico'))
+    else:
+        app.setWindowIcon(QtGui.QIcon('Assets/Logo/icon48x.ico'))
     ui = MainWindow()
     sys.exit(app.exec_())
