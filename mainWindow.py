@@ -6,6 +6,7 @@ from config import Config
 from settings import SettingsWindow
 from tabs import RecentActivityTab, RecentScoreTab
 
+VERSION = '0.0.1'
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
