@@ -1,5 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from functions import dump_config, OsuStatUser, verify_credentials
+from functions import OsuStatUser
 
 
 class SettingsWindow(QtWidgets.QMainWindow):
@@ -8,54 +8,60 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.setupUi()
         self.setupText(mainWindow)
         self.setupConnections(mainWindow)
+    
 
     def set_default_user_clicked(self, mainWindow):
-        x = OsuStatUser(mainWindow.api).search_user(
-            self.default_user_field.text())
         msg = QtWidgets.QMessageBox()
         msg.setWindowTitle("OsuStatQt")
-        if x == 0:
-            msg.setIcon(QtWidgets.QMessageBox.Critical)
-            msg.setText("\
-Could not find the specified default user in bancho. \
-Kindly set the default user again in the settings.\
-        ")
+
+        if mainWindow.config.cred_verification_status == 'VERIFIED':
+            x = OsuStatUser(mainWindow.config.api).search_user(
+                self.default_user_field.text())
+
+            if x == 0:  # If no user is found in Bancho
+                msg.setIcon(QtWidgets.QMessageBox.Critical)
+                msg.setText("\
+    Could not find the specified default user in bancho. \
+    Kindly set the default user again in the settings.\
+            ")
+            else:  # If user is found
+                mainWindow.config.default_user = OsuStatUser(
+                    mainWindow.config.api, id=x)
+                mainWindow.config[2] = (mainWindow.default_user.username)
+                msg.setIcon(QtWidgets.QMessageBox.Information)
+                msg.setText(
+                    f"Default User has been set as {mainWindow.default_user.username}")
         else:
-            mainWindow.default_user = OsuStatUser(mainWindow.api, id=x)
-            mainWindow.config[2] = (mainWindow.default_user.username)
-            msg.setIcon(QtWidgets.QMessageBox.Information)
+            msg.setIcon(QtWidgets.QMessageBox.Critical)
             msg.setText(
-                f"Default User has been set as {mainWindow.default_user.username}")
-        x = msg.exec_()  # this will show our messagebox
+                f"Credentials have not been setup yet. Please check your settings.")
+
+        # Display Message Box
+        _i = msg.exec_()
+
+        #Refresh Settings Window
+        self.setupConnections(mainWindow)
+
 
     def submit_credentials_clicked(self, mainWindow):
         msg = QtWidgets.QMessageBox()
         msg.setWindowTitle("OsuStatQt")
 
-        # If not authenticated
-        if mainWindow.api == 0:
-            api = verify_credentials(
-                self.client_id_field.text(), self.client_secret_field.text())
+        # If not already authenticated
+        if mainWindow.config.cred_verification_status != 'VERIFIED':
+
+            mainWindow.config.client_id = self.client_id_field.text()
+            mainWindow.config.client_secret = self.client_secret_field.text()
+            mainWindow.config.verify_credentials()
 
             # If credentials are correct
-            if api != 0:
-                mainWindow.api = api
+            if mainWindow.config.cred_verification_status == 'VERIFIED':
 
                 # Disable Text Fields
                 self.client_id_field.setEnabled(False)
                 self.client_secret_field.setEnabled(False)
 
-                # Edit the existing the config
-                if len(mainWindow.config) != 0:
-                    mainWindow.config[0] = self.client_id_field.text()
-                    mainWindow.config[1] = self.client_secret_field.text()
-
-                # Append to config if empty
-                else:
-                    mainWindow.config.append(self.client_id_field.text())
-                    mainWindow.config.append(self.client_secret_field.text())
-
-                mainWindow.verticalLayout.removeWidget(mainWindow.alert_frame)
+                mainWindow.alert_frame.setParent(None)
 
                 msg.setIcon(QtWidgets.QMessageBox.Information)
                 msg.setText(
@@ -72,13 +78,31 @@ Kindly set the default user again in the settings.\
             msg.setText("You are already authenticated!")
         x = msg.exec_()  # this will show our messagebox
 
+        #Refresh Settings Window
+        self.setupConnections(mainWindow)
+
+
     def setupConnections(self, mainWindow):
-        if mainWindow.api != 0:
-            self.client_id_field.setText(mainWindow.config[0])
+        if mainWindow.config.cred_verification_status == 'VERIFIED':
+            self.frame_6.setEnabled(True)
+            self.set_default_user.setStyleSheet("QPushButton {background-color: rgb(86,57,172);\n"
+                                            "color: rgb(255, 255, 255);\n"
+                                            "padding: 6px;\n"
+                                            "border-radius:8px;\n"
+                                            "max-width:110px;\n"
+                                            "text-align: center;}\n"
+                                            "\n"
+                                            "QPushButton:hover {    \n"
+                                            "    background-color: rgb(140, 102, 255);\n"
+                                            "}\n"
+                                            "")
+            self.client_id_field.setText(str(mainWindow.config.client_id))
             self.client_id_field.setEnabled(False)
-            self.client_secret_field.setText(mainWindow.config[1])
+
+            self.client_secret_field.setText(mainWindow.config.client_secret)
             self.client_secret_field.setEnabled(False)
-            self.default_user_field.setText(mainWindow.config[2])
+
+            self.default_user_field.setText(mainWindow.config.default_user)
         else:
             self.frame_6.setEnabled(False)
             self.set_default_user.setStyleSheet("""
@@ -95,6 +119,8 @@ Kindly set the default user again in the settings.\
             lambda: self.submit_credentials_clicked(mainWindow))
         self.set_default_user.clicked.connect(
             lambda: self.set_default_user_clicked(mainWindow))
+
+
 
     def setupUi(self):
         self.resize(800, 439)
