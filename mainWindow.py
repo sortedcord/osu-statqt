@@ -3,8 +3,7 @@ from PyQt5 import QtCore, QtWidgets
 from settings import SettingsWindow
 from functions import dump_config, load_config, verify_credentials, OsuStatUser
 
-# TODO: rename recent_tabs to tabs.py
-from recent_tab import RecentTab
+from tabs import RecentActivityTab
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -22,9 +21,13 @@ class MainWindow(QtWidgets.QMainWindow):
         easy to navigate around, especially in vscode.
         """
 
+        print("Setting Layout")
         self.setupUi()
+        print("Setting Text")
         self.setupText()
+        print("Setting Style")
         self.setupStyle()
+        print("Setting Connections")
         self.setupConnections()
         self.show()
 
@@ -38,17 +41,20 @@ class MainWindow(QtWidgets.QMainWindow):
     def setupConnections(self):
         self.actionSettings.triggered.connect(
             self.showSettings)  # Settings Menu
+        print("Settings button Connected")
 
         self.config = load_config()
 
         # If Configuration was loaded successfully
         if self.config != []:
+            print("Configuration loaded.")
 
             # Verify API Credentials
             self.api = verify_credentials(self.config[0], self.config[1])
 
             # Credentials were verified
             if self.api != 0:
+                print("Credentials Verified")
                 self.statusbar.showMessage("Credentials Successfully Setup.")
                 self.verticalLayout.removeWidget(self.alert_frame)
 
@@ -57,8 +63,18 @@ class MainWindow(QtWidgets.QMainWindow):
                     validate_def = OsuStatUser(
                         self.api).search_user(self.config[2])
 
+                # If there is no default user present in the config file.
+                except:
+                    print("No Default user in config")
+
+                    self.statusbar.showMessage(
+                        "No valid default user was found.")
+                    # Placeholder for the default user
+                    self.config.append('')
+                else:
                     # If default user was found on bancho
                     if validate_def != 0:
+                        print("Default User Found on Bancho")
                         self.default_user = OsuStatUser(
                             self.api, id=validate_def)
 
@@ -66,9 +82,10 @@ class MainWindow(QtWidgets.QMainWindow):
                             f"Default User Set as {self.default_user.username}")
 
                         # Show Recent Tab
-                        self.recent_tab_content = RecentTab()
+                        self.recent_tab_content = RecentActivityTab(self)
                         self.verticalLayout_3.addWidget(
                             self.recent_tab_content)
+                        print("Displayed Recent Tab")
 
                         # Enable Refresh Button
                         self.refresh_button.setStyleSheet("""
@@ -87,26 +104,24 @@ class MainWindow(QtWidgets.QMainWindow):
                             }
                         """)
                         self.refresh_button.clicked.connect(self.refresh)
+                        print("Refresh Button Enabled")
 
                     # If default user was not found.
                     else:
+                        print("Default User not Found")
                         self.statusbar.showMessage(
                             "No valid default user was found.")
                         # Disable Refresh Button
                         self.refresh_button.setEnabled(False)
-
-                # If there is no default user present in the config file.
-                except:
-                    self.statusbar.showMessage(
-                        "No valid default user was found.")
-                    # Placeholder for the default user
-                    self.config.append('')
+                        print("Disabled Refresh Button")
 
         # TODO: Set default value for api as None
         if self.config == []:
+            print("Config Not Found.")
             self.api = 0
 
     def setupUi(self):
+        print("Resizing Window")
         self.resize(782, 600)
         self.centralwidget = QtWidgets.QWidget(self)
         self.centralwidget.setObjectName("centralwidget")
