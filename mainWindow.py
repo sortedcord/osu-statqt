@@ -3,7 +3,7 @@ from PyQt5 import QtCore, QtWidgets
 from settings import SettingsWindow
 from functions import dump_config, load_config, verify_credentials, OsuStatUser
 
-from tabs import RecentActivityTab
+from tabs import RecentActivityTab, RecentScoreTab
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -81,11 +81,18 @@ class MainWindow(QtWidgets.QMainWindow):
                         self.statusbar.showMessage(
                             f"Default User Set as {self.default_user.username}")
 
-                        # Show Recent Tab
-                        self.recent_tab_content = RecentActivityTab(self)
+                        # Show Recent Activity Tab
+                        self.recent_activity_tab_content = RecentActivityTab(self)
                         self.verticalLayout_3.addWidget(
-                            self.recent_tab_content)
-                        print("Displayed Recent Tab")
+                            self.recent_activity_tab_content)
+                        print("Displayed Recent Activity Tab")
+
+                        # Show Recent Scores Tab
+                        self.recent_activity_tab_content = RecentScoreTab(self)
+                        self.verticalLayout_4.addWidget(
+                            self.recent_activity_tab_content)
+                        print("Displayed Recent Scores Tab")
+
 
                         # Enable Refresh Button
                         self.refresh_button.setStyleSheet("""
@@ -177,11 +184,17 @@ class MainWindow(QtWidgets.QMainWindow):
         self.tabWidget = QtWidgets.QTabWidget(self.centralwidget)
         self.tabWidget.setObjectName("tabWidget")
 
-        self.recent_tab = QtWidgets.QWidget()
-        self.recent_tab.setObjectName("recent_tab")
-        self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.recent_tab)
+        self.recent_activity_tab = QtWidgets.QWidget()
+        self.recent_activity_tab.setObjectName("recent_activity_tab")
+        self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.recent_activity_tab)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
-        self.tabWidget.addTab(self.recent_tab, "")
+        self.tabWidget.addTab(self.recent_activity_tab, "")
+
+        self.recent_scores_tab = QtWidgets.QWidget()
+        self.recent_scores_tab.setObjectName("recent_scores_tab")
+        self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.recent_scores_tab)
+        self.verticalLayout_4.setObjectName("verticalLayout_4")
+        self.tabWidget.addTab(self.recent_scores_tab, "")
 
         self.user_tab = QtWidgets.QWidget()
         self.user_tab.setObjectName("user_tab")
@@ -241,7 +254,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.search_field.setPlaceholderText("type to search")
         self.searchButton.setText("Search")
         self.tabWidget.setTabText(
-            self.tabWidget.indexOf(self.recent_tab), "Recent")
+            self.tabWidget.indexOf(self.recent_activity_tab), "Recent Activity")
+        self.tabWidget.setTabText(
+            self.tabWidget.indexOf(self.recent_scores_tab), "Recent Scores")
         self.tabWidget.setTabText(
             self.tabWidget.indexOf(self.user_tab), "User")
         self.tabWidget.setTabText(
