@@ -29,10 +29,10 @@ class Config():
                         value = None
                     formatted_config[key] = value
 
-        self.client_id = formatted_config['client_id']
-        self.client_secret = formatted_config['client_secret']
-        self.default_user = formatted_config['default_user']
-        self.verify_credentials()
+            self.client_id = formatted_config['client_id']
+            self.client_secret = formatted_config['client_secret']
+            self.default_user = formatted_config['default_user']
+            self.verify_credentials()
 
     def dump_config(self):
         with open('config.osustat', 'w') as w:
