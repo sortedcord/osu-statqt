@@ -1,8 +1,9 @@
 from PyQt5 import QtCore, QtWidgets
 
-from settings import SettingsWindow
-from functions import dump_config, load_config, verify_credentials, OsuStatUser
+from functions import OsuStatUser
+from config import Config
 
+from settings import SettingsWindow
 from tabs import RecentActivityTab, RecentScoreTab
 
 
@@ -43,89 +44,68 @@ class MainWindow(QtWidgets.QMainWindow):
             self.showSettings)  # Settings Menu
         print("Settings button Connected")
 
-        self.config = load_config()
+        self.config = Config()
+        self.config.load_config()
 
-        # If Configuration was loaded successfully
-        if self.config != []:
-            print("Configuration loaded.")
+        # If credentials were valid
+        if self.config.cred_verification_status == 'VERIFIED':
+            self.statusbar.showMessage("Credentials verified")
+            print("Credentials verified")
 
-            # Verify API Credentials
-            self.api = verify_credentials(self.config[0], self.config[1])
+            self.alert_frame.setParent(None)  # Remove alert frame
 
-            # Credentials were verified
-            if self.api != 0:
-                print("Credentials Verified")
-                self.statusbar.showMessage("Credentials Successfully Setup.")
-                self.verticalLayout.removeWidget(self.alert_frame)
+            # If config has default user set
+            if self.config.default_user is not None:
+                _uval = OsuStatUser(
+                    self.config.api).search_user(self.config.default_user)
+                
+                # If Default User is valid
+                if _uval != 0: 
+                    self.default_user_class = OsuStatUser(self.config.api,self.config.default_user)
 
-                # Load Default User
-                try:
-                    validate_def = OsuStatUser(
-                        self.api).search_user(self.config[2])
 
-                # If there is no default user present in the config file.
-                except:
-                    print("No Default user in config")
+                    # Show Recent Activity Tab
+                    self.recent_activity_tab_content = RecentActivityTab(self)
+                    self.verticalLayout_3.addWidget(
+                        self.recent_activity_tab_content)
+                    print("Displayed Recent Activity Tab")
 
-                    self.statusbar.showMessage(
-                        "No valid default user was found.")
-                    # Placeholder for the default user
-                    self.config.append('')
+                    # Show Recent Scores Tab
+                    self.recent_activity_tab_content = RecentScoreTab(self)
+                    self.verticalLayout_4.addWidget(
+                        self.recent_activity_tab_content)
+                    print("Displayed Recent Scores Tab")
+
+                    # Enable Refresh Button
+                    self.refresh_button.setStyleSheet("""
+                        QPushButton {
+                            background-color: #AC396D;
+                            border:none;
+                            border-radius: 7px;
+                            font: 63 12pt \"Torus Pro SemiBold\";
+                            padding: 10px;
+                            min-width:80px;
+                        }
+
+                        QPushButton:hover {
+                            background-color: #FF66AB;
+
+                        }
+                    """)
+                    self.refresh_button.clicked.connect(self.refresh)
+                    print("Refresh Button Enabled")
                 else:
-                    # If default user was found on bancho
-                    if validate_def != 0:
-                        print("Default User Found on Bancho")
-                        self.default_user = OsuStatUser(
-                            self.api, id=validate_def)
+                    print("Defaut user was invalid")
 
-                        self.statusbar.showMessage(
-                            f"Default User Set as {self.default_user.username}")
+            # If default user is not set
+            else:
+                print("No default user was found")
 
-                        # Show Recent Activity Tab
-                        self.recent_activity_tab_content = RecentActivityTab(self)
-                        self.verticalLayout_3.addWidget(
-                            self.recent_activity_tab_content)
-                        print("Displayed Recent Activity Tab")
-
-                        # Show Recent Scores Tab
-                        self.recent_activity_tab_content = RecentScoreTab(self)
-                        self.verticalLayout_4.addWidget(
-                            self.recent_activity_tab_content)
-                        print("Displayed Recent Scores Tab")
-
-
-                        # Enable Refresh Button
-                        self.refresh_button.setStyleSheet("""
-                            QPushButton {
-                                background-color: #AC396D;
-                                border:none;
-                                border-radius: 7px;
-                                font: 63 12pt \"Torus Pro SemiBold\";
-                                padding: 10px;
-                                min-width:80px;
-                            }
-
-                            QPushButton:hover {
-                                background-color: #FF66AB;
-
-                            }
-                        """)
-                        self.refresh_button.clicked.connect(self.refresh)
-                        print("Refresh Button Enabled")
-
-                    # If default user was not found.
-                    else:
-                        print("Default User not Found")
-                        self.statusbar.showMessage(
-                            "No valid default user was found.")
-                        # Disable Refresh Button
-                        self.refresh_button.setEnabled(False)
-                        print("Disabled Refresh Button")
-
-        # TODO: Set default value for api as None
-        if self.config == []:
-            print("Config Not Found.")
-            self.api = 0
+        elif self.config.cred_verification_status == 'UNVERIFIED':
+            print("No Config was found")
+        else:
+            # With the cred_status as 'INVALID'
+            print("Credentials in config were invalid")
 
     def setupUi(self):
         print("Resizing Window")
@@ -377,7 +357,7 @@ class MainWindow(QtWidgets.QMainWindow):
         """)
 
     def closeEvent(self, event):
-        dump_config(self.config)
+        self.config.dump_config()
         event.accept()
 
 
