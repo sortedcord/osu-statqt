@@ -39,19 +39,19 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def enable_refresh_button(self):
         self.refresh_button.setStyleSheet("""
-                        QPushButton {
-                            background-color: #AC396D;
-                            border:none;
-                            border-radius: 7px;
-                            font: 63 12pt \"Torus Pro SemiBold\";
-                            padding: 10px;
-                            min-width:80px;
-                        }
+            QPushButton {
+                background-color: #AC396D;
+                border:none;
+                border-radius: 7px;
+                font: 63 12pt \"Torus Pro SemiBold\";
+                padding: 10px;
+                min-width:80px;
+            }
 
-                        QPushButton:hover {
-                            background-color: #FF66AB;
+            QPushButton:hover {
+                background-color: #FF66AB;
 
-                        }
+            }
                     """)
         self.refresh_button.clicked.connect(self.refresh)
         self.refresh_button.setEnabled(True)

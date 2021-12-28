@@ -165,12 +165,9 @@ class SettingsWindow(QtWidgets.QMainWindow):
             lambda: self.set_default_user_clicked(mainWindow))
 
 
-
     def setupUi(self):
         self.resize(800, 439)
-        self.setStyleSheet("background-color:rgb(24,22,29);\n"
-                           "color: rgb(255,255,255);\n"
-                           "padding:0px;")
+        
         self.centralwidget = QtWidgets.QWidget(self)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
@@ -180,8 +177,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.frame_2 = QtWidgets.QFrame(self.centralwidget)
         self.frame_2.setMinimumSize(QtCore.QSize(800, 49))
         self.frame_2.setMaximumSize(QtCore.QSize(16777215, 50))
-        self.frame_2.setStyleSheet("background-color: rgb(35,31,47);\n"
-                                   "")
+        
         self.frame_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_2.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_2.setObjectName("frame_2")
@@ -214,18 +210,14 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.label_7 = QtWidgets.QLabel(self.frame_4)
         self.label_7.setMinimumSize(QtCore.QSize(240, 0))
         self.label_7.setMaximumSize(QtCore.QSize(16777215, 16777215))
-        self.label_7.setStyleSheet("font: 63 18pt \"Torus Pro SemiBold\";\n"
-                                   "background-color:rgb(36,35,43);\n"
-                                   "padding-left: 30px")
+        
         self.label_7.setAlignment(
             QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
         self.label_7.setObjectName("label_7")
         self.horizontalLayout_4.addWidget(self.label_7)
         self.frame_5 = QtWidgets.QFrame(self.frame_4)
         self.frame_5.setMaximumSize(QtCore.QSize(16777215, 16777215))
-        self.frame_5.setStyleSheet("background-color:rgb(49,47,56);\n"
-                                   "font: 63 12pt \"Torus Pro SemiBold\";\n"
-                                   "color: rgb(148, 143, 163)")
+        
         self.frame_5.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_5.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_5.setObjectName("frame_5")
@@ -240,20 +232,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.formLayout_3.setWidget(
             0, QtWidgets.QFormLayout.LabelRole, self.label_8)
         self.client_id_field = QtWidgets.QLineEdit(self.frame_5)
-        self.client_id_field.setStyleSheet("QLineEdit {\n"
-                                           "background-color: rgb(61, 57, 70);\n"
-                                           "border: none;\n"
-                                           "padding: 6px;\n"
-                                           "border-radius: 4px;\n"
-                                           "color: rgb(255,255,255);\n"
-                                           "font: 63 10pt \"Torus Pro SemiBold\";\n"
-                                           "}\n"
-                                           "\n"
-                                           "QLineEdit:focus {\n"
-                                           "border-style: solid;\n"
-                                           "border-width: 2px;\n"
-                                           "border-color:  rgb(148, 143, 163);\n"
-                                           "}")
+        
         self.client_id_field.setObjectName("client_id_field")
         self.formLayout_3.setWidget(
             0, QtWidgets.QFormLayout.FieldRole, self.client_id_field)
@@ -262,35 +241,12 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.formLayout_3.setWidget(
             1, QtWidgets.QFormLayout.LabelRole, self.label_9)
         self.client_secret_field = QtWidgets.QLineEdit(self.frame_5)
-        self.client_secret_field.setStyleSheet("QLineEdit {\n"
-                                               "background-color: rgb(61, 57, 70);\n"
-                                               "border: none;\n"
-                                               "padding: 6px;\n"
-                                               "border-radius: 4px;\n"
-                                               "color: rgb(255,255,255);\n"
-                                               "font: 63 10pt \"Torus Pro SemiBold\";\n"
-                                               "}\n"
-                                               "\n"
-                                               "QLineEdit:focus {\n"
-                                               "border-style: solid;\n"
-                                               "border-width: 2px;\n"
-                                               "border-color:  rgb(148, 143, 163);\n"
-                                               "}")
+
         self.client_secret_field.setObjectName("client_secret_field")
         self.formLayout_3.setWidget(
             1, QtWidgets.QFormLayout.FieldRole, self.client_secret_field)
         self.submit_credentials = QtWidgets.QPushButton(self.frame_5)
-        self.submit_credentials.setStyleSheet("QPushButton {background-color: rgb(86,57,172);\n"
-                                              "color: rgb(255, 255, 255);\n"
-                                              "padding: 6px;\n"
-                                              "border-radius:8px;\n"
-                                              "max-width:110px;\n"
-                                              "text-align: center;}\n"
-                                              "\n"
-                                              "QPushButton:hover {    \n"
-                                              "    background-color: rgb(140, 102, 255);\n"
-                                              "}\n"
-                                              "")
+
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(".\\Screens\\../Assets/check.png"),
                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -307,15 +263,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
             self.get_credentials_3.sizePolicy().hasHeightForWidth())
         self.get_credentials_3.setSizePolicy(sizePolicy)
         self.get_credentials_3.setMinimumSize(QtCore.QSize(160, 0))
-        self.get_credentials_3.setStyleSheet("QPushButton {background-color: rgb(86,57,172);\n"
-                                             "color: rgb(255, 255, 255);\n"
-                                             "padding: 6px;\n"
-                                             "border-radius:8px;\n"
-                                             "text-align: center;}\n"
-                                             "\n"
-                                             "QPushButton:hover {    \n"
-                                             "    background-color: rgb(140, 102, 255);\n"
-                                             "}")
+
         self.get_credentials_3.setObjectName("get_credentials_3")
         self.formLayout_3.setWidget(
             7, QtWidgets.QFormLayout.FieldRole, self.get_credentials_3)
@@ -333,18 +281,14 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.label_10 = QtWidgets.QLabel(self.frame_6)
         self.label_10.setMinimumSize(QtCore.QSize(240, 0))
         self.label_10.setMaximumSize(QtCore.QSize(16777215, 16777215))
-        self.label_10.setStyleSheet("font: 63 18pt \"Torus Pro SemiBold\";\n"
-                                    "background-color:rgb(36,35,43);\n"
-                                    "padding-left: 30px")
+
         self.label_10.setAlignment(
             QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
         self.label_10.setObjectName("label_10")
         self.horizontalLayout_5.addWidget(self.label_10)
         self.frame_7 = QtWidgets.QFrame(self.frame_6)
         self.frame_7.setMaximumSize(QtCore.QSize(16777215, 16777215))
-        self.frame_7.setStyleSheet("background-color:rgb(49,47,56);\n"
-                                   "font: 63 12pt \"Torus Pro SemiBold\";\n"
-                                   "color: rgb(148, 143, 163)")
+
         self.frame_7.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_7.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_7.setObjectName("frame_7")
@@ -359,35 +303,12 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.formLayout_4.setWidget(
             0, QtWidgets.QFormLayout.LabelRole, self.label_11)
         self.default_user_field = QtWidgets.QLineEdit(self.frame_7)
-        self.default_user_field.setStyleSheet("QLineEdit {\n"
-                                              "background-color: rgb(61, 57, 70);\n"
-                                              "border: none;\n"
-                                              "padding: 6px;\n"
-                                              "border-radius: 4px;\n"
-                                              "color: rgb(255,255,255);\n"
-                                              "font: 63 10pt \"Torus Pro SemiBold\";\n"
-                                              "}\n"
-                                              "\n"
-                                              "QLineEdit:focus {\n"
-                                              "border-style: solid;\n"
-                                              "border-width: 2px;\n"
-                                              "border-color:  rgb(148, 143, 163);\n"
-                                              "}")
+
         self.default_user_field.setObjectName("default_user_field")
         self.formLayout_4.setWidget(
             0, QtWidgets.QFormLayout.FieldRole, self.default_user_field)
         self.set_default_user = QtWidgets.QPushButton(self.frame_7)
-        self.set_default_user.setStyleSheet("QPushButton {background-color: rgb(86,57,172);\n"
-                                            "color: rgb(255, 255, 255);\n"
-                                            "padding: 6px;\n"
-                                            "border-radius:8px;\n"
-                                            "max-width:110px;\n"
-                                            "text-align: center;}\n"
-                                            "\n"
-                                            "QPushButton:hover {    \n"
-                                            "    background-color: rgb(140, 102, 255);\n"
-                                            "}\n"
-                                            "")
+
         self.set_default_user.setIcon(icon)
         self.set_default_user.setObjectName("set_default_user")
         self.formLayout_4.setWidget(
@@ -408,3 +329,132 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.label_10.setText("User")
         self.label_11.setText("username")
         self.set_default_user.setText("Enter")
+    
+    def setupStylesheet(self):
+        self.setStyleSheet("""
+            background-color:rgb(24,22,29);
+            color: rgb(255,255,255);
+            padding:0px;
+        """)
+
+        self.frame_2.setStyleSheet("""
+            background-color: rgb(35,31,47);
+        """)
+        
+        self.label_7.setStyleSheet("""
+            font: 63 18pt \"Torus Pro SemiBold\";
+            background-color:rgb(36,35,43);
+            padding-left: 30px""")
+        
+        self.frame_5.setStyleSheet("""
+            background-color:rgb(49,47,56);
+            font: 63 12pt \"Torus Pro SemiBold\";
+            color: rgb(148, 143, 163)
+        """)
+        
+        self.client_id_field.setStyleSheet("""
+            QLineEdit {
+                background-color: rgb(61, 57, 70);
+                border: none;
+                padding: 6px;
+                border-radius: 4px;
+                color: rgb(255,255,255);
+                font: 63 10pt \"Torus Pro SemiBold\";
+            }
+            
+            QLineEdit:focus {
+                border-style: solid;
+                border-width: 2px;
+                border-color:  rgb(148, 143, 163);
+            }
+        """)
+        
+        self.client_secret_field.setStyleSheet("""
+            QLineEdit {
+                background-color: rgb(61, 57, 70);
+                border: none;
+                padding: 6px;
+                border-radius: 4px;
+                color: rgb(255,255,255);
+                font: 63 10pt \"Torus Pro SemiBold\";
+            }
+                
+            QLineEdit:focus {
+                border-style: solid;
+                border-width: 2px;
+                border-color:  rgb(148, 143, 163);
+            }
+        """)
+                            
+        self.submit_credentials.setStyleSheet("""
+            QPushButton {
+                background-color: rgb(86,57,172);
+                color: rgb(255, 255, 255);
+                padding: 6px;
+                border-radius:8px;
+                max-width:110px;
+                text-align: center;
+            }
+                                              
+            QPushButton:hover {    
+                background-color: rgb(140, 102, 255);
+            }
+        """)
+
+        self.get_credentials_3.setStyleSheet("""
+            QPushButton {
+                background-color: rgb(86,57,172);
+                color: rgb(255, 255, 255);
+                padding: 6px;
+                border-radius:8px;
+                text-align: center;
+            }
+                
+            QPushButton:hover {    
+                background-color: rgb(140, 102, 255);
+            }
+        """)
+
+        self.label_10.setStyleSheet("""
+            font: 63 18pt \"Torus Pro SemiBold\";
+            background-color:rgb(36,35,43);
+            padding-left: 30px
+        """)
+                            
+        self.frame_7.setStyleSheet("""
+            background-color:rgb(49,47,56);
+            font: 63 12pt \"Torus Pro SemiBold\";
+            color: rgb(148, 143, 163);
+        """)
+
+        self.default_user_field.setStyleSheet("""
+            QLineEdit {
+                background-color: rgb(61, 57, 70);
+                border: none;
+                padding: 6px;
+                border-radius: 4px;
+                color: rgb(255,255,255);
+                font: 63 10pt \"Torus Pro SemiBold\";
+            }
+                                                
+            QLineEdit:focus {
+                border-style: solid;
+                border-width: 2px;
+                border-color:  rgb(148, 143, 163);
+            }
+        """)
+
+        self.set_default_user.setStyleSheet("""
+            QPushButton {
+                background-color: rgb(86,57,172);
+                color: rgb(255, 255, 255);
+                padding: 6px;
+                border-radius:8px;
+                max-width:110px;
+                text-align: center;}
+                
+            QPushButton:hover {    
+                background-color: rgb(140, 102, 255);
+            }
+        """)
+                            
