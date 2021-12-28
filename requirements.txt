@@ -1,2 +1,2 @@
-ossapi==2.2.1
+ossapi==2.2.1 # Uses my fork of ossapi
 PyQt5==5.15.6
