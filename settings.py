@@ -68,6 +68,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
                     mainWindow.config.api, id=x)
                 print("Default User has been set")
                 msg.setIcon(QtWidgets.QMessageBox.Information)
+                mainWindow.enable_refresh_button()
                 msg.setText(
                     f"Default User has been set as {mainWindow.default_user_class.username}")
         else:
@@ -122,6 +123,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
 
 
     def setupConnections(self, mainWindow):
+        # If credentials verified
         if mainWindow.config.cred_verification_status == 'VERIFIED':
             self.frame_6.setEnabled(True)
             self.set_default_user.setStyleSheet("QPushButton {background-color: rgb(86,57,172);\n"
@@ -141,7 +143,10 @@ class SettingsWindow(QtWidgets.QMainWindow):
             self.client_secret_field.setText(mainWindow.config.client_secret)
             self.client_secret_field.setEnabled(False)
 
-            self.default_user_field.setText(mainWindow.config.default_user)
+            if mainWindow.default_user_class is not None:
+                self.default_user_field.setText(mainWindow.default_user_class.username)
+        
+        # If credentials not verified
         else:
             self.frame_6.setEnabled(False)
             self.set_default_user.setStyleSheet("""

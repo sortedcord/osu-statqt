@@ -37,6 +37,41 @@ class MainWindow(QtWidgets.QMainWindow):
     def refresh(self):
         self.statusbar.showMessage("Refreshing")
 
+    def enable_refresh_button(self):
+        self.refresh_button.setStyleSheet("""
+                        QPushButton {
+                            background-color: #AC396D;
+                            border:none;
+                            border-radius: 7px;
+                            font: 63 12pt \"Torus Pro SemiBold\";
+                            padding: 10px;
+                            min-width:80px;
+                        }
+
+                        QPushButton:hover {
+                            background-color: #FF66AB;
+
+                        }
+                    """)
+        self.refresh_button.clicked.connect(self.refresh)
+        self.refresh_button.setEnabled(True)
+    
+
+    def disable_refresh_button(self):
+        self.refresh_button.setEnabled(False)
+        self.refresh_button.setStyleSheet("""
+            QPushButton {
+                background-color: rgb(122, 86, 103);
+                color: rgb(200, 200, 200);
+                border:none;
+                border-radius: 7px;
+                font: 63 12pt \"Torus Pro SemiBold\";
+                padding: 10px;
+                min-width:80px
+            }
+        """)
+
+
     def showSettings(self):
         self.settingsWindow = SettingsWindow(self)
         self.settingsWindow.show()
@@ -80,29 +115,15 @@ class MainWindow(QtWidgets.QMainWindow):
                     print("Displayed Recent Scores Tab")
 
                     # Enable Refresh Button
-                    self.refresh_button.setStyleSheet("""
-                        QPushButton {
-                            background-color: #AC396D;
-                            border:none;
-                            border-radius: 7px;
-                            font: 63 12pt \"Torus Pro SemiBold\";
-                            padding: 10px;
-                            min-width:80px;
-                        }
-
-                        QPushButton:hover {
-                            background-color: #FF66AB;
-
-                        }
-                    """)
-                    self.refresh_button.clicked.connect(self.refresh)
+                    self.enable_refresh_button()
                     print("Refresh Button Enabled")
                 else:
-                    
+                    self.disable_refresh_button()
                     print("Defaut user was invalid")
 
             # If default user is not set
             else:
+                self.disable_refresh_button()
                 print("No default user was found")
 
         elif self.config.cred_verification_status == 'UNVERIFIED':
