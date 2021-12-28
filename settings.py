@@ -7,22 +7,25 @@ class SettingsWindow(QtWidgets.QMainWindow):
         super().__init__()
         self.setupUi()
         self.setupText(mainWindow)
+        self.setupStylesheet()
         self.setupConnections(mainWindow)
     
     def reload_settings_window(self, mainWindow):
         if mainWindow.config.cred_verification_status == 'VERIFIED':
             self.frame_6.setEnabled(True)
-            self.set_default_user.setStyleSheet("QPushButton {background-color: rgb(86,57,172);\n"
-                                            "color: rgb(255, 255, 255);\n"
-                                            "padding: 6px;\n"
-                                            "border-radius:8px;\n"
-                                            "max-width:110px;\n"
-                                            "text-align: center;}\n"
-                                            "\n"
-                                            "QPushButton:hover {    \n"
-                                            "    background-color: rgb(140, 102, 255);\n"
-                                            "}\n"
-                                            "")
+            self.set_default_user.setStyleSheet("""
+            QPushButton {
+                background-color: rgb(86,57,172);
+                color: rgb(255, 255, 255);
+                padding: 6px;
+                border-radius:8px;
+                max-width:110px;
+                text-align: center;}
+            
+            QPushButton:hover {    
+                background-color: rgb(140, 102, 255);
+            }
+            """)
             self.client_id_field.setText(str(mainWindow.config.client_id))
             self.client_id_field.setEnabled(False)
 
@@ -126,17 +129,19 @@ class SettingsWindow(QtWidgets.QMainWindow):
         # If credentials verified
         if mainWindow.config.cred_verification_status == 'VERIFIED':
             self.frame_6.setEnabled(True)
-            self.set_default_user.setStyleSheet("QPushButton {background-color: rgb(86,57,172);\n"
-                                            "color: rgb(255, 255, 255);\n"
-                                            "padding: 6px;\n"
-                                            "border-radius:8px;\n"
-                                            "max-width:110px;\n"
-                                            "text-align: center;}\n"
-                                            "\n"
-                                            "QPushButton:hover {    \n"
-                                            "    background-color: rgb(140, 102, 255);\n"
-                                            "}\n"
-                                            "")
+            self.set_default_user.setStyleSheet("""
+                QPushButton {
+                    background-color: rgb(86,57,172);
+                    color: rgb(255, 255, 255);
+                    padding: 6px;
+                    border-radius:8px;
+                    max-width:110px;
+                    text-align: center;}
+                    
+                QPushButton:hover {    
+                    background-color: rgb(140, 102, 255);
+                }
+            """)
             self.client_id_field.setText(str(mainWindow.config.client_id))
             self.client_id_field.setEnabled(False)
 

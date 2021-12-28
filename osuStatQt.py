@@ -36,6 +36,20 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def refresh(self):
         self.statusbar.showMessage("Refreshing")
+        # Show Recent Activity Tab
+        self.recent_activity_tab_content = RecentActivityTab(self)
+        self.verticalLayout_3.addWidget(
+            self.recent_activity_tab_content)
+        print("Displayed Recent Activity Tab")
+
+        # Show Recent Scores Tab
+        self.recent_activity_tab_content = RecentScoreTab(self)
+        self.verticalLayout_4.addWidget(
+            self.recent_activity_tab_content)
+        print("Displayed Recent Scores Tab")
+        
+        
+
 
     def enable_refresh_button(self):
         self.refresh_button.setStyleSheet("""
