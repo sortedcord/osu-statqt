@@ -55,6 +55,16 @@ class MainWindow(QtWidgets.QMainWindow):
         print("Displayed Recent Scores Tab")
         self.statusbar.showMessage("Data Refreshed")
 
+        # Timeout refresh Button
+        self.disable_refresh_button()
+        self.refresh_timer = QtCore.QTimer()
+        self.refresh_timer.setInterval(15000)
+        self.refresh_timer.setSingleShot(True)
+        self.refresh_timer.timeout.connect(self.enable_refresh_button)
+        self.refresh_timer.start()
+
+
+
 
     def enable_refresh_button(self):
         self.refresh_button.setStyleSheet("""
