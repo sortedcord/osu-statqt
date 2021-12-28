@@ -42,6 +42,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.settingsWindow.show()
 
     def setupConnections(self):
+        self.default_user_class = None
+
         self.actionSettings.triggered.connect(
             self.showSettings)  # Settings Menu
         print("Settings button Connected")
@@ -64,7 +66,6 @@ class MainWindow(QtWidgets.QMainWindow):
                 # If Default User is valid
                 if _uval != 0: 
                     self.default_user_class = OsuStatUser(self.config.api,self.config.default_user)
-
 
                     # Show Recent Activity Tab
                     self.recent_activity_tab_content = RecentActivityTab(self)
@@ -97,6 +98,7 @@ class MainWindow(QtWidgets.QMainWindow):
                     self.refresh_button.clicked.connect(self.refresh)
                     print("Refresh Button Enabled")
                 else:
+                    
                     print("Defaut user was invalid")
 
             # If default user is not set
@@ -359,6 +361,10 @@ class MainWindow(QtWidgets.QMainWindow):
         """)
 
     def closeEvent(self, event):
+        try:
+            self.config.default_user = self.default_user_class.username
+        except:
+            print("Default User Class was none. Default user wasn't verified throughout runtime.")
         self.config.dump_config()
         event.accept()
 

@@ -9,6 +9,44 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.setupText(mainWindow)
         self.setupConnections(mainWindow)
     
+    def reload_settings_window(self, mainWindow):
+        if mainWindow.config.cred_verification_status == 'VERIFIED':
+            self.frame_6.setEnabled(True)
+            self.set_default_user.setStyleSheet("QPushButton {background-color: rgb(86,57,172);\n"
+                                            "color: rgb(255, 255, 255);\n"
+                                            "padding: 6px;\n"
+                                            "border-radius:8px;\n"
+                                            "max-width:110px;\n"
+                                            "text-align: center;}\n"
+                                            "\n"
+                                            "QPushButton:hover {    \n"
+                                            "    background-color: rgb(140, 102, 255);\n"
+                                            "}\n"
+                                            "")
+            self.client_id_field.setText(str(mainWindow.config.client_id))
+            self.client_id_field.setEnabled(False)
+
+            self.client_secret_field.setText(mainWindow.config.client_secret)
+            self.client_secret_field.setEnabled(False)
+
+            self.default_user_field.setText(mainWindow.config.default_user)
+        else:
+            self.frame_6.setEnabled(False)
+            self.set_default_user.setStyleSheet("""
+            QPushButton {
+                background-color: rgb(60,57,71);
+                color: rgb(200, 200, 200);
+                padding: 6px;
+                border-radius:8px;
+                max-width:110px;
+                text-align: center;
+            }
+            """)
+        self.set_default_user.clicked.connect(
+            lambda: self.set_default_user_clicked(mainWindow))
+        
+        if mainWindow.default_user_class is not None:
+            self.default_user_field.setText(mainWindow.default_user_class.username)
 
     def set_default_user_clicked(self, mainWindow):
         msg = QtWidgets.QMessageBox()
@@ -17,6 +55,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
         if mainWindow.config.cred_verification_status == 'VERIFIED':
             x = OsuStatUser(mainWindow.config.api).search_user(
                 self.default_user_field.text())
+            print('User ID: ', x)
 
             if x == 0:  # If no user is found in Bancho
                 msg.setIcon(QtWidgets.QMessageBox.Critical)
@@ -25,12 +64,12 @@ class SettingsWindow(QtWidgets.QMainWindow):
     Kindly set the default user again in the settings.\
             ")
             else:  # If user is found
-                mainWindow.config.default_user = OsuStatUser(
+                mainWindow.default_user_class = OsuStatUser(
                     mainWindow.config.api, id=x)
-                mainWindow.config[2] = (mainWindow.default_user.username)
+                print("Default User has been set")
                 msg.setIcon(QtWidgets.QMessageBox.Information)
                 msg.setText(
-                    f"Default User has been set as {mainWindow.default_user.username}")
+                    f"Default User has been set as {mainWindow.default_user_class.username}")
         else:
             msg.setIcon(QtWidgets.QMessageBox.Critical)
             msg.setText(
@@ -40,7 +79,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
         _i = msg.exec_()
 
         #Refresh Settings Window
-        self.setupConnections(mainWindow)
+        self.reload_settings_window(mainWindow)
 
 
     def submit_credentials_clicked(self, mainWindow):
