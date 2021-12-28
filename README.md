@@ -22,7 +22,7 @@ Binaries are only available for windows as of now, but you can always run the py
 
 **Latest Release:**
 
-| [Windows 8.1+ (x64)](https://github.com/ppy/osu/releases/latest/download/install.exe) | 
+| [Windows 8.1+ (x64)](https://github.com/sortedcord/osu-statqt/releases) | 
 | ------------- |
 
 ## Configuring Osu!StatQt
