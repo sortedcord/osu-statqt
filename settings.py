@@ -13,6 +13,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
     def reload_settings_window(self, mainWindow):
         if mainWindow.config.cred_verification_status == 'VERIFIED':
             self.frame_6.setEnabled(True)
+            self.frame_8.setEnabled(True)
             self.set_default_user.setStyleSheet("""
             QPushButton {
                 background-color: rgb(86,57,172);
@@ -35,6 +36,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
             self.default_user_field.setText(mainWindow.config.default_user)
         else:
             self.frame_6.setEnabled(False)
+            self.frame_8.setEnabled(False)
             self.set_default_user.setStyleSheet("""
             QPushButton {
                 background-color: rgb(60,57,71);
@@ -129,6 +131,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
         # If credentials verified
         if mainWindow.config.cred_verification_status == 'VERIFIED':
             self.frame_6.setEnabled(True)
+            self.frame_8.setEnabled(True)
             self.set_default_user.setStyleSheet("""
                 QPushButton {
                     background-color: rgb(86,57,172);
@@ -154,6 +157,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
         # If credentials not verified
         else:
             self.frame_6.setEnabled(False)
+            self.frame_8.setEnabled(False)
             self.set_default_user.setStyleSheet("""
             QPushButton {
                 background-color: rgb(60,57,71);
