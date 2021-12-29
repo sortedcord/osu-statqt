@@ -13,6 +13,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
     def reload_settings_window(self, mainWindow):
         if mainWindow.config.cred_verification_status == 'VERIFIED':
             self.frame_6.setEnabled(True)
+            self.frame_8.setEnabled(True)
             self.set_default_user.setStyleSheet("""
             QPushButton {
                 background-color: rgb(86,57,172);
@@ -35,6 +36,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
             self.default_user_field.setText(mainWindow.config.default_user)
         else:
             self.frame_6.setEnabled(False)
+            self.frame_8.setEnabled(False)
             self.set_default_user.setStyleSheet("""
             QPushButton {
                 background-color: rgb(60,57,71);
@@ -129,6 +131,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
         # If credentials verified
         if mainWindow.config.cred_verification_status == 'VERIFIED':
             self.frame_6.setEnabled(True)
+            self.frame_8.setEnabled(True)
             self.set_default_user.setStyleSheet("""
                 QPushButton {
                     background-color: rgb(86,57,172);
@@ -154,6 +157,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
         # If credentials not verified
         else:
             self.frame_6.setEnabled(False)
+            self.frame_8.setEnabled(False)
             self.set_default_user.setStyleSheet("""
             QPushButton {
                 background-color: rgb(60,57,71);
@@ -320,6 +324,72 @@ class SettingsWindow(QtWidgets.QMainWindow):
             2, QtWidgets.QFormLayout.FieldRole, self.set_default_user)
         self.horizontalLayout_5.addWidget(self.frame_7)
         self.verticalLayout_4.addWidget(self.frame_6)
+        self.frame_8 = QtWidgets.QFrame(self.frame_3)
+        self.frame_8.setMinimumSize(QtCore.QSize(798, 136))
+        self.frame_8.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_8.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_8.setObjectName("frame_8")
+        self.horizontalLayout_6 = QtWidgets.QHBoxLayout(self.frame_8)
+        self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_6.setSpacing(0)
+        self.horizontalLayout_6.setObjectName("horizontalLayout_6")
+        self.label_12 = QtWidgets.QLabel(self.frame_8)
+        self.label_12.setMinimumSize(QtCore.QSize(240, 0))
+        self.label_12.setMaximumSize(QtCore.QSize(240, 16777215))
+        self.label_12.setStyleSheet("font: 63 18pt \"Torus Pro SemiBold\";\n"
+"background-color:rgb(36,35,43);\n"
+"padding-left: 30px")
+        self.label_12.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.label_12.setObjectName("label_12")
+        self.horizontalLayout_6.addWidget(self.label_12)
+        self.frame_9 = QtWidgets.QFrame(self.frame_8)
+        self.frame_9.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.frame_9.setStyleSheet("background-color:rgb(49,47,56);\n"
+"font: 63 12pt \"Torus Pro SemiBold\";\n"
+"color: rgb(148, 143, 163)")
+        self.frame_9.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_9.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_9.setObjectName("frame_9")
+        self.formLayout_5 = QtWidgets.QFormLayout(self.frame_9)
+        self.formLayout_5.setContentsMargins(35, 30, 50, -1)
+        self.formLayout_5.setHorizontalSpacing(18)
+        self.formLayout_5.setObjectName("formLayout_5")
+        self.label_13 = QtWidgets.QLabel(self.frame_9)
+        self.label_13.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.label_13.setObjectName("label_13")
+        self.formLayout_5.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.label_13)
+        self.save_refresh_limit = QtWidgets.QPushButton(self.frame_9)
+        self.save_refresh_limit.setStyleSheet("QPushButton {background-color: rgb(86,57,172);\n"
+"color: rgb(255, 255, 255);\n"
+"padding: 6px;\n"
+"border-radius:8px;\n"
+"max-width:110px;\n"
+"text-align: center;}\n"
+"\n"
+"QPushButton:hover {    \n"
+"    background-color: rgb(140, 102, 255);\n"
+"}\n"
+"")
+        self.save_refresh_limit.setIcon(icon)
+        self.save_refresh_limit.setObjectName("save_refresh_limit")
+        self.formLayout_5.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.save_refresh_limit)
+        self.refresh_limit_combo = QtWidgets.QComboBox(self.frame_9)
+        self.refresh_limit_combo.setStyleSheet("background-color: rgb(61, 57, 70);\n"
+"border: none;\n"
+"padding: 6px;\n"
+"border-radius: 4px;\n"
+"color: rgb(255,255,255);\n"
+"font: 63 10pt \"Torus Pro SemiBold\";")
+        self.refresh_limit_combo.setObjectName("refresh_limit_combo")
+        self.refresh_limit_combo.addItem("")
+        self.refresh_limit_combo.addItem("")
+        self.refresh_limit_combo.addItem("")
+        self.refresh_limit_combo.addItem("")
+        self.refresh_limit_combo.addItem("")
+        self.refresh_limit_combo.addItem("")
+        self.formLayout_5.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.refresh_limit_combo)
+        self.horizontalLayout_6.addWidget(self.frame_9)
+        self.verticalLayout_4.addWidget(self.frame_8)
         self.verticalLayout.addWidget(self.frame_3)
         self.setCentralWidget(self.centralwidget)
 
@@ -334,6 +404,15 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.label_10.setText("User")
         self.label_11.setText("username")
         self.set_default_user.setText("Enter")
+        self.label_12.setText("OsuStat")
+        self.label_13.setText("refresh limit")
+        self.save_refresh_limit.setText("Save")
+        self.refresh_limit_combo.setItemText(0, "No Limit")
+        self.refresh_limit_combo.setItemText(1, "Every 5 Seconds")
+        self.refresh_limit_combo.setItemText(2, "Every 10 Seconds")
+        self.refresh_limit_combo.setItemText(3, "Every 15 Seconds")
+        self.refresh_limit_combo.setItemText(4, "Every 30 Seconds")
+        self.refresh_limit_combo.setItemText(5, "Every Minute")
     
     def setupStylesheet(self):
         self.setStyleSheet("""
