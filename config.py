@@ -14,6 +14,7 @@ class Config():
         self.cred_verification_status = 'UNVERIFIED'
         self.default_user = default_user
         self.api = None
+        self.refresh_timeout = 15000 # Default refresh timeout is 15 seconds
 
         if None not in (self.client_id, self.client_secret):
             self.verify_credentials()
