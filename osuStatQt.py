@@ -2,7 +2,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import os
 
 from functions import OsuStatUser
-from config import Config
+from config import load_config
 
 from settings import SettingsWindow
 from tabs import RecentActivityTab, RecentScoreTab
@@ -102,8 +102,8 @@ class MainWindow(QtWidgets.QMainWindow):
             self.showSettings)  # Settings Menu
         print("Settings button Connected")
 
-        self.config = Config()
-        self.config.load_config()
+        self.config = load_config()
+
 
         # If credentials were valid
         if self.config.cred_verification_status == 'VERIFIED':
@@ -144,12 +144,6 @@ class MainWindow(QtWidgets.QMainWindow):
             else:
                 self.disable_refresh_button()
                 print("No default user was found")
-
-        elif self.config.cred_verification_status == 'UNVERIFIED':
-            print("No Config was found")
-        else:
-            # With the cred_status as 'INVALID'
-            print("Credentials in config were invalid")
 
     def setupUi(self):
         print("Resizing Window")
