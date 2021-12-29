@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>439</height>
+    <width>816</width>
+    <height>615</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -87,10 +87,7 @@ padding:0px;</string>
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout_4">
-       <property name="spacing">
-        <number>5</number>
-       </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
        <property name="leftMargin">
         <number>0</number>
        </property>
@@ -187,7 +184,7 @@ color: rgb(148, 143, 163)</string>
               <number>18</number>
              </property>
              <property name="leftMargin">
-              <number>50</number>
+              <number>42</number>
              </property>
              <property name="topMargin">
               <number>30</number>
@@ -456,6 +453,180 @@ QPushButton:hover {
                 <iconset>
                  <normaloff>../Assets/check.png</normaloff>../Assets/check.png</iconset>
                </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="frame_8">
+         <property name="minimumSize">
+          <size>
+           <width>798</width>
+           <height>136</height>
+          </size>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_6">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="label_12">
+            <property name="minimumSize">
+             <size>
+              <width>240</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>240</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">font: 63 18pt &quot;Torus Pro SemiBold&quot;;
+background-color:rgb(36,35,43);
+padding-left: 30px</string>
+            </property>
+            <property name="text">
+             <string>OsuStat</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+            </property>
+            <property name="margin">
+             <number>20</number>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QFrame" name="frame_9">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color:rgb(49,47,56);
+font: 63 12pt &quot;Torus Pro SemiBold&quot;;
+color: rgb(148, 143, 163)</string>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QFormLayout" name="formLayout_5">
+             <property name="horizontalSpacing">
+              <number>18</number>
+             </property>
+             <property name="leftMargin">
+              <number>35</number>
+             </property>
+             <property name="topMargin">
+              <number>30</number>
+             </property>
+             <property name="rightMargin">
+              <number>50</number>
+             </property>
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_13">
+               <property name="text">
+                <string>refresh limit</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QPushButton" name="save_refresh_limit">
+               <property name="styleSheet">
+                <string notr="true">QPushButton {background-color: rgb(86,57,172);
+color: rgb(255, 255, 255);
+padding: 6px;
+border-radius:8px;
+max-width:110px;
+text-align: center;}
+
+QPushButton:hover {	
+	background-color: rgb(140, 102, 255);
+}
+</string>
+               </property>
+               <property name="text">
+                <string>Save</string>
+               </property>
+               <property name="icon">
+                <iconset>
+                 <normaloff>../Assets/check.png</normaloff>../Assets/check.png</iconset>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QComboBox" name="refresh_limit_combo">
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(61, 57, 70);
+border: none;
+padding: 6px;
+border-radius: 4px;
+color: rgb(255,255,255);
+font: 63 10pt &quot;Torus Pro SemiBold&quot;;</string>
+               </property>
+               <item>
+                <property name="text">
+                 <string>No Limit</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Every 5 Seconds</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Every 10 Seconds</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Every 15 Seconds</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Every 30 Seconds</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Every Minute</string>
+                </property>
+               </item>
               </widget>
              </item>
             </layout>
