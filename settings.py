@@ -62,7 +62,18 @@ class SettingsWindow(QtWidgets.QMainWindow):
             print("That value of refresh cooldown is not supported")
     
     def save_refresh_cooldown_clicked(self, mainWindow):
+        if self.refresh_limit_combo.currentIndex() < 2:
+            msg = QtWidgets.QMessageBox()
+            msg.setWindowTitle("OsuStatQt")
+            msg.setIcon(QtWidgets.QMessageBox.Warning)
+            msg.setText("""
+Although you can, but it is highly recommended 
+not to set the refresh cooldown value below 10 
+seconds as it may cause spamming of the refresh button.
+            """)
+            _msg = msg.exec_()
         mainWindow.config.refresh_cooldown = self.refresh_cooldown_values[self.refresh_limit_combo.currentIndex()]
+
 
 
     def set_default_user_clicked(self, mainWindow):
