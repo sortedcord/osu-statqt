@@ -36,6 +36,65 @@ OsuStat uses Circleguard's [ossapiV2](https://github.com/circleguard/ossapi) whi
 
 For the Callback Url you can have any localhost port which is not in use.
 
+## Building Osu!StatQt
+
+I use `pyinstaller` for building and managing packages for OsuStatQt. It is highly recommended to use a virtual environment when building with pyinstaller.
+
+[Circleguard's ossapi](https://github.com/circleguard/ossapi) causes issues with pyinstaller as for some reason its not able to read the dumped token files. Instead I suggest using https://github.com/sortedcord/ossapi which I have modified to not dump the tokens at all.
+
+``` bash
+# Assuming this is in a venv
+
+git clone https://github.com/sortedcord/ossapi
+cd ossapi
+pip install -e .
+```
+
+Other dependencies which you will need include `PyQt5` and `PyQt5-tools`
+
+``` bash
+pip install PyQt5 PyQt5-tools
+```
+
+``` bash
+# In a separate folder
+
+git clone https://github.com/sortedcord/osu-statqt.git
+cd osu-statqt
+```
+### Windows 8.1+ and GNU/Linux
+
+
+#### Default Build
+```powershell
+pyinstaller --noconsole --add-data="Assets/Logo/icon48x.ico;."  .\osuStatQt.py --noconfirm --name="OsuStatQt" --icon="Assets/Logo/icon256x.ico"
+```
+
+#### Debug Build
+
+Just remove the `--noconcole` flag to see the console when the app is run.
+
+```powershell
+pyinstaller --add-data="Assets/Logo/icon48x.ico;."  .\osuStatQt.py --noconfirm --name="OsuStatQt" --icon="Assets/Logo/icon256x.ico"
+```
+
+#### Standalone Build
+
+Use the `--onefile` flag to compile this into a single file
+
+```powershell
+pyinstaller --onefile --add-data="Assets/Logo/icon48x.ico;."  .\osuStatQt.py --noconfirm --name="OsuStatQt" --icon="Assets/Logo/icon256x.ico"
+```
+
+### Mac OS (Catalina and above)
+
+I don't own a Mac nor am I interested in setting up a hackintosh, so practically there is no way for me to test the mac os build, however the process of building binaries is more or less the same, the only catch is to build a standalone binary.
+
+```bash
+pyinstaller --onefile --add-data="Assets/Logo/icon48x.ico;."  .\osuStatQt.py --noconfirm --name="OsuStatQt" --icon="Assets/Logo/icon256x.ico"
+```
+
+
 
 ## Credits
 
