@@ -1,5 +1,5 @@
 from ossapi import *
-
+import datetime
 
 class OsuStatUser():
     """ IN CASE YOU ARE NOT USING THIS CLASS TO SEARCH FOR USERS:
@@ -29,3 +29,21 @@ class OsuStatUser():
             return 0
         else:
             return user.id
+
+
+def get_time_elapsed(d1):
+    d2 = datetime.datetime.now(datetime.timezone.utc)
+    dif = d2 - d1
+
+    hours = (dif.seconds)//(60*60)
+
+    if dif.days >= 1:
+        return f"{dif.days} days ago"
+    elif dif.days < 1 and hours >= 1:
+        return f"{hours} hours ago"
+    elif (dif.days,hours) < (1,1) and dif.minutes >= 1:
+        return f"{hours} hours ago"
+    elif (dif.days,hours,dif.minutes) < (1,1,1):
+        return f"A few seconds ago"
+
+    

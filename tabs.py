@@ -1,5 +1,8 @@
 from PyQt5 import QtCore, QtWidgets
 
+from Components.recent_activity import RecentActivityItem
+
+
 
 class RecentActivityTab(QtWidgets.QWidget):
     def __init__(self, mainWindow):
@@ -8,30 +11,9 @@ class RecentActivityTab(QtWidgets.QWidget):
         self.setupConnections(mainWindow)
 
     def setupConnections(self, mainWindow):
-        for recent_activity in mainWindow.config.api.user_recent_activity(user_id=mainWindow.default_user_class.id, limit=20):
-            widget = QtWidgets.QLabel()
-            # print(recent_activity, "\n")
-            if 'LostEvent' in str(type(recent_activity)):
-                widget.setText(
-                    f"{mainWindow.default_user_class.username} lost first place on {recent_activity.beatmap.title}")
-            elif 'UserSupportAgain' in str(type(recent_activity)):
-                widget.setText(
-                    f"{mainWindow.default_user_class.username} Bought Supporter Again")
-            elif 'BeatmapsetUpdate' in str(type(recent_activity)):
-                widget.setText(
-                    f"{mainWindow.default_user_class.username} updated beatmapset {recent_activity.beatmapset.title}")
-            elif 'BeatmapsetUpload' in str(type(recent_activity)):
-                widget.setText(
-                    f"{mainWindow.default_user_class.username} uploaded beatmapset {recent_activity.beatmapset.title}")
-            elif 'Achievement' in str(type(recent_activity)):
-                widget.setText(
-                    f"{mainWindow.default_user_class.username} got the {recent_activity.achievement.name} achievement")
-            elif 'RankEvent' in str(type(recent_activity)):
-                widget.setText(
-                    f"{recent_activity.scoreRank}   {mainWindow.default_user_class.username} achieved rank #{recent_activity.rank} on {recent_activity.beatmap.title}")
-            else:
-                widget.setText("Unknown Event occured")
-            widget.setWordWrap(True)
+        for recent_activity in mainWindow.config.api.user_recent_activity(user_id=mainWindow.default_user_class.id, limit=20, offset=0):
+            # print(recent_activity)
+            widget = RecentActivityItem(mainWindow, recent_activity)
             self.verticalLayout_2.addWidget(widget)
 
     def setupUi(self):
@@ -39,7 +21,7 @@ class RecentActivityTab(QtWidgets.QWidget):
         self.resize(778, 352)
         self.setStyleSheet("""background-color: #2A2327;
                            color:rgb(255,255,255);
-                           font: 63 9pt "Torus Pro SemiBold"; 
+                           font: 63 9pt "Torus Pro"; 
                            border: none;""")
         self.verticalLayout = QtWidgets.QVBoxLayout(self)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)

@@ -160,7 +160,8 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def setupUi(self):
         print("Resizing Window")
-        self.resize(782, 600)
+        self.resize(900, 700)
+        self.setMinimumSize(870, 400)
         self.centralwidget = QtWidgets.QWidget(self)
         self.centralwidget.setObjectName("centralwidget")
 
