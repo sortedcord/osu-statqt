@@ -27,7 +27,6 @@ Binaries are only available for windows as of now, but you can always run the py
 
 ## Configuring Osu!StatQt
 
-Firstly, I highly suggest not to manually edit `config.OsuStat` file unless you are debugging or know what you are doing.
 OsuStat uses Circleguard's [ossapiV2](https://github.com/circleguard/ossapi) which is a python wrapper for Osu-api V2. This requires you to create a OAuth Application in your [osu account settings](https://osu.ppy.sh/home/account/edit)
 
 ![apitutorial](https://user-images.githubusercontent.com/37407370/147528626-cb381857-5d54-464d-9bb7-e9ca6602927b.gif)
