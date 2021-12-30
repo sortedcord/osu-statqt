@@ -1,5 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from functions import OsuStatUser
+import webbrowser
 
 
 class SettingsWindow(QtWidgets.QMainWindow):
@@ -9,6 +10,10 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.setupText(mainWindow)
         self.setupStylesheet()
         self.setupConnections(mainWindow)
+    
+    def get_credentials_clicked(self):
+        webbrowser.open("https://osu.ppy.sh/home/account/edit")
+
     
     def reload_settings_window(self, mainWindow):
         if mainWindow.config.cred_verification_status == 'VERIFIED':
@@ -174,8 +179,11 @@ seconds as it may cause spamming of the refresh button.
             self.client_secret_field.setText(mainWindow.config.client_secret)
             self.client_secret_field.setEnabled(False)
 
+            self.get_credentials_3.clicked.connect(lambda: self.get_credentials_clicked())
+
             if mainWindow.default_user_class is not None:
                 self.default_user_field.setText(mainWindow.default_user_class.username)
+            
         
         # If credentials not verified
         else:
