@@ -10,6 +10,8 @@ class RecentActivityTab(QtWidgets.QWidget):
     def setupConnections(self, mainWindow):
         for recent_activity in mainWindow.config.api.user_recent_activity(user_id=mainWindow.default_user_class.id, limit=20):
             widget = QtWidgets.QLabel()
+            # print(recent_activity, "\n")
+
             if 'LostEvent' in str(type(recent_activity)):
                 widget.setText(
                     f"{mainWindow.default_user_class.username} lost first place on {recent_activity.beatmap.title}")
@@ -24,7 +26,7 @@ class RecentActivityTab(QtWidgets.QWidget):
                     f"{mainWindow.default_user_class.username} uploaded beatmapset {recent_activity.beatmapset.title}")
             elif 'Achievement' in str(type(recent_activity)):
                 widget.setText(
-                    f"{mainWindow.default_user_class.username} got some achievement")
+                    f"{mainWindow.default_user_class.username} got the {recent_activity.achievement.name} achievement")
             elif 'RankEvent' in str(type(recent_activity)):
                 widget.setText(
                     f"{recent_activity.scoreRank}   {mainWindow.default_user_class.username} achieved rank #{recent_activity.rank} on {recent_activity.beatmap.title}")
