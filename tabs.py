@@ -11,7 +11,6 @@ class RecentActivityTab(QtWidgets.QWidget):
         for recent_activity in mainWindow.config.api.user_recent_activity(user_id=mainWindow.default_user_class.id, limit=20):
             widget = QtWidgets.QLabel()
             # print(recent_activity, "\n")
-
             if 'LostEvent' in str(type(recent_activity)):
                 widget.setText(
                     f"{mainWindow.default_user_class.username} lost first place on {recent_activity.beatmap.title}")
@@ -32,14 +31,16 @@ class RecentActivityTab(QtWidgets.QWidget):
                     f"{recent_activity.scoreRank}   {mainWindow.default_user_class.username} achieved rank #{recent_activity.rank} on {recent_activity.beatmap.title}")
             else:
                 widget.setText("Unknown Event occured")
+            widget.setWordWrap(True)
             self.verticalLayout_2.addWidget(widget)
 
     def setupUi(self):
         self.setObjectName("self")
         self.resize(778, 352)
-        self.setStyleSheet("background-color: #2A2327;\n"
-                           "color:rgb(255,255,255);\n"
-                           "font: 63 9pt \"Torus Pro SemiBold\";")
+        self.setStyleSheet("""background-color: #2A2327;
+                           color:rgb(255,255,255);
+                           font: 63 9pt "Torus Pro SemiBold"; 
+                           border: none;""")
         self.verticalLayout = QtWidgets.QVBoxLayout(self)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setObjectName("verticalLayout")
@@ -55,6 +56,95 @@ class RecentActivityTab(QtWidgets.QWidget):
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.verticalLayout.addWidget(self.scrollArea)
+        self.scrollArea.setStyleSheet("""
+        QScrollBar:vertical {
+	border: none;
+    background: rgb(45, 45, 68);
+    width: 14px;
+    margin: 15px 0 15px 0;
+	border-radius: 0px;
+ }
+
+/*  HANDLE BAR VERTICAL */
+QScrollBar::handle:vertical {	
+	background-color: #ac396d;
+	min-height: 30px;
+	border-radius: 0px;
+}
+QScrollBar::handle:vertical:hover{	
+	background-color: rgb(255, 102, 171);
+}
+QScrollBar::handle:vertical:pressed {	
+	background-color: rgb(255, 102, 171);
+}
+
+/* BTN TOP - SCROLLBAR */
+QScrollBar::sub-line:vertical {
+	border: none;
+	background-color: rgb(59, 59, 90);
+	height: 15px;
+	border-top-left-radius: 0px;
+	border-top-right-radius: 0px;
+	subcontrol-position: top;
+	subcontrol-origin: margin;
+}
+QScrollBar::sub-line:vertical:hover {	
+	background-color: rgb(255, 102, 171);
+}
+QScrollBar::sub-line:vertical:pressed {	
+	background-color: rgb(255, 102, 171);
+}
+
+/* BTN BOTTOM - SCROLLBAR */
+QScrollBar::add-line:vertical {
+	border: none;
+	background-color: rgb(59, 59, 90);
+	height: 15px;
+	border-bottom-left-radius: 0px;
+	border-bottom-right-radius: 0px;
+	subcontrol-position: bottom;
+	subcontrol-origin: margin;
+}
+QScrollBar::add-line:vertical:hover {	
+	background-color: rgb(255, 0, 127);
+}
+QScrollBar::add-line:vertical:pressed {	
+	background-color: rgb(255, 102, 171);
+}
+
+/* RESET ARROW */
+QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {
+	background: none;
+}
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+	background: none;
+}
+
+
+
+/* HORIZONTAL SCROLLBAR - HOMEWORK */
+QScrollBar:horizontal {
+   
+}
+QScrollBar::handle:horizontal {
+    
+}
+QScrollBar::add-line:horizontal {
+    
+}
+QScrollBar::sub-line:horizontal {
+    
+}
+QScrollBar::up-arrow:horizontal, QScrollBar::down-arrow:horizontal
+{
+
+}
+QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal
+{
+
+}
+
+        """)
 
 
 class RecentScoreTab(QtWidgets.QWidget):
@@ -96,3 +186,4 @@ class RecentScoreTab(QtWidgets.QWidget):
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.verticalLayout.addWidget(self.scrollArea)
+        

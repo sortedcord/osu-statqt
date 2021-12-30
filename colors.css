@@ -11,3 +11,8 @@
 .settingsWindow {
   --disabled-button: #3c3947;
 }
+
+.scrollbar {
+  --color-1: rgb(45, 45, 68);
+  
+}

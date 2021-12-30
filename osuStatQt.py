@@ -212,18 +212,22 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.verticalLayout.addWidget(self.search_box)
 
+        # Tabs
+
         self.tabWidget = QtWidgets.QTabWidget(self.centralwidget)
         self.tabWidget.setObjectName("tabWidget")
 
         self.recent_activity_tab = QtWidgets.QWidget()
         self.recent_activity_tab.setObjectName("recent_activity_tab")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.recent_activity_tab)
+        self.verticalLayout_3.setContentsMargins(0, 6, 0, 0)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.tabWidget.addTab(self.recent_activity_tab, "")
 
         self.recent_scores_tab = QtWidgets.QWidget()
         self.recent_scores_tab.setObjectName("recent_scores_tab")
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.recent_scores_tab)
+        self.verticalLayout_4.setContentsMargins(0, 6, 0, 0)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.tabWidget.addTab(self.recent_scores_tab, "")
 
