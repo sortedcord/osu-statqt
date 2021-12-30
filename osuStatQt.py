@@ -35,7 +35,19 @@ class MainWindow(QtWidgets.QMainWindow):
         self.show()
 
     def refresh(self):
-        self.statusbar.showMessage("Refreshing")
+        self.disable_refresh_button()
+        self.refresh_timer = QtCore.QTimer()
+
+        if not self.config.refresh_cooldown == 0:
+            self.refresh_timer.setInterval(self.config.refresh_cooldown)
+        else:
+            self.refresh_timer.setInterval(1)
+
+        self.refresh_timer.setSingleShot(True)
+        self.refresh_timer.timeout.connect(self.enable_refresh_button)
+        self.refresh_timer.start()
+
+        self.statusbar.showMessage("Refreshing... Please Wait")
         try:
             self.recent_activity_tab_content.setParent(None)
             self.recent_scores_tab_content.setParent(None)
@@ -43,6 +55,7 @@ class MainWindow(QtWidgets.QMainWindow):
             pass
 
         # Show Recent Activity Tab
+        
         self.recent_activity_tab_content = RecentActivityTab(self)
         self.verticalLayout_3.addWidget(
             self.recent_activity_tab_content)

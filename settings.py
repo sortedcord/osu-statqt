@@ -13,6 +13,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
     def reload_settings_window(self, mainWindow):
         if mainWindow.config.cred_verification_status == 'VERIFIED':
             self.frame_6.setEnabled(True)
+            self.frame_8.setEnabled(True)
             self.set_default_user.setStyleSheet("""
             QPushButton {
                 background-color: rgb(86,57,172);
@@ -35,6 +36,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
             self.default_user_field.setText(mainWindow.config.default_user)
         else:
             self.frame_6.setEnabled(False)
+            self.frame_8.setEnabled(False)
             self.set_default_user.setStyleSheet("""
             QPushButton {
                 background-color: rgb(60,57,71);
@@ -48,8 +50,31 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.set_default_user.clicked.connect(
             lambda: self.set_default_user_clicked(mainWindow))
         
+        self.load_refresh_cooldown(mainWindow)
+        
         if mainWindow.default_user_class is not None:
             self.default_user_field.setText(mainWindow.default_user_class.username)
+    
+    def load_refresh_cooldown(self,mainWindow):
+        try:
+            self.refresh_limit_combo.setCurrentIndex(self.refresh_cooldown_values.index(mainWindow.config.refresh_cooldown))
+        except IndexError:
+            print("That value of refresh cooldown is not supported")
+    
+    def save_refresh_cooldown_clicked(self, mainWindow):
+        if self.refresh_limit_combo.currentIndex() < 2:
+            msg = QtWidgets.QMessageBox()
+            msg.setWindowTitle("OsuStatQt")
+            msg.setIcon(QtWidgets.QMessageBox.Warning)
+            msg.setText("""
+Although you can, but it is highly recommended 
+not to set the refresh cooldown value below 10 
+seconds as it may cause spamming of the refresh button.
+            """)
+            _msg = msg.exec_()
+        mainWindow.config.refresh_cooldown = self.refresh_cooldown_values[self.refresh_limit_combo.currentIndex()]
+
+
 
     def set_default_user_clicked(self, mainWindow):
         msg = QtWidgets.QMessageBox()
@@ -129,6 +154,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
         # If credentials verified
         if mainWindow.config.cred_verification_status == 'VERIFIED':
             self.frame_6.setEnabled(True)
+            self.frame_8.setEnabled(True)
             self.set_default_user.setStyleSheet("""
                 QPushButton {
                     background-color: rgb(86,57,172);
@@ -154,6 +180,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
         # If credentials not verified
         else:
             self.frame_6.setEnabled(False)
+            self.frame_8.setEnabled(False)
             self.set_default_user.setStyleSheet("""
             QPushButton {
                 background-color: rgb(60,57,71);
@@ -166,8 +193,14 @@ class SettingsWindow(QtWidgets.QMainWindow):
             """)
         self.submit_credentials.clicked.connect(
             lambda: self.submit_credentials_clicked(mainWindow))
+
         self.set_default_user.clicked.connect(
             lambda: self.set_default_user_clicked(mainWindow))
+        
+        self.refresh_cooldown_values = [0, 5000, 10000, 15000, 30000, 60000] # time in milliseconds
+        self.load_refresh_cooldown(mainWindow)
+        self.save_refresh_limit.clicked.connect(
+            lambda: self.save_refresh_cooldown_clicked(mainWindow))
 
 
     def setupUi(self):
@@ -320,6 +353,53 @@ class SettingsWindow(QtWidgets.QMainWindow):
             2, QtWidgets.QFormLayout.FieldRole, self.set_default_user)
         self.horizontalLayout_5.addWidget(self.frame_7)
         self.verticalLayout_4.addWidget(self.frame_6)
+        self.frame_8 = QtWidgets.QFrame(self.frame_3)
+        self.frame_8.setMinimumSize(QtCore.QSize(798, 136))
+        self.frame_8.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_8.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_8.setObjectName("frame_8")
+        self.horizontalLayout_6 = QtWidgets.QHBoxLayout(self.frame_8)
+        self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_6.setSpacing(0)
+        self.horizontalLayout_6.setObjectName("horizontalLayout_6")
+        self.label_12 = QtWidgets.QLabel(self.frame_8)
+        self.label_12.setMinimumSize(QtCore.QSize(240, 0))
+        self.label_12.setMaximumSize(QtCore.QSize(240, 16777215))
+        
+        self.label_12.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.label_12.setObjectName("label_12")
+        self.horizontalLayout_6.addWidget(self.label_12)
+        self.frame_9 = QtWidgets.QFrame(self.frame_8)
+        self.frame_9.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        
+        self.frame_9.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_9.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_9.setObjectName("frame_9")
+        self.formLayout_5 = QtWidgets.QFormLayout(self.frame_9)
+        self.formLayout_5.setContentsMargins(35, 30, 50, -1)
+        self.formLayout_5.setHorizontalSpacing(18)
+        self.formLayout_5.setObjectName("formLayout_5")
+        self.label_13 = QtWidgets.QLabel(self.frame_9)
+        self.label_13.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.label_13.setObjectName("label_13")
+        self.formLayout_5.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.label_13)
+        self.save_refresh_limit = QtWidgets.QPushButton(self.frame_9)
+        
+        self.save_refresh_limit.setIcon(icon)
+        self.save_refresh_limit.setObjectName("save_refresh_limit")
+        self.formLayout_5.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.save_refresh_limit)
+        self.refresh_limit_combo = QtWidgets.QComboBox(self.frame_9)
+        
+        self.refresh_limit_combo.setObjectName("refresh_limit_combo")
+        self.refresh_limit_combo.addItem("")
+        self.refresh_limit_combo.addItem("")
+        self.refresh_limit_combo.addItem("")
+        self.refresh_limit_combo.addItem("")
+        self.refresh_limit_combo.addItem("")
+        self.refresh_limit_combo.addItem("")
+        self.formLayout_5.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.refresh_limit_combo)
+        self.horizontalLayout_6.addWidget(self.frame_9)
+        self.verticalLayout_4.addWidget(self.frame_8)
         self.verticalLayout.addWidget(self.frame_3)
         self.setCentralWidget(self.centralwidget)
 
@@ -334,6 +414,15 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.label_10.setText("User")
         self.label_11.setText("username")
         self.set_default_user.setText("Enter")
+        self.label_12.setText("OsuStat")
+        self.label_13.setText("refresh limit")
+        self.save_refresh_limit.setText("Save")
+        self.refresh_limit_combo.setItemText(0, "No Limit")
+        self.refresh_limit_combo.setItemText(1, "Every 5 Seconds")
+        self.refresh_limit_combo.setItemText(2, "Every 10 Seconds")
+        self.refresh_limit_combo.setItemText(3, "Every 15 Seconds")
+        self.refresh_limit_combo.setItemText(4, "Every 30 Seconds")
+        self.refresh_limit_combo.setItemText(5, "Every Minute")
     
     def setupStylesheet(self):
         self.setStyleSheet("""
@@ -462,4 +551,39 @@ class SettingsWindow(QtWidgets.QMainWindow):
                 background-color: rgb(140, 102, 255);
             }
         """)
-                            
+
+        self.label_12.setStyleSheet("""
+            font: 63 18pt \"Torus Pro SemiBold\";
+            background-color:rgb(36,35,43);
+            padding-left: 30px""")
+
+        self.frame_9.setStyleSheet("""
+            background-color:rgb(49,47,56);
+            font: 63 12pt \"Torus Pro SemiBold\";
+            color: rgb(148, 143, 163)
+        """)
+
+        self.save_refresh_limit.setStyleSheet("""
+            QPushButton {
+                background-color: rgb(86,57,172);
+                color: rgb(255, 255, 255);
+                padding: 6px;
+                border-radius:8px;
+                max-width:110px;
+                text-align: center;
+            }
+            
+            QPushButton:hover {    
+                background-color: rgb(140, 102, 255);
+            }
+        """)
+
+        self.refresh_limit_combo.setStyleSheet("""
+            background-color: rgb(61, 57, 70);
+            border: none;
+            padding: 6px;
+            border-radius: 4px;
+            color: rgb(255,255,255);
+            font: 63 10pt \"Torus Pro SemiBold\";
+        """)
+                                        

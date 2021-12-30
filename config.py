@@ -14,6 +14,7 @@ class Config:
         self.cred_verification_status = "UNVERIFIED"
         self.default_user = default_user
         self.api = None
+        self.refresh_cooldown = 15000
 
     def dump_config(self):
         with open("config.osustat", "wb") as w:
