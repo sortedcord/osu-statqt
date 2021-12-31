@@ -69,7 +69,7 @@ class RecentActivityItem(QWidget):
 			self.gamemode_label.setText("(osu!)")
 			self.rank_score_label.setPixmap(QtGui.QPixmap(None))
 		
-		elif type(activity) == ossapi.models.UserSupportAgainEvent or type(activity) == ossapi.models.UserSupportEvent:
+		elif type(activity) == ossapi.models.UserSupportAgainEvent:
 			self.event_description_label.setText(f" has bought osu! supporter")
 			self.event_type.setText("")
 			self.gamemode_label.setText("")
