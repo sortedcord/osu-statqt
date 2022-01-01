@@ -142,9 +142,6 @@ class RecentScoreTab(QtWidgets.QWidget):
     def setupConnections(self, mainWindow):
         
         for recent_score in mainWindow.config.api.user_scores(mainWindow.default_user_class.id, 'recent', "1", limit=10):
-            print("grade",recent_score.rank)
-            print(recent_score.rank == enums.Grade.A)
-            print("grade",type(recent_score.rank))
             widget = RecentScoreItem(recent_score)
             self.verticalLayout_2.addWidget(widget)
         # except:

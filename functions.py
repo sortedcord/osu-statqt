@@ -1,5 +1,7 @@
 from ossapi import *
 import datetime
+import oppai
+import pyttanko
 
 class OsuStatUser():
     """ IN CASE YOU ARE NOT USING THIS CLASS TO SEARCH FOR USERS:
@@ -46,5 +48,3 @@ def get_time_elapsed(d1):
         return f"{minutes} minutes ago"
     elif (dif.days,hours,minutes) < (1,1,1):
         return f"A few seconds ago"
-
-    
