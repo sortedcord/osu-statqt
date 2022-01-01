@@ -16,3 +16,12 @@
   --color-1: rgb(45, 45, 68);
   
 }
+
+.scorecard {
+  --card-background: #392E33;
+  --unweighted-pp: #FF67AA;
+  --inner-card: #46393f;
+  --yellow: #FECC20;
+  --blue: #0074FE;
+  --green: #88DA20;
+}
