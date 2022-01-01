@@ -34,6 +34,16 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setupConnections()
         self.show()
 
+
+    def closeEvent(self, event):
+        try:
+            self.config.default_user = self.default_user_class.username
+        except:
+            print("Default User Class was none. Default user wasn't verified throughout runtime.")
+        self.config.dump_config()
+        event.accept()
+
+
     def refresh(self):
         self.disable_refresh_button()
         self.refresh_timer = QtCore.QTimer()
@@ -53,9 +63,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.recent_scores_tab_content.setParent(None)
         except:
             pass
-
         # Show Recent Activity Tab
-        
         self.recent_activity_tab_content = RecentActivityTab(self)
         self.verticalLayout_3.addWidget(
             self.recent_activity_tab_content)
@@ -411,14 +419,6 @@ class MainWindow(QtWidgets.QMainWindow):
                 min-width:80px
             }
         """)
-
-    def closeEvent(self, event):
-        try:
-            self.config.default_user = self.default_user_class.username
-        except:
-            print("Default User Class was none. Default user wasn't verified throughout runtime.")
-        self.config.dump_config()
-        event.accept()
 
 
 if __name__ == "__main__":

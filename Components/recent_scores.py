@@ -1,7 +1,6 @@
 
 from PyQt5 import QtCore, QtGui
 from PyQt5.QtWidgets import *
-from ossapi.models import Score
 
 from functions import get_time_elapsed
 
@@ -9,49 +8,101 @@ from functions import get_time_elapsed
 class RecentScoreItem(QWidget):
 	def __init__(self, score):
 		super().__init__() 
-		self.show_UI(score)
-		# self.show()
+		self.show_UI()
+		self.setStyles()
+		self.setConnections(score)
+
 	
-	def hide_accuracy_box(self):
+	def mousePressEvent(self, event):
+		if self.accuracy_box.isVisible() == False:
+			print("Showing accuracy Box")
+			self.accuracy_box.setVisible(True)
+			self.setMinimumSize(796, 88)
+		else:
+			print("Hiding Accuracy Box")
+			self.accuracy_box.setVisible(False)
+			self.setMinimumSize(796, 60)
+	
+	def setConnections(self, score):
+
+		# Set grade image
+		if not score.passed:
+			self.rank_grade_label.setPixmap(QtGui.QPixmap(".\\Components\\../Assets/Rank Grades/F.png"))
+		else:
+			_grade = str(score.rank).split("Grade.")[1]
+			self.rank_grade_label.setPixmap(QtGui.QPixmap(f".\\Components\\../Assets/Rank Grades/{_grade}.png"))
+		
+		# Show mods
+		mods = str(score.mods)
+		mods = [*map(''.join, zip(mods[::2], mods[1::2]))] # Split mods sring into individual mod names
+		if 'NM' not in mods:
+			sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+			sizePolicy.setHorizontalStretch(0)
+			sizePolicy.setVerticalStretch(0)
+			for mod in mods:
+				try:
+					self.mod_icon = QLabel(self.innerscore_box)
+					self.mod_list.addWidget(self.mod_icon)
+					sizePolicy.setHeightForWidth(self.mod_icon.sizePolicy().hasHeightForWidth())
+					self.mod_icon.setSizePolicy(sizePolicy)
+					self.mod_icon.setMaximumSize(QtCore.QSize(36, 26))
+					self.mod_icon.setScaledContents(True)
+					self.mod_icon.setObjectName("mod_icon")
+					self.mod_icon.setPixmap(QtGui.QPixmap(f".\\Components\\../Assets/Mod Icons/{mod}.png"))
+				except:
+					print("Mod Icon Not found")
+		
 		self.accuracy_box.setVisible(False)
-	
+		
+		self.beatmap_title.setText(score.beatmapset.title)
+		self.beatmap_subtext_label.setText(f"{score.beatmap.version}     {get_time_elapsed(score.created_at)}")
+		self.accuracy_label.setText(f"{score.accuracy*100:.2f}%")
+		self.weighted_pp_label.setText("15pp")
+		if score.pp is not None:
+			self.unweighted_pp_label.setText(f"{score.pp:.1f}pp")
+		else:
+			self.unweighted_pp_label.setText(f"   --   ")
+		
 
-	def render_accuracy_box(self):
-		pass
+	def show_UI(self):
 
-	def show_UI(self, score):
-		# self.resize(796, 88)
+		# Set widget Layout
 		sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
 		sizePolicy.setHorizontalStretch(0)
 		sizePolicy.setVerticalStretch(0)
 		sizePolicy.setHeightForWidth(self.sizePolicy().hasHeightForWidth())
 		self.setSizePolicy(sizePolicy)
+
+		# Set Size Constraints
 		self.setMinimumSize(QtCore.QSize(750, 60))
 		self.setMaximumSize(QtCore.QSize(16777215, 88))
-		self.setStyleSheet("background-color: #392E33; color:rgb(255,255,255); font: 63 9pt \"Torus Pro SemiBold\"; border: none;")
 		self.verticalLayout = QVBoxLayout(self)
 		self.verticalLayout.setContentsMargins(0, 0, 0, 0)
 		self.verticalLayout.setSpacing(0)
 		self.verticalLayout.setObjectName("verticalLayout")
+
+
 		self.scorebox = QFrame(self)
 		self.scorebox.setMinimumSize(QtCore.QSize(0, 60))
 		self.scorebox.setMaximumSize(QtCore.QSize(16777215, 60))
-		self.scorebox.setStyleSheet("background-color: #392E33;")
 		self.scorebox.setFrameShape(QFrame.StyledPanel)
 		self.scorebox.setFrameShadow(QFrame.Raised)
 		self.scorebox.setObjectName("scorebox")
+
 		self.horizontalLayout = QHBoxLayout(self.scorebox)
 		self.horizontalLayout.setContentsMargins(0, 0, 9, 0)
 		self.horizontalLayout.setObjectName("horizontalLayout")
+		
 		self.innerscore_box = QFrame(self.scorebox)
-		self.innerscore_box.setStyleSheet("background-color: #46393f")
 		self.innerscore_box.setFrameShape(QFrame.StyledPanel)
 		self.innerscore_box.setFrameShadow(QFrame.Raised)
 		self.innerscore_box.setObjectName("innerscore_box")
+
 		self.horizontalLayout_2 = QHBoxLayout(self.innerscore_box)
 		self.horizontalLayout_2.setContentsMargins(-1, 4, 20, 4)
 		self.horizontalLayout_2.setSpacing(16)
 		self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+
 		self.rank_grade_label = QLabel(self.innerscore_box)
 		sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
 		sizePolicy.setHorizontalStretch(0)
@@ -60,24 +111,22 @@ class RecentScoreItem(QWidget):
 		self.rank_grade_label.setSizePolicy(sizePolicy)
 		self.rank_grade_label.setMaximumSize(QtCore.QSize(44, 16777215))
 		self.rank_grade_label.setText("")
-		if not score.passed:
-			self.rank_grade_label.setPixmap(QtGui.QPixmap(".\\Components\\../Assets/Rank Grades/F.png"))
-		else:
-			self.rank_grade_label.setPixmap(QtGui.QPixmap(".\\Components\\../Assets/Rank Grades/X.png"))
 		self.rank_grade_label.setScaledContents(True)
 		self.rank_grade_label.setObjectName("rank_grade_label")
 		self.horizontalLayout_2.addWidget(self.rank_grade_label)
+
 		self.beatmap_info_box = QVBoxLayout()
 		self.beatmap_info_box.setSpacing(0)
 		self.beatmap_info_box.setObjectName("beatmap_info_box")
+
 		self.beatmap_title = QLabel(self.innerscore_box)
 		sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
 		sizePolicy.setHorizontalStretch(0)
 		sizePolicy.setVerticalStretch(0)
 		sizePolicy.setHeightForWidth(self.beatmap_title.sizePolicy().hasHeightForWidth())
+
 		self.beatmap_title.setSizePolicy(sizePolicy)
 		self.beatmap_title.setMaximumSize(QtCore.QSize(16777215, 30))
-		self.beatmap_title.setStyleSheet("font: 63 10pt \"Torus Pro SemiBold\";")
 		self.beatmap_title.setAlignment(QtCore.Qt.AlignBottom|QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft)
 		self.beatmap_title.setObjectName("beatmap_title")
 		self.beatmap_info_box.addWidget(self.beatmap_title)
@@ -93,26 +142,6 @@ class RecentScoreItem(QWidget):
 		self.mod_list.setSpacing(4)
 		self.mod_list.setObjectName("mod_list")
 
-		
-		mods = str(score.mods)
-		mods = [*map(''.join, zip(mods[::2], mods[1::2]))]
-		if 'NM' not in mods:
-			for mod in mods:
-				try:
-					self.dummy_mod_2 = QLabel(self.innerscore_box)
-					sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-					sizePolicy.setHorizontalStretch(0)
-					sizePolicy.setVerticalStretch(0)
-					sizePolicy.setHeightForWidth(self.dummy_mod_2.sizePolicy().hasHeightForWidth())
-					self.dummy_mod_2.setSizePolicy(sizePolicy)
-					self.dummy_mod_2.setMaximumSize(QtCore.QSize(36, 26))
-					self.dummy_mod_2.setText("")
-					self.dummy_mod_2.setScaledContents(True)
-					self.dummy_mod_2.setObjectName("dummy_mod_2")
-					self.mod_list.addWidget(self.dummy_mod_2)
-					self.dummy_mod_2.setPixmap(QtGui.QPixmap(f".\\Components\\../Assets/Mod Icons/{mod}.png"))
-				except:
-					print("Mod Icon Not found")
 		self.horizontalLayout_2.addLayout(self.mod_list)
 		self.accuracy_label = QLabel(self.innerscore_box)
 		sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
@@ -120,7 +149,6 @@ class RecentScoreItem(QWidget):
 		sizePolicy.setVerticalStretch(0)
 		sizePolicy.setHeightForWidth(self.accuracy_label.sizePolicy().hasHeightForWidth())
 		self.accuracy_label.setSizePolicy(sizePolicy)
-		self.accuracy_label.setStyleSheet("color: #FECC20; font: 75 11pt \"Torus Pro Bold\";")
 		self.accuracy_label.setObjectName("accuracy_label")
 		self.horizontalLayout_2.addWidget(self.accuracy_label)
 		self.weighted_pp_label = QLabel(self.innerscore_box)
@@ -129,7 +157,6 @@ class RecentScoreItem(QWidget):
 		sizePolicy.setVerticalStretch(0)
 		sizePolicy.setHeightForWidth(self.weighted_pp_label.sizePolicy().hasHeightForWidth())
 		self.weighted_pp_label.setSizePolicy(sizePolicy)
-		self.weighted_pp_label.setStyleSheet("font: 75 11pt \"Torus Pro Bold\";")
 		self.weighted_pp_label.setObjectName("weighted_pp_label")
 		self.horizontalLayout_2.addWidget(self.weighted_pp_label)
 		self.horizontalLayout.addWidget(self.innerscore_box)
@@ -139,7 +166,6 @@ class RecentScoreItem(QWidget):
 		sizePolicy.setVerticalStretch(0)
 		sizePolicy.setHeightForWidth(self.unweighted_pp_label.sizePolicy().hasHeightForWidth())
 		self.unweighted_pp_label.setSizePolicy(sizePolicy)
-		self.unweighted_pp_label.setStyleSheet("color: #FF67AA; font: 75 14pt \"Torus Pro Bold\";")
 		self.unweighted_pp_label.setAlignment(QtCore.Qt.AlignCenter)
 		self.unweighted_pp_label.setObjectName("unweighted_pp_label")
 		self.horizontalLayout.addWidget(self.unweighted_pp_label)
@@ -148,7 +174,6 @@ class RecentScoreItem(QWidget):
 		self.accuracy_box = QFrame(self)
 		self.accuracy_box.setMinimumSize(QtCore.QSize(0, 28))
 		self.accuracy_box.setMaximumSize(QtCore.QSize(16777215, 28))
-		self.accuracy_box.setStyleSheet("background-color: rgb(32,26,29); font: 75 10pt \"Torus Pro Bold\";")
 		self.accuracy_box.setFrameShape(QFrame.StyledPanel)
 		self.accuracy_box.setFrameShadow(QFrame.Raised)
 		self.accuracy_box.setObjectName("accuracy_box")
@@ -168,7 +193,6 @@ class RecentScoreItem(QWidget):
 		font.setItalic(False)
 		font.setWeight(9)
 		self.accuracy_100_label.setFont(font)
-		self.accuracy_100_label.setStyleSheet("color: #0074FE")
 		self.accuracy_100_label.setAlignment(QtCore.Qt.AlignCenter)
 		self.accuracy_100_label.setObjectName("accuracy_100_label")
 		self.horizontalLayout_3.addWidget(self.accuracy_100_label)
@@ -185,7 +209,6 @@ class RecentScoreItem(QWidget):
 		font.setItalic(False)
 		font.setWeight(9)
 		self.accuracy_95_label.setFont(font)
-		self.accuracy_95_label.setStyleSheet("color: #88DA20;")
 		self.accuracy_95_label.setAlignment(QtCore.Qt.AlignCenter)
 		self.accuracy_95_label.setObjectName("accuracy_95_label")
 		self.horizontalLayout_3.addWidget(self.accuracy_95_label)
@@ -202,7 +225,6 @@ class RecentScoreItem(QWidget):
 		font.setItalic(False)
 		font.setWeight(9)
 		self.accuracy_90_label.setFont(font)
-		self.accuracy_90_label.setStyleSheet("color: #E5B538")
 		self.accuracy_90_label.setAlignment(QtCore.Qt.AlignCenter)
 		self.accuracy_90_label.setObjectName("accuracy_90_label")
 		self.horizontalLayout_3.addWidget(self.accuracy_90_label)
@@ -227,32 +249,49 @@ class RecentScoreItem(QWidget):
 		self.accuracy_95_label.setText("95%    127pp")
 		self.accuracy_90_label.setText("90%    127pp")
 		self.accuracy_85_label.setText("85%    127pp")
+	
+	
+	def setStyles(self):
 
-		self.accuracy_box.setVisible(False)
+		self.setStyleSheet("""
+			background-color: #392E33; 
+			color:rgb(255,255,255); 
+			font: 63 9pt \"Torus Pro SemiBold\"; 
+			border: none;
+		""")
+
+		self.scorebox.setStyleSheet("""
+			background-color: #392E33;
+		""")
 		
-		self.setWindowTitle("Form")
-		self.beatmap_title.setText(score.beatmapset.title)
-		self.beatmap_subtext_label.setText(f"{score.beatmap.version}     {get_time_elapsed(score.created_at)}")
-		self.accuracy_label.setText(f"{score.accuracy*100:.2f}%")
-		self.weighted_pp_label.setText("15pp")
-		if score.pp is not None:
-			self.unweighted_pp_label.setText(f"{score.pp:.1f}pp")
-		else:
-			self.unweighted_pp_label.setText(f"--")
-		
-	def mousePressEvent(self, event):
-		if self.accuracy_box.isVisible() == False:
-			print("Showing accuracy Box")
-			self.accuracy_box.setVisible(True)
-			self.setMinimumSize(796, 88)
-		else:
-			print("Hiding Accuracy Box")
-			self.accuracy_box.setVisible(False)
-			self.setMinimumSize(796, 60)
+		self.innerscore_box.setStyleSheet("""
+			background-color: #46393f
+		""")
 
+		self.beatmap_title.setStyleSheet("""
+			font: 63 10pt \"Torus Pro SemiBold\";
+		""")
 
-if __name__ == "__main__":
-	import sys
-	app = QApplication(sys.argv)
-	ui = RecentScoreItem()
-	sys.exit(app.exec_())
+		self.accuracy_label.setStyleSheet("""
+			color: #FECC20; 
+			font: 75 11pt \"Torus Pro Bold\";
+		""")
+
+		self.weighted_pp_label.setStyleSheet("""
+			font: 75 11pt \"Torus Pro Bold\";
+		""")
+
+		self.unweighted_pp_label.setStyleSheet("""
+			color: #FF67AA; 
+			font: 75 14pt \"Torus Pro Bold\";
+		""")
+
+		self.accuracy_box.setStyleSheet("""
+			background-color: rgb(32,26,29); 
+			font: 75 10pt \"Torus Pro Bold\";
+		""")
+
+		self.accuracy_100_label.setStyleSheet("""color: #0074FE""")
+		self.accuracy_95_label.setStyleSheet("""color: #88DA20;""")
+		self.accuracy_90_label.setStyleSheet("""color: #E5B538""")
+
