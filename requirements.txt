@@ -1,2 +1,3 @@
-ossapi==2.2.1 # Uses my fork of ossapi
+ossapi==2.2.1 # Uses my fork of ossapi check building instructions
+oppai==4.1.0 # Not available on pip. Check build instructions on how to install
 PyQt5==5.15.6

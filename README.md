@@ -49,7 +49,7 @@ cd ossapi
 pip install -e .
 ```
 
-Other dependencies which you will need include `PyQt5` and `PyQt5-tools`
+Other dependencies which you will need include `PyQt5` and `PyQt5-tools`.
 
 ``` bash
 pip install PyQt5 PyQt5-tools
