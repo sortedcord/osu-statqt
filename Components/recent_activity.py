@@ -5,6 +5,8 @@ import datetime
 
 from functions import get_time_elapsed
 
+from Components.settings import SettingsButton
+
 
 class RecentActivityItem(QWidget):
 	def __init__(self, mainWindow, activity):
