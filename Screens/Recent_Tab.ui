@@ -48,7 +48,27 @@ font: 63 9pt &quot;Torus Pro SemiBold&quot;;</string>
         <height>350</height>
        </rect>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout_2"/>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QPushButton" name="pushButton">
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+	background:rgb(85,68,76);
+	border:none;
+	border-radius: 14px;
+	padding: 7px;
+	max-width:140px;
+}
+QPushButton:hover {
+	background: rgb(112,92,101);
+}</string>
+         </property>
+         <property name="text">
+          <string>SHOW MORE</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </widget>
    </item>

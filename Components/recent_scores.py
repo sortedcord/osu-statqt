@@ -30,6 +30,7 @@ class RecentScoreItem(QWidget):
 			self.rank_grade_label.setPixmap(QtGui.QPixmap(".\\Components\\../Assets/Rank Grades/F.png"))
 		else:
 			_grade = str(score.rank).split("Grade.")[1]
+			print("Grade is: ", _grade)
 			self.rank_grade_label.setPixmap(QtGui.QPixmap(f".\\Components\\../Assets/Rank Grades/{_grade}.png"))
 		
 		# Show mods
@@ -57,7 +58,7 @@ class RecentScoreItem(QWidget):
 		self.beatmap_title.setText(score.beatmapset.title)
 		self.beatmap_subtext_label.setText(f"{score.beatmap.version}     {get_time_elapsed(score.created_at)}")
 		self.accuracy_label.setText(f"{score.accuracy*100:.2f}%")
-		self.weighted_pp_label.setText("15pp")
+		self.weighted_pp_label.setText("")
 		if score.pp is not None:
 			self.unweighted_pp_label.setText(f"{score.pp:.1f}pp")
 		else:
@@ -245,10 +246,10 @@ class RecentScoreItem(QWidget):
 		self.accuracy_85_label.setObjectName("accuracy_85_label")
 		self.horizontalLayout_3.addWidget(self.accuracy_85_label)
 		self.verticalLayout.addWidget(self.accuracy_box)
-		self.accuracy_100_label.setText("100%    127pp")
-		self.accuracy_95_label.setText("95%    127pp")
-		self.accuracy_90_label.setText("90%    127pp")
-		self.accuracy_85_label.setText("85%    127pp")
+		self.accuracy_100_label.setText("100%    ??pp")
+		self.accuracy_95_label.setText("95%    ??pp")
+		self.accuracy_90_label.setText("90%    ??pp")
+		self.accuracy_85_label.setText("85%    ??pp")
 	
 	
 	def setStyles(self):
