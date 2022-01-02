@@ -59,6 +59,8 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.statusbar.showMessage("Refreshing... Please Wait")
         try:
+            self.verticalLayout_4.removeWidget(self.recent_scores_tab_content)
+            self.verticalLayout_3.removeWidget(self.recent_activity_tab_content)
             self.recent_activity_tab_content.setParent(None)
             self.recent_scores_tab_content.setParent(None)
         except:

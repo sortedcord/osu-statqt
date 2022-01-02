@@ -134,7 +134,6 @@ class RecentScoreTab(QtWidgets.QWidget):
                 padding: 7px;
                 max-width:140px;
                 font: 63 9pt \"Torus Pro SemiBold\";
-                margin-top: 10px;
 
             }
             QPushButton:hover {

@@ -86,12 +86,3 @@ class RecentActivityItem(QWidget):
 		
 
 		self.datetime_label.setText(get_time_elapsed(activity.created_at))
-
-		# self.show()
-
-
-# if __name__ == "__main__":
-#     import sys
-#     app = QApplication(sys.argv)
-#     ui = RecentActivityItem()
-#     sys.exit(app.exec_())

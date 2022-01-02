@@ -295,4 +295,3 @@ class RecentScoreItem(QWidget):
 		self.accuracy_100_label.setStyleSheet("""color: #0074FE""")
 		self.accuracy_95_label.setStyleSheet("""color: #88DA20;""")
 		self.accuracy_90_label.setStyleSheet("""color: #E5B538""")
-
