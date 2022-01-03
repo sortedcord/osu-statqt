@@ -22,7 +22,7 @@ class SettingsWindow(QMainWindow):
 
 
     # <=============== Clicked Events ===============>
-    def submit_credentials_clicked(self):
+    def verify_credentials_clicked(self):
         mainWindow = self.mainWindow
 
         # If not already authenticated
@@ -61,7 +61,17 @@ class SettingsWindow(QMainWindow):
 
     def get_credentials_clicked(self):
         webbrowser.open("https://osu.ppy.sh/home/account/edit")
-    
+
+
+    def save_config_clicked(self):
+        MainWindow = self.mainWindow
+
+        if MainWindow.config.default_user != self.default_user_field.text():
+            self.save_default_user_clicked()
+        
+        if self.mainWindow.config.refresh_cooldown != self.refresh_cooldown_values[self.refresh_limit_combo.currentIndex()]:
+            self.save_refresh_cooldown_clicked()
+
 
     def save_default_user_clicked(self):
         mainWindow = self.mainWindow
@@ -75,6 +85,7 @@ class SettingsWindow(QMainWindow):
 
         else:  # If user is found
             mainWindow.default_user_class = OsuStatUser(mainWindow.config.api, id=_id)
+            mainWindow.config.default_user = mainWindow.default_user_class.username
             MsgBox(f"Default user has been set as {mainWindow.default_user_class.username}", "information")
 
             mainWindow.enable_refresh_button()
@@ -143,9 +154,20 @@ class SettingsWindow(QMainWindow):
         # Title Bar Layout
         self.title_bar_layout = QHBoxLayout(self.top_bar_frame)
         self.title_bar_layout.setSpacing(12)
+        self.window_layout.addWidget(self.top_bar_frame)
+
+        # Title Bar Content
         self.title_label = QLabel(self.top_bar_frame)
         self.title_bar_layout.addWidget(self.title_label)
-        self.window_layout.addWidget(self.top_bar_frame)
+
+        # Reset Config Button
+        self.reset_config_button = SettingsButton("Reset Config", "rgb(204,51,51)", "rgb(234,71,70)")
+        self.title_bar_layout.addWidget(self.reset_config_button)
+
+        # Save Config Button
+        self.save_config_button = SettingsButton("Save Config")
+        self.save_config_button.clicked.connect(lambda: self.save_config_clicked())
+        self.title_bar_layout.addWidget(self.save_config_button)
 
 
         # Settings Content
@@ -178,9 +200,9 @@ class SettingsWindow(QMainWindow):
         self.credentials_panel.form_frame_layout.setWidget(1, QFormLayout.FieldRole, self.client_secret_field)
 
         # Submit Credentials Button
-        self.submit_credentials_button = SettingsButton('Submit')
-        self.credentials_panel.form_frame_layout.setWidget(6, QFormLayout.FieldRole, self.submit_credentials_button)
-        self.submit_credentials_button.clicked.connect(lambda: self.submit_credentials_clicked())
+        self.verify_credentials_button = SettingsButton('Verify')
+        self.credentials_panel.form_frame_layout.setWidget(6, QFormLayout.FieldRole, self.verify_credentials_button)
+        self.verify_credentials_button.clicked.connect(lambda: self.verify_credentials_clicked())
 
         # Get Credentials Button
         self.get_credentials_button = SettingsButton('Get Credentials')
@@ -202,11 +224,6 @@ class SettingsWindow(QMainWindow):
         self.default_user_field = SettingsField()
         self.default_user_panel.form_frame_layout.setWidget(0, QFormLayout.FieldRole, self.default_user_field)
 
-        # Submit Default User
-        self.set_default_user = SettingsButton("Submit")
-        self.default_user_panel.form_frame_layout.setWidget(2, QFormLayout.FieldRole, self.set_default_user)
-        self.set_default_user.clicked.connect(lambda: self.save_default_user_clicked())
-
 
         self.settings_layout.addWidget(self.default_user_panel)
 
@@ -218,10 +235,6 @@ class SettingsWindow(QMainWindow):
         self.refresh_cooldown_label = SettingsLabel('refresh cooldown')
         self.refresh_cooldown_label.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.osuStat_panel.form_frame_layout.setWidget(0, QFormLayout.LabelRole, self.refresh_cooldown_label)
-
-        self.save_refresh_limit = SettingsButton('Save')
-        self.osuStat_panel.form_frame_layout.setWidget(2, QFormLayout.FieldRole, self.save_refresh_limit)
-        self.save_refresh_limit.clicked.connect(lambda: self.save_refresh_cooldown_clicked())
 
         self.refresh_limit_combo = QComboBox()
         self.refresh_limit_combo.setObjectName("refresh_limit_combo")
