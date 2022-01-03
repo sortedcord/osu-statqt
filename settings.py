@@ -91,6 +91,12 @@ class SettingsWindow(QMainWindow):
         # Delete existing config file
         del_config_file()
 
+        # Reset Fields
+        self.client_id_field.setText(None)
+        self.client_secret_field.setText(None)
+        self.default_user_field.setText(None)
+        self.refresh_limit_combo.setCurrentIndex(3)
+
         # Load settings again
         self.load_data()
         
@@ -155,6 +161,7 @@ class SettingsWindow(QMainWindow):
         # If credentials not verified
         else:
             self.ulock_panels(False)
+            mainWindow.disable_refresh_button()
         
         # Load Refresh Cooldown
         try:
