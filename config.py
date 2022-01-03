@@ -68,3 +68,7 @@ def load_config():
     else:
         print("Config not found")
         return Config()
+
+def del_config_file():
+    if os.path.exists("config.osustat"):
+        os.remove("config.osustat")

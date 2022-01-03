@@ -134,6 +134,7 @@ class SettingsField(QLineEdit):
 
         self.setStyleSheet(self.enabled_style)
 
+
 class SettingsLabel(QLabel):
     def __init__(self, text=None):
         super().__init__()

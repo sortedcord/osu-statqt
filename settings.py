@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import *
 from Components.settings import *
 from Components.utility import MsgBox
 
+from config import Config, del_config_file
 from functions import OsuStatUser
 import webbrowser
 
@@ -39,6 +40,9 @@ class SettingsWindow(QMainWindow):
                 self.client_id_field.setEnabled(False)
                 self.client_secret_field.setEnabled(False)
 
+                # Hide verify Button
+                self.verify_credentials_button.setVisible(False)
+
                 mainWindow.alert_frame.setParent(None)
 
                 MsgBox("Authenticated Successfully, you may use this client now.", 'information')
@@ -64,16 +68,36 @@ class SettingsWindow(QMainWindow):
 
 
     def save_config_clicked(self):
-        MainWindow = self.mainWindow
+        mainWindow = self.mainWindow
 
-        if MainWindow.config.default_user != self.default_user_field.text():
-            self.save_default_user_clicked()
+        if mainWindow.config.cred_verification_status == 'VERIFIED':
+
+            if mainWindow.config.default_user != self.default_user_field.text():
+                self.save_default_user()
+            
+            if mainWindow.config.refresh_cooldown != self.refresh_cooldown_values[self.refresh_limit_combo.currentIndex()]:
+                self.save_refresh_cooldown()
         
-        if self.mainWindow.config.refresh_cooldown != self.refresh_cooldown_values[self.refresh_limit_combo.currentIndex()]:
-            self.save_refresh_cooldown_clicked()
+        else:
+            MsgBox("Please verify API credentials first.", "critical")
 
 
-    def save_default_user_clicked(self):
+    def reset_config_clicked(self):
+        mainWindow = self.mainWindow
+
+        # Set MainWindow to new config instance
+        mainWindow.config = Config()
+
+        # Delete existing config file
+        del_config_file()
+
+        # Load settings again
+        self.load_data()
+        
+
+
+    # <=============== Save Events ===============>
+    def save_default_user(self):
         mainWindow = self.mainWindow
 
         _id = OsuStatUser(mainWindow.config.api).search_user(
@@ -91,7 +115,7 @@ class SettingsWindow(QMainWindow):
             mainWindow.enable_refresh_button()
     
 
-    def save_refresh_cooldown_clicked(self):
+    def save_refresh_cooldown(self):
         print(self.refresh_limit_combo.currentIndex())
         if self.refresh_limit_combo.currentIndex() < 2:
             MsgBox("""Although you can, but it is highly recommended not to set the refresh cooldown value below 10 seconds as it may cause spamming of the refresh button.""", 'information')
@@ -101,7 +125,6 @@ class SettingsWindow(QMainWindow):
 
     # <=============== Other Functions ===============>
     def ulock_panels(self, state):
-        self.credentials_panel.setEnabled(state)
         self.default_user_panel.setEnabled(state)
         self.osuStat_panel.setEnabled(state)
 
@@ -110,7 +133,7 @@ class SettingsWindow(QMainWindow):
         mainWindow= self.mainWindow
 
         # If credentials verified
-        if self.mainWindow.config.cred_verification_status == 'VERIFIED':
+        if mainWindow.config.cred_verification_status == 'VERIFIED':
             self.ulock_panels(True)
 
             self.client_id_field.setText(str(mainWindow.config.client_id))
@@ -120,9 +143,14 @@ class SettingsWindow(QMainWindow):
             self.client_id_field.setEnabled(False)
             self.client_secret_field.setEnabled(False)
 
+            # Hide verify credentials button
+            self.verify_credentials_button.setVisible(False)
+
             # Load Default User
             if mainWindow.default_user_class is not None:
                 self.default_user_field.setText(mainWindow.default_user_class.username)
+            else:
+                mainWindow.disable_refresh_button()
 
         # If credentials not verified
         else:
@@ -135,10 +163,12 @@ class SettingsWindow(QMainWindow):
             print("That value of refresh cooldown is not supported")
 
 
+
     def setupUi(self):
         # Window Layout
         self.resize(800, 439)
         self.centralwidget = QWidget(self)
+        self.setCentralWidget(self.centralwidget)
         self.window_layout = QVBoxLayout(self.centralwidget)
         self.window_layout.setContentsMargins(0, 0, 0, 0)
         self.window_layout.setSpacing(0)
@@ -162,6 +192,7 @@ class SettingsWindow(QMainWindow):
 
         # Reset Config Button
         self.reset_config_button = SettingsButton("Reset Config", "rgb(204,51,51)", "rgb(234,71,70)")
+        self.reset_config_button.clicked.connect(lambda: self.reset_config_clicked())
         self.title_bar_layout.addWidget(self.reset_config_button)
 
         # Save Config Button
@@ -175,6 +206,7 @@ class SettingsWindow(QMainWindow):
         self.settings_content_frame.setStyleSheet("border:none;")
         self.settings_content_frame.setFrameShape(QFrame.StyledPanel)
         self.settings_content_frame.setFrameShadow(QFrame.Raised)
+        self.window_layout.addWidget(self.settings_content_frame)
 
         # Settings Content Layout
         self.settings_layout = QVBoxLayout(self.settings_content_frame)
@@ -248,8 +280,8 @@ class SettingsWindow(QMainWindow):
 
 
         self.settings_layout.addWidget(self.osuStat_panel)
-        self.window_layout.addWidget(self.settings_content_frame)
-        self.setCentralWidget(self.centralwidget)
+
+        
 
     def setupText(self):
         self.setWindowTitle("Settings | OsuStatQt")
@@ -261,6 +293,8 @@ class SettingsWindow(QMainWindow):
         self.refresh_limit_combo.setItemText(4, "Every 30 Seconds")
         self.refresh_limit_combo.setItemText(5, "Every Minute")
     
+
+
     def setupStylesheet(self):
         self.setStyleSheet("""
             background-color:rgb(24,22,29);
@@ -283,3 +317,4 @@ class SettingsWindow(QMainWindow):
             font: 63 10pt \"Torus Pro SemiBold\";
         """)
                                      
+
