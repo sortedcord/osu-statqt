@@ -2,6 +2,7 @@ from PyQt5 import QtCore
 from PyQt5.QtWidgets import *
 
 from Components.settings import *
+from Components.css_files import scrollbar_style
 from Components.utility import MsgBox
 
 from config import Config, del_config_file
@@ -207,13 +208,19 @@ class SettingsWindow(QMainWindow):
         self.save_config_button.clicked.connect(lambda: self.save_config_clicked())
         self.title_bar_layout.addWidget(self.save_config_button)
 
+        # Settings Scrollable Area
+        self.settings_scrollable_area = QScrollArea(self.centralwidget)
+        self.settings_scrollable_area.setWidgetResizable(True)
+        self.settings_scrollable_area.setStyleSheet(scrollbar_style)
+        self.window_layout.addWidget(self.settings_scrollable_area)
+
 
         # Settings Content
-        self.settings_content_frame = QFrame(self.centralwidget)
+        self.settings_content_frame = QFrame()
         self.settings_content_frame.setStyleSheet("border:none;")
         self.settings_content_frame.setFrameShape(QFrame.StyledPanel)
         self.settings_content_frame.setFrameShadow(QFrame.Raised)
-        self.window_layout.addWidget(self.settings_content_frame)
+        self.settings_scrollable_area.setWidget(self.settings_content_frame)
 
         # Settings Content Layout
         self.settings_layout = QVBoxLayout(self.settings_content_frame)
