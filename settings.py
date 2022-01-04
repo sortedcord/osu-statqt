@@ -93,6 +93,11 @@ class SettingsWindow(QMainWindow):
                 logger.debug("Change in refresh cooldown  detected")
                 self.save_refresh_cooldown()
                 logger.info("refresh cooldown Saved")
+            
+            if mainWindow.config.show_failed_scores != self.toggle_failed_scores_checkbox.isChecked():
+                logger.debug("Change in failed scores option")
+                self.toggled_failed_scores()
+                logger.info(f"Set Failed Scores to {mainWindow.config.show_failed_scores} in config")
         
         else:
             MsgBox("Please verify API credentials first.", "critical")
@@ -121,6 +126,12 @@ class SettingsWindow(QMainWindow):
         
 
 
+    def toggled_failed_scores(self):
+        mainWindow = self.mainWindow
+
+        mainWindow.config.show_failed_scores = self.toggle_failed_scores_checkbox.isChecked()
+
+
     # <=============== Save Events ===============>
     def save_default_user(self):
         mainWindow = self.mainWindow
@@ -137,6 +148,8 @@ class SettingsWindow(QMainWindow):
             mainWindow.config.default_user = mainWindow.default_user_class.username
             logger.success(f"Default user set as {mainWindow.default_user_class.username}")
             MsgBox(f"Default user has been set as {mainWindow.default_user_class.username}", "information")
+
+            self.default_user_field.setText(mainWindow.default_user_class.username)
 
             mainWindow.enable_refresh_button()
     
@@ -164,6 +177,7 @@ class SettingsWindow(QMainWindow):
 
             self.client_id_field.setText(str(mainWindow.config.client_id))
             self.client_secret_field.setText(mainWindow.config.client_secret)
+            self.toggle_failed_scores_checkbox.setChecked(mainWindow.config.show_failed_scores)
             logger.debug("Filled in Fields")
 
             # Disable Credentials Field
@@ -208,7 +222,7 @@ class SettingsWindow(QMainWindow):
         self.window_layout.setSpacing(0)
 
 
-        # Top Titile Bar
+        # Top Title Bar
         self.top_bar_frame = QFrame(self.centralwidget)
         self.top_bar_frame.setMinimumSize(QtCore.QSize(800, 49))
         self.top_bar_frame.setMaximumSize(QtCore.QSize(16777215, 50))
@@ -318,6 +332,22 @@ class SettingsWindow(QMainWindow):
         self.refresh_limit_combo.addItem("")
         self.osuStat_panel.form_frame_layout.setWidget(0, QFormLayout.FieldRole, self.refresh_limit_combo)
 
+        # Toggle Failed Scores
+        self.toggle_failed_scores = SettingsLabel('show failed scores')
+        self.toggle_failed_scores.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.osuStat_panel.form_frame_layout.setWidget(1, QFormLayout.LabelRole, self.toggle_failed_scores)
+
+        # Toggle Failed Scores check box
+        self.toggle_failed_scores_checkbox = QCheckBox()
+        self.toggle_failed_scores_checkbox.setIconSize(QtCore.QSize(42, 16))
+        sizePolicy = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.toggle_failed_scores_checkbox.sizePolicy().hasHeightForWidth())
+        self.toggle_failed_scores_checkbox.setSizePolicy(sizePolicy)
+        self.toggle_failed_scores_checkbox.setText("")
+        self.osuStat_panel.form_frame_layout.setWidget(1, QFormLayout.FieldRole, self.toggle_failed_scores_checkbox)
+
 
         self.settings_layout.addWidget(self.osuStat_panel)
 
@@ -355,6 +385,10 @@ class SettingsWindow(QMainWindow):
             border-radius: 4px;
             color: rgb(255,255,255);
             font: 63 10pt \"Torus Pro SemiBold\";
+        """)
+
+        self.toggle_failed_scores_checkbox.setStyleSheet("""
+            background-color:rgb(49,47,56);
         """)
                                      
 

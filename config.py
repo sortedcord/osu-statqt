@@ -10,17 +10,17 @@ class Config:
     def __init__(self, client_id=None, client_secret=None, default_user=None):
 
         self.client_id = client_id
-        logger.debug(f"Client ID set as {self.client_id} ")
         self.client_secret = client_secret
-        logger.debug(f"Client secret set as {self.client_secret} ")
+
         self.cred_verification_status = "UNVERIFIED"
-        logger.debug(f"Credentials Verification status set as {self.cred_verification_status} ")
         self.default_user = default_user
-        logger.debug(f"Default User Set as {self.default_user} ")
         self.api = None
-        logger.debug(f"API Token set as {self.api} ")
+
+        # OsuStat Specific
         self.refresh_cooldown = 15000
-        logger.debug(f"Refresh Cooldown set as {self.refresh_cooldown} ")
+        self.show_failed_scores = True
+
+        logger.debug(f"Config Object Defaults set.")
 
     def dump_config(self):
         with open("config.osustat", "wb") as w:

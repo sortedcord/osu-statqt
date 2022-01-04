@@ -1,11 +1,10 @@
 from PyQt5 import QtCore, QtWidgets
-from ossapi import enums
 
 from Components.recent_activity import RecentActivityItem
 from Components.recent_scores import RecentScoreItem
 from Components.css_files import scrollbar_style
 
-import ossapi
+from loguru import logger
 
 class RecentActivityTab(QtWidgets.QWidget):
     def __init__(self, mainWindow):
@@ -20,7 +19,7 @@ class RecentActivityTab(QtWidgets.QWidget):
         self.setupConnections(mainWindow)
 
     def setupConnections(self, mainWindow):
-        print("offset is: ", self.offset)
+        logger.info(f"offset set to: {self.offset}")
         for recent_activity in mainWindow.config.api.user_recent_activity(user_id=mainWindow.default_user_class.id, limit=15, offset=self.offset):
             widget = RecentActivityItem(mainWindow, recent_activity)
             self.verticalLayout_2.addWidget(widget)
@@ -30,7 +29,6 @@ class RecentActivityTab(QtWidgets.QWidget):
 
 
     def setupUi(self):
-        self.setObjectName("self")
         self.resize(778, 352)
         self.verticalLayout = QtWidgets.QVBoxLayout(self)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
@@ -83,7 +81,7 @@ class RecentScoreTab(QtWidgets.QWidget):
         self.setupConnections(mainWindow)
 
     def setupConnections(self, mainWindow):
-        for recent_score in mainWindow.config.api.user_scores(mainWindow.default_user_class.id, 'recent', "1", limit=10, offset=self.offset):
+        for recent_score in mainWindow.config.api.user_scores(mainWindow.default_user_class.id, 'recent', str(int(mainWindow.config.show_failed_scores)), limit=10, offset=self.offset):
             widget = RecentScoreItem(recent_score)
             self.verticalLayout_2.addWidget(widget)
         
