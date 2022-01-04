@@ -4,71 +4,99 @@ from ossapi import OssapiV2
 from ossapi import *
 import oauthlib
 import requests
-
+from loguru import logger
 
 class Config:
     def __init__(self, client_id=None, client_secret=None, default_user=None):
 
         self.client_id = client_id
+        logger.debug(f"Client ID set as {self.client_id} ")
         self.client_secret = client_secret
+        logger.debug(f"Client secret set as {self.client_secret} ")
         self.cred_verification_status = "UNVERIFIED"
+        logger.debug(f"Credentials Verification status set as {self.cred_verification_status} ")
         self.default_user = default_user
+        logger.debug(f"Default User Set as {self.default_user} ")
         self.api = None
+        logger.debug(f"API Token set as {self.api} ")
         self.refresh_cooldown = 15000
+        logger.debug(f"Refresh Cooldown set as {self.refresh_cooldown} ")
 
     def dump_config(self):
         with open("config.osustat", "wb") as w:
             self.api = None
-            pkl.dump(self, w)
+            logger.debug(f"API Token set as {self.api}")
+
+            try: 
+                pkl.dump(self, w)
+            except:
+                logger.error("Could not dump pickled object")
+            else:
+                logger.info("Config Dumped successfully.")
 
     def verify_credentials(self):
-        print("Credentials:", self.client_id, self.client_secret)
+        logger.debug(f"Verifying Credentials {self.client_id}; {self.client_secret}")
 
         if None in (self.client_id, self.client_secret):
+            logger.error("Either of the credentials are missing. Cannot verify None Values")
             self.cred_verification_status = "UNVERIFIED"
+            logger.info(f"Credentials Verification status updated to {self.cred_verification_status} ")
 
         else:
-            # Putting this in a different try block to save time
+            logger.warning("Client ID type is string. Converting to Base10 Int")
             if "str" in str(type(self.client_id)):
                 try:
                     self.client_id = int(self.client_id)
                 except ValueError:
+                    logger.error("Client ID contains alphanumeric characters while only integer was expected.")
                     self.cred_verification_status = "INVALID"
+                    logger.info(f"Credentials Verification status updated to {self.cred_verification_status} ")
+                else:
+                    logger.success("Converted to Base10")
 
             try:
                 self.api = OssapiV2(self.client_id, self.client_secret)
             except oauthlib.oauth2.rfc6749.errors.InvalidClientError:
                 self.cred_verification_status = "INVALID"
+                logger.error("Entered credentials are invalid.")
             except requests.exceptions.ConnectionError:
                 self.cred_verification_status = "NO_INTERNET"
-            except requests.exceptions.ConnectionError:
-                self.cred_verification_status = "NO_INTERNET"
+                logger.error("Cannot send request. Please check your network connectivity.")
             else:
                 self.cred_verification_status = "VERIFIED"
+                logger.error("Credentials Verified Successfully")
+            logger.info(f"Credentials Verification status updated to {self.cred_verification_status} ")
 
 
 def load_config():
     if os.path.exists("config.osustat"):
-        try:
-            with open("config.osustat", "rb") as f:
-                config = pkl.load(f)
-                print(
-                    f"=========== CONFIG LOADED =========== \n",
-                    f"Client ID: {config.client_id} \n"
-                    f"Default User: {config.default_user} \n",
-                )
+        logger.info("Config file found in the directory.")
+        with open("config.osustat", "rb") as f:
+            logger.info("Reading Config File")
+            try:
+                    config = pkl.load(f)
+            except EOFError:
+                logger.warning("Config File is Blank!")
+                return Config()
+            except pkl._pickle.UnpicklingError:
+                logger.error("The config file is corrupted.")
+            else:
+                logger.success("Configurations loaded successfully")
+                logger.debug("Verifying Credentials")
                 config.verify_credentials()
                 return config
-        except EOFError:
-            print("The config is empty.")
-            return Config()
-        except pkl._pickle.UnpicklingError:
-            print("The config is corrupted.")
+
 
     else:
-        print("Config not found")
+        logger.error("Config file not found")
         return Config()
 
 def del_config_file():
     if os.path.exists("config.osustat"):
-        os.remove("config.osustat")
+        logger.info("Config File Found")
+        try:
+            os.remove("config.osustat")
+        except:
+            logger.error("Could not delete File")
+        else:
+            logger.success("Deleted config file succesfully.")

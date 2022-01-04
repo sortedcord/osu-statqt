@@ -1,5 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import os
+from loguru import logger
 
 from functions import OsuStatUser
 from config import load_config
@@ -11,7 +12,7 @@ VERSION = '0.0.4'
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
-        super().__init__()
+        super().__init__()  
 
         """
         I have broken down the initialization of MainWindow into 4 parts:
@@ -24,58 +25,65 @@ class MainWindow(QtWidgets.QMainWindow):
         easy to navigate around, especially in vscode.
         """
 
-        print("Setting Layout")
         self.setupUi()
-        print("Setting Text")
         self.setupText()
-        print("Setting Style")
+        logger.debug("Loaded Window UI Structure")
         self.setupStyle()
-        print("Setting Connections")
+        logger.debug("Applied Stylesheet to Qt")
         self.setupConnections()
+        logger.debug("Connections have been setup.")
         self.show()
 
 
     def closeEvent(self, event):
+        logger.debug("Close Window Event Triggered.")
         try:
+            logger.debug(f"Set config default_user: {self.config.default_user} as database username {self.default_user_class.username}")
             self.config.default_user = self.default_user_class.username
         except:
-            print("Default User Class was none. Default user wasn't verified throughout runtime.")
+            logger.warning("Default User Class was none. Default user wasn't verified throughout runtime.")
         self.config.dump_config()
         event.accept()
 
 
     def refresh(self):
         self.disable_refresh_button()
+        logger.debug("Refresh Button disabled")
         self.refresh_timer = QtCore.QTimer()
 
         if not self.config.refresh_cooldown == 0:
             self.refresh_timer.setInterval(self.config.refresh_cooldown)
+            logger.info(f"Refresh Cooldown set to {self.config.refresh_cooldown/1000} seconds")
         else:
-            self.refresh_timer.setInterval(1)
+            logger.warning("Refresh Cooldown has been disabled")
+            logger.info("Setting Time Interval to 100ms to prevent GUI Freeze")
+            self.refresh_timer.setInterval(100)
 
         self.refresh_timer.setSingleShot(True)
         self.refresh_timer.timeout.connect(self.enable_refresh_button)
         self.refresh_timer.start()
+        logger.info("Cooldown Timer Started")
 
         self.statusbar.showMessage("Refreshing... Please Wait")
         try:
             self.verticalLayout_4.removeWidget(self.recent_scores_tab_content)
             self.verticalLayout_3.removeWidget(self.recent_activity_tab_content)
-            self.recent_activity_tab_content.setParent(None)
-            self.recent_scores_tab_content.setParent(None)
+            self.recent_scores_tab_content = None
+            self.recent_activity_tab_content = None
+            logger.debug("Removed Tab Contents")
         except:
             pass
         # Show Recent Activity Tab
         self.recent_activity_tab_content = RecentActivityTab(self)
         self.verticalLayout_3.addWidget(
             self.recent_activity_tab_content)
-        print("Displayed Recent Activity Tab")
+        logger.debug("Displayed Recent Activity Tab")
 
         # Show Recent Scores Tab
         self.recent_scores_tab_content = RecentScoreTab(self)
         self.verticalLayout_4.addWidget(
             self.recent_scores_tab_content)
-        print("Displayed Recent Scores Tab")
+        logger.debug("Displayed Recent Scores Tab")
         self.statusbar.showMessage("Data Refreshed")
 
 
@@ -116,73 +124,82 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def showSettings(self):
         self.settingsWindow = SettingsWindow(self)
+        logger.debug("Created SettingsWindow Class Instance")
         self.settingsWindow.show()
+        logger.info("Showing Settings Window")
 
     def setupConnections(self):
         self.default_user_class = None
+        logger.debug(f"Default User Class set to {self.default_user_class}")
 
-        self.actionSettings.triggered.connect(
-            self.showSettings)  # Settings Menu
-        print("Settings button Connected")
+        self.actionSettings.triggered.connect(self.showSettings)  # Settings Menu
+        logger.debug("Connected settings menu to 'showSettings'")
 
         self.config = load_config()
-
+        logger.debug("Config Loaded")
 
         # If credentials were valid
         if self.config.cred_verification_status == 'VERIFIED':
             self.statusbar.showMessage("Credentials verified")
-            print("Credentials verified")
+            logger.info("Credentials Verified")
 
             self.alert_frame.setParent(None)  # Remove alert frame
+            logger.debug("Alert Frame Removed")
 
             # If config has default user set
             if self.config.default_user is not None:
+                logger.debug(f"Searching for user {self.config.default_user}")
                 _uval = OsuStatUser(
                     self.config.api).search_user(self.config.default_user)
                 
                 # If Default User is valid
                 if _uval != 0: 
+                    logger.info(f"{self.config.default_user} found on Bancho")
                     self.default_user_class = OsuStatUser(self.config.api,self.config.default_user)
+                    logger.debug("Created Default User Class")
 
                     # Show Recent Activity Tab
                     self.recent_activity_tab_content = RecentActivityTab(self)
-                    self.verticalLayout_3.addWidget(
-                        self.recent_activity_tab_content)
-                    print("Displayed Recent Activity Tab")
+                    self.verticalLayout_3.addWidget(self.recent_activity_tab_content)
+                    logger.debug("Rendering Activity Tab")
+                    
 
                     # Show Recent Scores Tab
                     self.recent_scores_tab_content = RecentScoreTab(self)
-                    self.verticalLayout_4.addWidget(
-                        self.recent_scores_tab_content)
-                    print("Displayed Recent Scores Tab")
+                    self.verticalLayout_4.addWidget(self.recent_scores_tab_content)
+                    logger.debug("Rendering Activity Tab")
 
                     # Enable Refresh Button
                     self.enable_refresh_button()
-                    print("Refresh Button Enabled")
+                    logger.debug("Enabled Refresh Button")
                 else:
+                    logger.error(f"{self.config.default_user} not found on Bancho")
                     self.disable_refresh_button()
-                    print("Defaut user was invalid")
+                    logger.debug("Refresh Button Disabled")
 
             # If default user is not set
             else:
+                logger.warning("No default user was found in config")
                 self.disable_refresh_button()
-                print("No default user was found")
+                logger.debug("Refresh Button Disabled")
+        else:
+            logger.error("Credentials in the config are either missing or invalid.")
 
     def setupUi(self):
-        print("Resizing Window")
         self.resize(900, 700)
         self.setMinimumSize(870, 400)
+        logger.debug(f"Set Window Size to 900,700 and minimum size to 870, 400")
         self.centralwidget = QtWidgets.QWidget(self)
-        self.centralwidget.setObjectName("centralwidget")
+        logger.debug("Created Central Widget")
 
         self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
         self.verticalLayout.setObjectName("verticalLayout")
-
+    
         self.alert_frame = QtWidgets.QFrame(self.centralwidget)
         self.alert_frame.setMinimumSize(QtCore.QSize(100, 80))
         self.alert_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.alert_frame.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.alert_frame.setObjectName("alert_frame")
+        logger.debug("Created Alert Frame")
 
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.alert_frame)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")

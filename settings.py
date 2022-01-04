@@ -8,7 +8,7 @@ from Components.utility import MsgBox
 from config import Config, del_config_file
 from functions import OsuStatUser
 import webbrowser
-
+from loguru import logger
 
 class SettingsWindow(QMainWindow):
     def __init__(self, mainWindow):
@@ -18,66 +18,81 @@ class SettingsWindow(QMainWindow):
         self.refresh_cooldown_values = [0, 5000, 10000, 15000, 30000, 60000] # time in milliseconds
 
         self.setupUi()
+        logger.debug("Loaded Window UI Structure")
         self.setupText()
         self.setupStylesheet()
+        logger.debug("Applied Stylesheet to Qt")
         self.load_data()
+        logger.debug("Loaded Window Data")
 
 
     # <=============== Clicked Events ===============>
     def verify_credentials_clicked(self):
+        logger.info("Executing Verify Credentials Button clicked event")
+
         mainWindow = self.mainWindow
+        mainWindow.config.client_id = self.client_id_field.text()
+        mainWindow.config.client_secret = self.client_secret_field.text()
+        logger.debug(f"Verifying {mainWindow.config.client_id},{mainWindow.config.client_secret} ")
+        mainWindow.config.verify_credentials()
 
-        # If not already authenticated
-        if mainWindow.config.cred_verification_status != 'VERIFIED':
+        # If credentials are correct
+        if mainWindow.config.cred_verification_status == 'VERIFIED':
+            logger.success("Credentials have been verified.")
 
-            mainWindow.config.client_id = self.client_id_field.text()
-            mainWindow.config.client_secret = self.client_secret_field.text()
-            mainWindow.config.verify_credentials()
+            # Disable Text Fields
+            logger.debug("Locked Text Fields")
+            self.client_id_field.setEnabled(False)
+            self.client_secret_field.setEnabled(False)
 
-            # If credentials are correct
-            if mainWindow.config.cred_verification_status == 'VERIFIED':
+            # Hide verify Button
+            logger.debug("Set Credentials button visibility to False")
+            self.verify_credentials_button.setVisible(False)
 
-                # Disable Text Fields
-                self.client_id_field.setEnabled(False)
-                self.client_secret_field.setEnabled(False)
+            logger.debug("Remove Alert Frame")
+            mainWindow.alert_frame.setParent(None)
 
-                # Hide verify Button
-                self.verify_credentials_button.setVisible(False)
-
-                mainWindow.alert_frame.setParent(None)
-
-                MsgBox("Authenticated Successfully, you may use this client now.", 'information')
-
-                # Refresh Settings Window
-                self.load_data()
-
-            # If invalid credentials
-            else:
-                mainWindow.config.cred_verification_status = 'INVALID'
-                MsgBox("Invalid Credentials. Please Try Again.", 'critical')
-
-        # If already Authenticated
-        else:
-            MsgBox("You are already authenticated", 'information')
+            MsgBox("Authenticated Successfully, you may use this client now.", 'information')
 
             # Refresh Settings Window
+            logger.debug("Remove Alert Frame")
             self.load_data()
+
+        # If invalid credentials
+        else:
+            logger.error("Entered credentials are invalid")
+            mainWindow.config.cred_verification_status = 'INVALID'
+            logger.info(f"Updated Login credentials to {mainWindow.config.cred_verification_status}")
+            MsgBox("Invalid Credentials. Please Try Again.", 'critical')
+        
+        # Refresh Settings Window
+        self.load_data()
+        logger.error("Reloaded settings Window fields")
 
 
     def get_credentials_clicked(self):
+        logger.info("Get Credentials button click event performed")
         webbrowser.open("https://osu.ppy.sh/home/account/edit")
+        logger.info("Opening Link in Browser")
 
 
     def save_config_clicked(self):
+        logger.info("Save Config Button Click Event Triggered")
+
         mainWindow = self.mainWindow
 
         if mainWindow.config.cred_verification_status == 'VERIFIED':
 
             if mainWindow.config.default_user != self.default_user_field.text():
+                logger.debug("Change in default user detected")
                 self.save_default_user()
+                logger.info("Default User Saved")
+
             
             if mainWindow.config.refresh_cooldown != self.refresh_cooldown_values[self.refresh_limit_combo.currentIndex()]:
+                logger.debug("Change in refresh cooldown  detected")
                 self.save_refresh_cooldown()
+                logger.info("refresh cooldown Saved")
         
         else:
             MsgBox("Please verify API credentials first.", "critical")
@@ -88,15 +103,18 @@ class SettingsWindow(QMainWindow):
 
         # Set MainWindow to new config instance
         mainWindow.config = Config()
+        logger.info("Reset config instance")
 
         # Delete existing config file
         del_config_file()
+        logger.info("Deleted Config File")
 
         # Reset Fields
         self.client_id_field.setText(None)
         self.client_secret_field.setText(None)
         self.default_user_field.setText(None)
         self.refresh_limit_combo.setCurrentIndex(3)
+        logger.debug("Fields have been reset")
 
         # Load settings again
         self.load_data()
@@ -107,16 +125,17 @@ class SettingsWindow(QMainWindow):
     def save_default_user(self):
         mainWindow = self.mainWindow
 
-        _id = OsuStatUser(mainWindow.config.api).search_user(
-            self.default_user_field.text())
-        print('User ID: ', _id)
+        _id = OsuStatUser(mainWindow.config.api).search_user(self.default_user_field.text())
 
         if _id == 0:  # If no user is found in Bancho
+            logger.error(f"{self.default_user_field.text()} was not found in Bancho")
             MsgBox('Specified user not found. Try checking your spelling.')
 
         else:  # If user is found
+            logger.success("Specified User found.")
             mainWindow.default_user_class = OsuStatUser(mainWindow.config.api, id=_id)
             mainWindow.config.default_user = mainWindow.default_user_class.username
+            logger.success(f"Default user set as {mainWindow.default_user_class.username}")
             MsgBox(f"Default user has been set as {mainWindow.default_user_class.username}", "information")
 
             mainWindow.enable_refresh_button()
@@ -145,23 +164,30 @@ class SettingsWindow(QMainWindow):
 
             self.client_id_field.setText(str(mainWindow.config.client_id))
             self.client_secret_field.setText(mainWindow.config.client_secret)
+            logger.debug("Filled in Fields")
 
             # Disable Credentials Field
             self.client_id_field.setEnabled(False)
             self.client_secret_field.setEnabled(False)
+            logger.debug("Locked Credentials Fields")
 
             # Hide verify credentials button
             self.verify_credentials_button.setVisible(False)
+            logger.debug(f"Verify Credentials Button Visibility > {self.verify_credentials_button.isVisible}")
 
             # Load Default User
             if mainWindow.default_user_class is not None:
                 self.default_user_field.setText(mainWindow.default_user_class.username)
+                logger.debug(f"Default User Field set to {mainWindow.default_user_class.username}")
             else:
+                logger.debug(f"Disabled Refresh Button on MainWindow.")
                 mainWindow.disable_refresh_button()
 
         # If credentials not verified
         else:
+            logger.debug("Credentials Not Verified. Locking Other Panels")
             self.ulock_panels(False)
+            logger.debug("Disabled Refresh Button")
             mainWindow.disable_refresh_button()
         
         # Load Refresh Cooldown
