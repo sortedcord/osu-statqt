@@ -447,5 +447,13 @@ if __name__ == "__main__":
         app.setWindowIcon(QtGui.QIcon('icon48x.ico'))
     else:
         app.setWindowIcon(QtGui.QIcon('Assets/Logo/icon48x.ico'))
+
+    try:
+        QtGui.QFontDatabase.addApplicationFont("Assets/Fonts/TorusPro-SemiBold.ttf")
+        QtGui.QFontDatabase.addApplicationFont("Assets/Fonts/TorusPro-Bold.ttf")
+        QtGui.QFontDatabase.addApplicationFont("Assets/TorusPro-Regular.ttf")
+    except: logger.error("Could not load fonts")
+    else: logger.debug("Fonts loaded")
+
     ui = MainWindow()
     sys.exit(app.exec_())
