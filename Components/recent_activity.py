@@ -79,7 +79,7 @@ class RecentActivityItem(QWidget):
 			self.event_description_label.setText(f" achieved rank # {activity.rank} on ")
 			self.event_type.setText(f"{activity.beatmap.title} ")
 			self.gamemode_label.setText("(osu!)")
-			self.rank_score_label.setPixmap(QtGui.QPixmap(f".\\Components\\../Assets/Rank Grades/{activity.scoreRank}.png"))
+			self.rank_score_label.setPixmap(QtGui.QPixmap(f"Assets/Rank_Grades/{activity.scoreRank}.png"))
 
 		elif type(activity) == ossapi.models.RankLostEvent:
 			self.event_description_label.setText(f" has lost first place on ")

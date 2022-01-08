@@ -27,11 +27,11 @@ class RecentScoreItem(QWidget):
 
 		# Set grade image
 		if not score.passed:
-			self.rank_grade_label.setPixmap(QtGui.QPixmap(".\\Components\\../Assets/Rank Grades/F.png"))
+			self.rank_grade_label.setPixmap(QtGui.QPixmap("Assets/Rank_Grades/F.png"))
 		else:
 			_grade = str(score.rank).split("Grade.")[1]
 			print("Grade is: ", _grade)
-			self.rank_grade_label.setPixmap(QtGui.QPixmap(f".\\Components\\../Assets/Rank Grades/{_grade}.png"))
+			self.rank_grade_label.setPixmap(QtGui.QPixmap(f"Assets/Rank_Grades/{_grade}.png"))
 		
 		# Show mods
 		mods = str(score.mods)
@@ -49,7 +49,7 @@ class RecentScoreItem(QWidget):
 					self.mod_icon.setMaximumSize(QtCore.QSize(36, 26))
 					self.mod_icon.setScaledContents(True)
 					self.mod_icon.setObjectName("mod_icon")
-					self.mod_icon.setPixmap(QtGui.QPixmap(f".\\Components\\../Assets/Mod Icons/{mod}.png"))
+					self.mod_icon.setPixmap(QtGui.QPixmap(f"ssets/Mod_Icons/{mod}.png"))
 				except:
 					print("Mod Icon Not found")
 		
