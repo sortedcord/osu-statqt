@@ -155,7 +155,6 @@ class SettingsWindow(QMainWindow):
     
 
     def save_refresh_cooldown(self):
-        print(self.refresh_limit_combo.currentIndex())
         if self.refresh_limit_combo.currentIndex() < 2:
             MsgBox("""Although you can, but it is highly recommended not to set the refresh cooldown value below 10 seconds as it may cause spamming of the refresh button.""", 'information')
         self.mainWindow.config.refresh_cooldown = self.refresh_cooldown_values[self.refresh_limit_combo.currentIndex()]
@@ -208,7 +207,7 @@ class SettingsWindow(QMainWindow):
         try:
             self.refresh_limit_combo.setCurrentIndex(self.refresh_cooldown_values.index(mainWindow.config.refresh_cooldown))
         except IndexError:
-            print("That value of refresh cooldown is not supported")
+            logger.error("That value of refresh cooldown is not supported")
 
 
 

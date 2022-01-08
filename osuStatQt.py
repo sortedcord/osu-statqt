@@ -47,22 +47,9 @@ class MainWindow(QtWidgets.QMainWindow):
 
 
     def refresh(self):
+        logger.info("Refresh Button was clicked.")
         self.disable_refresh_button()
-        logger.debug("Refresh Button disabled")
-        self.refresh_timer = QtCore.QTimer()
-
-        if not self.config.refresh_cooldown == 0:
-            self.refresh_timer.setInterval(self.config.refresh_cooldown)
-            logger.info(f"Refresh Cooldown set to {self.config.refresh_cooldown/1000} seconds")
-        else:
-            logger.warning("Refresh Cooldown has been disabled")
-            logger.info("Setting Time Interval to 100ms to prevent GUI Freeze")
-            self.refresh_timer.setInterval(100)
-
-        self.refresh_timer.setSingleShot(True)
-        self.refresh_timer.timeout.connect(self.enable_refresh_button)
-        self.refresh_timer.start()
-        logger.info("Cooldown Timer Started")
+        logger.debug("Refresh Button disabled")   
 
         self.statusbar.showMessage("Refreshing... Please Wait")
         try:
@@ -86,6 +73,20 @@ class MainWindow(QtWidgets.QMainWindow):
         logger.debug("Displayed Recent Scores Tab")
         self.statusbar.showMessage("Data Refreshed")
 
+        self.refresh_obj = QtCore.QTimer()
+
+        if not self.config.refresh_cooldown == 0:
+            self.refresh_obj.setInterval(self.config.refresh_cooldown)
+            logger.info(f"Refresh Cooldown set to {self.config.refresh_cooldown/1000} seconds")
+        else:
+            logger.warning("Refresh Cooldown has been disabled")
+            logger.info("Setting Time Interval to 100ms to prevent GUI Freeze")
+            self.refresh_obj.setInterval(100)
+
+        self.refresh_obj.setSingleShot(True)
+        self.refresh_obj.timeout.connect(self.enable_refresh_button)
+        self.refresh_obj.start()
+        logger.info("Started Timer")
 
     def enable_refresh_button(self):
         self.refresh_button.setStyleSheet("""

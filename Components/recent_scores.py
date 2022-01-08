@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import *
 
 from functions import get_time_elapsed
 
+from loguru import logger
 
 class RecentScoreItem(QWidget):
 	def __init__(self, score):
@@ -15,11 +16,9 @@ class RecentScoreItem(QWidget):
 	
 	def mousePressEvent(self, event):
 		if self.accuracy_box.isVisible() == False:
-			print("Showing accuracy Box")
 			self.accuracy_box.setVisible(True)
 			self.setMinimumSize(796, 88)
 		else:
-			print("Hiding Accuracy Box")
 			self.accuracy_box.setVisible(False)
 			self.setMinimumSize(796, 60)
 	
@@ -30,7 +29,6 @@ class RecentScoreItem(QWidget):
 			self.rank_grade_label.setPixmap(QtGui.QPixmap("Assets/Rank_Grades/F.png"))
 		else:
 			_grade = str(score.rank).split("Grade.")[1]
-			print("Grade is: ", _grade)
 			self.rank_grade_label.setPixmap(QtGui.QPixmap(f"Assets/Rank_Grades/{_grade}.png"))
 		
 		# Show mods
@@ -51,7 +49,7 @@ class RecentScoreItem(QWidget):
 					self.mod_icon.setObjectName("mod_icon")
 					self.mod_icon.setPixmap(QtGui.QPixmap(f"ssets/Mod_Icons/{mod}.png"))
 				except:
-					print("Mod Icon Not found")
+					logger.error("Mod Icon Not found")
 		
 		self.accuracy_box.setVisible(False)
 		
