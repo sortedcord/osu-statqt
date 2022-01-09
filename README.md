@@ -18,7 +18,7 @@ In its alpha stage, this is just the barebones with basic features. With the sub
 
 ## Usage
 
-As of the current release, you can [set a default user](#Setting_Default_User) for osu stat and view your recent activity and scores (including failed scores) as well as their information such as Performance Points, Time, Beatmap Title, Diff and Ranked Score.
+As of the current release, you can [set a default user](#setting-default-user) for osu stat and view your recent activity and scores (including failed scores) as well as their information such as Performance Points, Time, Beatmap Title, Diff and Ranked Score.
 
 ## Installing Osu!StatQt
 
