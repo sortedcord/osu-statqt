@@ -18,7 +18,10 @@ class Config:
 
         # OsuStat Specific
         self.refresh_cooldown = 15000
+
+        # Panels
         self.show_failed_scores = True
+        self.panel_items = 15
 
         logger.debug(f"Config Object Defaults set.")
 

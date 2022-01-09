@@ -86,18 +86,24 @@ class SettingsWindow(QMainWindow):
             if mainWindow.config.default_user != self.default_user_field.text():
                 logger.debug("Change in default user detected")
                 self.save_default_user()
-                logger.info("Default User Saved")
+                
 
             
             if mainWindow.config.refresh_cooldown != self.refresh_cooldown_values[self.refresh_limit_combo.currentIndex()]:
                 logger.debug("Change in refresh cooldown  detected")
                 self.save_refresh_cooldown()
-                logger.info("refresh cooldown Saved")
             
             if mainWindow.config.show_failed_scores != self.toggle_failed_scores_checkbox.isChecked():
                 logger.debug("Change in failed scores option")
                 self.toggled_failed_scores()
                 logger.info(f"Set Failed Scores to {mainWindow.config.show_failed_scores} in config")
+            
+            if mainWindow.config.panel_items != int(self.panel_items_field.text()) and self.panel_items_field.text() != '':
+                logger.debug("Change in number of items shown on load.")
+                self.save_panel_items()
+                logger.info(f"Set panel items shown on load to {mainWindow.config.panel_items} in config")
+            
+            MsgBox("Settings Saved successfully.")
         
         else:
             MsgBox("Please verify API credentials first.", "critical")
@@ -160,6 +166,10 @@ class SettingsWindow(QMainWindow):
         self.mainWindow.config.refresh_cooldown = self.refresh_cooldown_values[self.refresh_limit_combo.currentIndex()]
 
 
+    def save_panel_items(self):
+        if int(self.panel_items_field.text()) > 27:
+            MsgBox("Do not set this value value too high as it may register as abuse of the API. Recommended value is in the range of 15 to 25.", "warning")
+        self.mainWindow.config.panel_items = int(self.panel_items_field.text())
 
     # <=============== Other Functions ===============>
     def ulock_panels(self, state):
@@ -177,6 +187,7 @@ class SettingsWindow(QMainWindow):
             self.client_id_field.setText(str(mainWindow.config.client_id))
             self.client_secret_field.setText(mainWindow.config.client_secret)
             self.toggle_failed_scores_checkbox.setChecked(mainWindow.config.show_failed_scores)
+            self.panel_items_field.setText(str(mainWindow.config.panel_items))
             logger.debug("Filled in Fields")
 
             # Disable Credentials Field
@@ -346,6 +357,15 @@ class SettingsWindow(QMainWindow):
         self.toggle_failed_scores_checkbox.setSizePolicy(sizePolicy)
         self.toggle_failed_scores_checkbox.setText("")
         self.osuStat_panel.form_frame_layout.setWidget(1, QFormLayout.FieldRole, self.toggle_failed_scores_checkbox)
+
+        # Panel Items Label
+        self.panel_items_label = SettingsLabel('Items shown on load')
+        self.panel_items_label.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.osuStat_panel.form_frame_layout.setWidget(2, QFormLayout.LabelRole, self.panel_items_label)
+
+        # Panel Items Field 
+        self.panel_items_field = SettingsField()
+        self.osuStat_panel.form_frame_layout.setWidget(2, QFormLayout.FieldRole, self.panel_items_field)
 
 
         self.settings_layout.addWidget(self.osuStat_panel)
