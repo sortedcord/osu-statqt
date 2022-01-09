@@ -82,7 +82,7 @@ class RecentScoreTab(QtWidgets.QWidget):
 
     def setupConnections(self, mainWindow):
         for recent_score in mainWindow.config.api.user_scores(mainWindow.default_user_class.id, 'recent', str(int(mainWindow.config.show_failed_scores)), limit=10, offset=self.offset):
-            widget = RecentScoreItem(recent_score)
+            widget = RecentScoreItem(mainWindow, recent_score)
             self.verticalLayout_2.addWidget(widget)
         
         self.verticalLayout_2.addWidget(self.show_more_button)

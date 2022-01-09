@@ -7,11 +7,11 @@ from functions import get_time_elapsed
 from loguru import logger
 
 class RecentScoreItem(QWidget):
-	def __init__(self, score):
+	def __init__(self, mainWindow, score):
 		super().__init__() 
 		self.show_UI()
 		self.setStyles()
-		self.setConnections(score)
+		self.setConnections(score, mainWindow)
 
 	
 	def mousePressEvent(self, event):
@@ -22,14 +22,14 @@ class RecentScoreItem(QWidget):
 			self.accuracy_box.setVisible(False)
 			self.setMinimumSize(796, 60)
 	
-	def setConnections(self, score):
+	def setConnections(self, score, mainWindow):
 
 		# Set grade image
 		if not score.passed:
-			self.rank_grade_label.setPixmap(QtGui.QPixmap("Assets/Rank_Grades/F.png"))
+			self.rank_grade_label.setPixmap(QtGui.QPixmap(f"{mainWindow.assetpath}/Rank_Grades/F.png"))
 		else:
 			_grade = str(score.rank).split("Grade.")[1]
-			self.rank_grade_label.setPixmap(QtGui.QPixmap(f"Assets/Rank_Grades/{_grade}.png"))
+			self.rank_grade_label.setPixmap(QtGui.QPixmap(f"{mainWindow.assetpath}/Rank_Grades/{_grade}.png"))
 		
 		# Show mods
 		mods = str(score.mods)

@@ -7,12 +7,15 @@ from config import load_config
 
 from settings import SettingsWindow
 from tabs import RecentActivityTab, RecentScoreTab
+from pathlib import Path
 
 VERSION = '0.0.4'
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()  
+
+        self.assetpath = Path(__file__).parent / "Assets"
 
         """
         I have broken down the initialization of MainWindow into 4 parts:
@@ -449,10 +452,13 @@ if __name__ == "__main__":
     else:
         app.setWindowIcon(QtGui.QIcon('Assets/Logo/icon48x.ico'))
 
+    assetpath = Path(__file__).parent / "Assets"
+    logger.info(f"Asset Path set as: {assetpath}")
+
     try:
-        QtGui.QFontDatabase.addApplicationFont("Assets/Fonts/TorusPro-SemiBold.ttf")
-        QtGui.QFontDatabase.addApplicationFont("Assets/Fonts/TorusPro-Bold.ttf")
-        QtGui.QFontDatabase.addApplicationFont("Assets/TorusPro-Regular.ttf")
+        QtGui.QFontDatabase.addApplicationFont(f"{assetpath}/Fonts/TorusPro-SemiBold.ttf")
+        QtGui.QFontDatabase.addApplicationFont(f"{assetpath}/Fonts/TorusPro-Bold.ttf")
+        QtGui.QFontDatabase.addApplicationFont(f"{assetpath}/Fonts/TorusPro-Regular.ttf")
     except: logger.error("Could not load fonts")
     else: logger.debug("Fonts loaded")
 
