@@ -5,6 +5,24 @@ All notable changes to OsuStatQt will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.5] Alpha - 2022-01-09
+
+### Added / Changes
+- Cleaned Up and Optimized `settings.py`. The code is wayy more easy to read now. #21 
+- Created a Top Bar with a Save Button to save all field changes . #23 
+- Added Reset Button to delete existing config and reset all settings.
+- Using Scrollbars in settings. #17 
+- Implemented Logging #10 
+- Added feature to Toggle Failed Scores #20 
+- Added setting to change the number of items loading in panels on first load. #19 
+
+### Bug Fixes
+- Fixed Tabs Popping Out on Refreshing #25 
+- Fixed Icons and images not showing up in Linux and MacOS #27 
+- Included custom fonts in the assets #26 
+- Refresh Button now reloads panels only once. #28 
+- OsuStatQt now loads assets when executed from any location. 
+
 ## [0.0.4] Alpha - 2022-01-02
 
 ### Added / Changes
@@ -52,6 +70,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.0.5]: https://github.com/sortedcord/osu-statqt/releases/tag/v0.0.5-alpha
 [0.0.4]: https://github.com/sortedcord/osu-statqt/releases/tag/v0.0.4-alpha
 [0.0.3]: https://github.com/sortedcord/osu-statqt/releases/tag/v0.0.3-alpha
 [0.0.2]: https://github.com/sortedcord/osu-statqt/releases/tag/v0.0.2-alpha
