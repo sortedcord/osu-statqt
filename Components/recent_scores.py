@@ -47,7 +47,7 @@ class RecentScoreItem(QWidget):
 					self.mod_icon.setMaximumSize(QtCore.QSize(36, 26))
 					self.mod_icon.setScaledContents(True)
 					self.mod_icon.setObjectName("mod_icon")
-					self.mod_icon.setPixmap(QtGui.QPixmap(f"ssets/Mod_Icons/{mod}.png"))
+					self.mod_icon.setPixmap(QtGui.QPixmap(f"{mainWindow.assetpath}/Mod_Icons/{mod}.png"))
 				except:
 					logger.error("Mod Icon Not found")
 		
