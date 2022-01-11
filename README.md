@@ -8,9 +8,14 @@
 
 Osu statistics right on your desktop, made with Qt5
 
-A lightweight desktop application to show you information about plays, scores and beatmaps. Basically a simplified osu-web client.
+A lightweight desktop application to show you information about plays, scores and beatmaps. Basically a simple osu-web client.
 
 ## Status
+
+![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/sortedcord/osu-statqt?include_prereleases&style=for-the-badge)
+![GitHub last commit](https://img.shields.io/github/last-commit/sortedcord/osu-statqt?style=for-the-badge)
+![GitHub issues](https://img.shields.io/github/issues/sortedcord/osu-statqt?label=ISSUES%20OPEN&style=for-the-badge)
+
 
 Currently, it is a passion project for me and I'm creating this to learn the pyQt framework and more stuff about Python. I plan on adding features to it with time and frequent releases as well until its fully complete or there are changes in osu API V2.
 
@@ -18,16 +23,24 @@ In its alpha stage, this is just the barebones with basic features. With the sub
 
 ## Usage
 
+![usage](docs/Images/usage0.png)
+
 As of the current release, you can [set a default user](#setting-default-user) for osu stat and view your recent activity and scores (including failed scores) as well as their information such as Performance Points, Time, Beatmap Title, Diff and Ranked Score.
 
 ## Installing Osu!StatQt
 
-Binaries are only available for windows as of now, but you can always run the python script from the source files on any operating system with python and its dependencies installed.
-
 **Latest Release:**
 
-| [Windows 8.1+ (x64)](https://github.com/sortedcord/osu-statqt/releases) | 
-| ------------- |
+| [Windows 8.1+ (x64)](https://github.com/sortedcord/osu-statqt/releases) | [Linux (x64)](https://github.com/sortedcord/osu-statqt/releases)
+| ------------- | ------------- |
+
+Binaries are available for both Windows and Linux <i>(Needs more Testing)</i>. It's quite straightforward for windows as you simply have to run a `.exe` file. For Linux you may need to set the File as executable and then run it.
+
+```bash
+$ sudo chmod +x ./OsuStatQt-0.0.5-linux-x64-standalone
+
+./OsuStatQt-0.0.5-linux-x64-standalone
+```
 
 ## Configuring Osu!StatQt
 
@@ -63,7 +76,7 @@ If you entered the credentials properly, then you will get a message telling you
 
 </details>
 </summary>
-<br>
+
 Once this is done, you can move on to setting up Default user and start using OsuStatQt.
 <br>
 
