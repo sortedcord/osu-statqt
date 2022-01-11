@@ -54,7 +54,6 @@ class RecentActivityItem(QWidget):
 		self.datetime_label.setObjectName("datetime_label")
 		self.horizontalLayout.addWidget(self.datetime_label)
 
-		logger.debug("Loaded RecentActivityItem UI")
 
 		self.username.setText(mainWindow.default_user_class.username)
 

@@ -20,10 +20,13 @@ class RecentActivityTab(QtWidgets.QWidget):
 
     def setupConnections(self, mainWindow):
         logger.info(f"offset set to: {self.offset}")
+        _count = 0
         for recent_activity in mainWindow.config.api.user_recent_activity(user_id=mainWindow.default_user_class.id, limit=mainWindow.config.panel_items, offset=self.offset):
             widget = RecentActivityItem(mainWindow, recent_activity)
             self.verticalLayout_2.addWidget(widget)
+            _count += 1
         
+        logger.debug(f"Created {_count} RecentActivity Cards")
         self.verticalLayout_2.addWidget(self.show_more_button)
         self.show_more_button.clicked.connect(lambda: self.show_more_clicked(mainWindow))
 
@@ -81,10 +84,13 @@ class RecentScoreTab(QtWidgets.QWidget):
         self.setupConnections(mainWindow)
 
     def setupConnections(self, mainWindow):
+        _count = 0
         for recent_score in mainWindow.config.api.user_scores(mainWindow.default_user_class.id, 'recent', str(int(mainWindow.config.show_failed_scores)), limit=mainWindow.config.panel_items, offset=self.offset):
             widget = RecentScoreItem(mainWindow, recent_score)
             self.verticalLayout_2.addWidget(widget)
+            _count += 1
         
+        logger.debug(f"Created {_count} RecentScoreItem cards")
         self.verticalLayout_2.addWidget(self.show_more_button)
         self.show_more_button.clicked.connect(lambda: self.show_more_clicked(mainWindow))
         
