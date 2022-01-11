@@ -37,11 +37,35 @@ Binaries are only available for windows as of now, but you can always run the py
 
 OsuStat uses Circleguard's [ossapiV2](https://github.com/circleguard/ossapi) which is a python wrapper for Osu-api V2. This requires you to create a OAuth Application in your [osu account settings](https://osu.ppy.sh/home/account/edit)
 
-![apitutorial](https://user-images.githubusercontent.com/37407370/147528626-cb381857-5d54-464d-9bb7-e9ca6602927b.gif)
+<summary>
+<details>
+Open OsuStatQt and go to <b> Preferences > Settings </b> and then click on `Get Credentials` Button.
 
-<i>Note: I may have shown my client-secret and client-id but that is only for demonstrational purposes and are dummy values. Do not share these credentials with anyone else as very risky and may have your account compromised.</i>
 
-For the Callback Url you can have any localhost port which is not in use.
+You would have to login in case you are not already logged in then go to the account setting page. There you would need to scroll all the way down to the OAuth Section and click on new OAuth Application.
+
+![](docs/Images/img1.png)
+
+In the popup, set the application name as anything you want and for the redirect url, set it as `https://127.0.0.1:727`.
+
+
+![](docs/Images/img2.png)
+
+<i>You may need to change `727` to something else if you already have some process using that port.</i>
+
+Entering the details will give you <b>Client ID</b> and <b>Client Secret</b>. Copy them to the OsuStatQt settings page (Make sure there are no spaces in either of the fields) and click `Verify`.
+
+![](docs/Images/3.png)
+
+If you entered the credentials properly, then you will get a message telling you so. 
+
+![](docs/Images/img4.png)
+
+</details>
+</summary>
+<br>
+Once this is done, you can move on to setting up Default user and start using OsuStatQt.
+<br>
 
 ### Setting Default User
 
