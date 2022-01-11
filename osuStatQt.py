@@ -9,24 +9,13 @@ from settings import SettingsWindow
 from tabs import RecentActivityTab, RecentScoreTab
 from pathlib import Path
 
-VERSION = '0.0.4'
+VERSION = '0.0.5'
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()  
 
         self.assetpath = Path(__file__).parent / "Assets"
-
-        """
-        I have broken down the initialization of MainWindow into 4 parts:
-        - Layout
-        - Meta (Text)
-        - Styling
-        - Signals and Slots
-
-        This makes the code much more readable and 
-        easy to navigate around, especially in vscode.
-        """
 
         self.setupUi()
         self.setupText()
@@ -58,8 +47,8 @@ class MainWindow(QtWidgets.QMainWindow):
         try:
             self.verticalLayout_4.removeWidget(self.recent_scores_tab_content)
             self.verticalLayout_3.removeWidget(self.recent_activity_tab_content)
-            self.recent_scores_tab_content = None
-            self.recent_activity_tab_content = None
+            self.recent_scores_tab_content.setParent(None)
+            self.recent_activity_tab_content.setParent(None)
             logger.debug("Removed Tab Contents")
         except:
             pass

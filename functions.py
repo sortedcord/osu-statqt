@@ -1,6 +1,6 @@
 from ossapi import *
 import datetime
-import oppai
+# import oppai
 import pyttanko
 
 class OsuStatUser():

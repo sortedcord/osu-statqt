@@ -1,4 +1,5 @@
-ossapi==2.2.1 # Uses my fork of ossapi check building instructions
 oppai==4.1.0
 PyQt5==5.15.6
-loguru==1.0.4
+requests==2.27.1
+loguru==0.5.3
+sip==6.5.0
