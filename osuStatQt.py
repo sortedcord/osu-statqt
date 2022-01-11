@@ -29,13 +29,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def closeEvent(self, event):
         logger.debug("Close Window Event Triggered.")
-        try:
-            logger.debug(f"Set config default_user: {self.config.default_user} as database username {self.default_user_class.username}")
-            self.config.default_user = self.default_user_class.username
-        except:
-            logger.warning("Default User Class was none. Default user wasn't verified throughout runtime.")
-        self.config.dump_config()
-        event.accept()
+        
 
 
     def refresh(self):

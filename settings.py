@@ -86,8 +86,6 @@ class SettingsWindow(QMainWindow):
             if mainWindow.config.default_user != self.default_user_field.text():
                 logger.debug("Change in default user detected")
                 self.save_default_user()
-                
-
             
             if mainWindow.config.refresh_cooldown != self.refresh_cooldown_values[self.refresh_limit_combo.currentIndex()]:
                 logger.debug("Change in refresh cooldown  detected")
@@ -104,6 +102,9 @@ class SettingsWindow(QMainWindow):
                 logger.info(f"Set panel items shown on load to {mainWindow.config.panel_items} in config")
             
             MsgBox("Settings Saved successfully.")
+
+            mainWindow.config.dump_config()
+
         
         else:
             MsgBox("Please verify API credentials first.", "critical")
