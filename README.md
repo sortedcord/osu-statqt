@@ -50,6 +50,8 @@ $ sudo chmod +x ./OsuStatQt-0.0.5-linux-x64-standalone
 
 OsuStat uses Circleguard's [ossapiV2](https://github.com/circleguard/ossapi) which is a python wrapper for Osu-api V2. This requires you to create a OAuth Application in your [osu account settings](https://osu.ppy.sh/home/account/edit)
 
+<i>Note: You can use an existing OAth Application's credentials if you have created one before.</i>
+
 <summary>
 <details>
 Open OsuStatQt and go to <b> Preferences > Settings </b> and then click on `Get Credentials` Button.
