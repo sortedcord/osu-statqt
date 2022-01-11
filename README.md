@@ -94,9 +94,7 @@ I use `pyinstaller` for building and managing packages for OsuStatQt. It is high
 ``` bash
 # Assuming this is in a venv
 
-git clone https://github.com/sortedcord/ossapi
-cd ossapi
-pip install -e .
+pip install -e git+https://github.com/sortedcord/ossapi.git@46a3c0a684aa792f2f3f55001539cb4faf3fd8ba#egg=ossapi
 ```
 
 Other dependencies which you will need include the following.
@@ -105,14 +103,19 @@ Other dependencies which you will need include the following.
 pip install -r requirements.txt
 ```
 
+And Clone this repository
+
 ``` bash
-# In a separate folder
 
 git clone https://github.com/sortedcord/osu-statqt.git
 cd osu-statqt
 ```
 
-Build files are included with in the source code. Use [onefile.spec](onefile.spec) to build a single file binary and use [build_package.spec](build_package.spec).
+Build files are included with in the source code. Use [onefile.spec](onefile.spec) to build a single file binary and use [build_package.spec](build_package.spec). Usage is like so:
+
+```bash
+$ pyinstaller ./build_package.spec #Or change this to onefile according to your need.
+```
 
 ### Enable verbose (console)
 
@@ -123,7 +126,7 @@ Change `console=False` to `console=True` in `.spec` files.
 I don't own a Mac nor am I interested in setting up a hackintosh, so practically there is no way for me to test the mac os build, however the process of building binaries is more or less the same, the only catch is to build a standalone binary.
 
 ```bash
-pyinstaller onefile.spec
+$ pyinstaller onefile.spec
 ```
 
 ## Credits
