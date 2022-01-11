@@ -65,7 +65,7 @@ pip install -e .
 Other dependencies which you will need include `PyQt5`, `PyQt5-tools` and `oppai` 😳.
 
 ``` bash
-pip install PyQt5 PyQt5-tools
+pip install PyQt5 PyQt5-tools oppai
 ```
 
 ``` bash
