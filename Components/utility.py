@@ -1,4 +1,4 @@
-from PyQt5 import QtCore
+from PyQt5 import QtCore, QtGui
 from PyQt5.QtWidgets import *
 
 class MsgBox(QMessageBox):
@@ -39,10 +39,7 @@ class CustomVLayout(QVBoxLayout):
     def __init__(self, parent, margins=(0,0,0,0), spacing=0):
         super().__init__(parent)
 
-        # Set Margins
-        _1, _2, _3, _4 = margins
-        self.setContentsMargins(_1,_2,_3,_4)
-
+        self.setContentsMargins(*margins)
         self.setSpacing(spacing)
 
 
@@ -50,11 +47,25 @@ class CustomHLayout(QHBoxLayout):
     def __init__(self, parent, margins=(0,0,0,0), spacing=0):
         super().__init__(parent)
 
-        # Set Margins
-        _1, _2, _3, _4 = margins
-        self.setContentsMargins(_1,_2,_3,_4)
-
+        self.setContentsMargins(*margins)
         self.setSpacing(spacing)
+
+class CustomLabel(QLabel):
+    def __init__(self, parent, text=None, color='white', font_size=10, font_style='', image=None, minSize=(0,0), maxSize=(16777215,16777215)):
+        super().__init__(parent)
+
+        if text is not None:
+            self.setText(text)
+
+        self.setStyleSheet(f"font: 75 {font_size}pt \"Torus Pro {font_style}\";\n"
+                            f"color: {color};")
+
+        if image is not None:
+            self.setPixmap(QtGui.QPixmap(image))
+            self.setScaledContents(True)
+        
+        self.setMinimumSize(QtCore.QSize(*minSize))
+        self.setMaximumSize(QtCore.QSize(*maxSize))
 
 
 
