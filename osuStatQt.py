@@ -1,6 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import os
 from loguru import logger
+from UserTab import UserTab
 
 from functions import OsuStatUser
 from config import load_config
@@ -22,9 +23,9 @@ class MainWindow(QtWidgets.QMainWindow):
         logger.debug("Loaded Window UI Structure")
         self.setupStyle()
         logger.debug("Applied Stylesheet to Qt")
+        self.show()
         self.setupConnections()
         logger.debug("Connections have been setup.")
-        self.show()
 
 
     def closeEvent(self, event):
@@ -141,6 +142,9 @@ class MainWindow(QtWidgets.QMainWindow):
                 
                 # If Default User is valid
                 if _uval != 0: 
+                    
+                    self.refresh_button.setText("Loading Data...")
+
                     logger.info(f"{self.config.default_user} found on Bancho")
                     self.default_user_class = OsuStatUser(self.config.api,self.config.default_user)
                     logger.debug("Created Default User Class")
@@ -156,9 +160,15 @@ class MainWindow(QtWidgets.QMainWindow):
                     self.verticalLayout_4.addWidget(self.recent_scores_tab_content)
                     logger.debug("Rendering Activity Tab")
 
+                    # Show User Tab
+                    self.user_tab_content = UserTab(self)
+                    self.verticalLayout_5.addWidget(self.user_tab_content)
+
+
                     # Enable Refresh Button
                     self.enable_refresh_button()
                     logger.debug("Enabled Refresh Button")
+                    self.refresh_button.setText("Refresh")
                 else:
                     logger.error(f"{self.config.default_user} not found on Bancho")
                     self.disable_refresh_button()
@@ -248,6 +258,9 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.user_tab = QtWidgets.QWidget()
         self.user_tab.setObjectName("user_tab")
+        self.tabWidget.addTab(self.user_tab, "")
+        self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.user_tab)
+        self.verticalLayout_5.setContentsMargins(0, 6, 0, 0)
         self.tabWidget.addTab(self.user_tab, "")
 
         self.search_tab = QtWidgets.QWidget()
