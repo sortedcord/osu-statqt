@@ -1,14 +1,15 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import os
 from loguru import logger
-from tabs.RecentActivityTab import RecentActivityTab
 
 from functions import OsuStatUser
 from config import load_config
 
 from settings import SettingsWindow
-from tabs_main import RecentScoreTab
 from pathlib import Path
+
+from tabs.RecentActivityTab import RecentActivityTab
+from tabs.RecentScoreTab import RecentScoreTab
 
 VERSION = '0.0.5'
 
@@ -26,7 +27,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.show()
         self.setupConnections()
         logger.debug("Connections have been setup.")
-        
+
 
     def load_tab_content(self):
         # Show Recent Activity Tab
@@ -117,6 +118,8 @@ class MainWindow(QtWidgets.QMainWindow):
         logger.info("Showing Settings Window")
 
     def setupConnections(self):
+        self.refresh_button.setText("Loading...")
+
         self.default_user_class = None
         logger.debug(f"Default User Class set to {self.default_user_class}")
 
@@ -143,7 +146,6 @@ class MainWindow(QtWidgets.QMainWindow):
                 # If Default User is valid
                 if _uval != 0: 
                     
-                    self.refresh_button.setText("Loading Data...")
 
                     logger.info(f"{self.config.default_user} found on Bancho")
                     self.default_user_class = OsuStatUser(self.config.api,self.config.default_user)
@@ -292,7 +294,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.menuAbout.setTitle("Help")
         self.actionGithub.setText("Github")
         self.actionAbout_OsuStatQt.setText("About OsuStatQt")
-        self.refresh_button.setText("Refresh")
+        
 
     def setupStyle(self):
         self.setStyleSheet("""
