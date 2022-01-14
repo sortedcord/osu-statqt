@@ -1,7 +1,7 @@
 from ossapi import *
 import datetime
 # import oppai
-import pyttanko
+
 
 class OsuStatUser():
     """ IN CASE YOU ARE NOT USING THIS CLASS TO SEARCH FOR USERS:
