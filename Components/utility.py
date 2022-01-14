@@ -1,5 +1,6 @@
 from PyQt5 import QtCore, QtGui
 from PyQt5.QtWidgets import *
+import requests
 
 class MsgBox(QMessageBox):
     def __init__(self, text, icon="information"):
@@ -51,7 +52,7 @@ class CustomHLayout(QHBoxLayout):
         self.setSpacing(spacing)
 
 class CustomLabel(QLabel):
-    def __init__(self, parent, text=None, color='white', font_size=10, font_style='', image=None, minSize=(0,0), maxSize=(16777215,16777215)):
+    def __init__(self, parent, text=None, color='white', font_size=10, font_style='', image_url=None, minSize=(0,0), maxSize=(16777215,16777215)):
         super().__init__(parent)
 
         if text is not None:
@@ -60,9 +61,18 @@ class CustomLabel(QLabel):
         self.setStyleSheet(f"font: 75 {font_size}pt \"Torus Pro {font_style}\";\n"
                             f"color: {color};")
 
-        if image is not None:
-            self.setPixmap(QtGui.QPixmap(image))
+        if image_url is not None:
+            if 'http' in image_url:
+                self.image = QtGui.QImage()
+                self.image.loadFromData(requests.get(image_url).content)
+                self.setPixmap(QtGui.QPixmap(self.image))
+            else:
+                self.setPixmap(QtGui.QPixmap(image_url))
+            
             self.setScaledContents(True)
+                
+            
+
         
         self.setMinimumSize(QtCore.QSize(*minSize))
         self.setMaximumSize(QtCore.QSize(*maxSize))

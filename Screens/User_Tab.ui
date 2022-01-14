@@ -426,8 +426,7 @@ background-size: 50px 100px;
                    </sizepolicy>
                   </property>
                   <property name="styleSheet">
-                   <string notr="true">
-</string>
+                   <string notr="true"/>
                   </property>
                   <property name="text">
                    <string>Play Count</string>

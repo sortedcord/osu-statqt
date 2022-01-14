@@ -6,7 +6,7 @@ from Components.utility import CustomHLayout, CustomLabel, CustomSizePolicy, Cus
 
 
 class UserTab(QWidget):
-    def __init__(self):
+    def __init__(self, mainWindow):
         super().__init__()
 
         self.resize(855, 590)
@@ -25,7 +25,7 @@ class UserTab(QWidget):
 
         self.panel0_layout = CustomHLayout(self.panel_0, (20, -1, 20, -1), 15)
 
-        self.player_icon = CustomLabel(self.panel_0, minSize=(30, 0), maxSize=(30, 16777215), image="Assets/Placeholders/user_info_icon.png")
+        self.player_icon = CustomLabel(self.panel_0, minSize=(30, 0), maxSize=(30, 16777215), image_url="Assets/Placeholders/user_info_icon.png")
         self.panel0_layout.addWidget(self.player_icon)
 
 
@@ -68,12 +68,13 @@ class UserTab(QWidget):
 
         self.section1_layout = CustomHLayout(self.section1, (0, -1, -1, -1), 9)
 
-        self.profile_picture = CustomLabel(self.section1, image="Assets/Placeholders/avatar-guest.png", minSize=(128, 100), maxSize=(128, 128))
+
+        self.profile_picture = CustomLabel(self.section1, image_url=f"https://a.ppy.sh/{mainWindow.default_user_class.id}", minSize=(128, 128), maxSize=(128, 128))
         sizePolicy = CustomSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred, self.profile_picture)
         self.section1_layout.addWidget(self.profile_picture)
 
 
-        self.username_label = CustomLabel(self.section1, text="JohnDoe")
+        self.username_label = CustomLabel(self.section1, text=f"{mainWindow.config.default_user}")
         sizePolicy = CustomSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred, self.username_label)
         self.username_label.setAlignment(Qt.AlignLeading | Qt.AlignLeft | Qt.AlignTop)
         self.section1_layout.addWidget(self.username_label)
@@ -124,11 +125,11 @@ class UserTab(QWidget):
         self.fields_frame.setLayoutDirection(Qt.RightToLeft)
         self.userTab_layout_18 = CustomVLayout(self.fields_frame)
 
-        self.ranked_score_value = CustomLabel(self.fields_frame, "314,722,286")
+        self.ranked_score_value = CustomLabel(self.fields_frame, str(mainWindow.default_user_class.ranked_score))
         sizePolicy = CustomSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed, self.ranked_score_value)
         self.userTab_layout_18.addWidget(self.ranked_score_value)
 
-        self.hit_accuracy_value = CustomLabel(self.fields_frame, "97.18%")
+        self.hit_accuracy_value = CustomLabel(self.fields_frame, str(mainWindow.default_user_class.hit_accuracy))
         sizePolicy = CustomSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed, self.hit_accuracy_value)
         self.userTab_layout_18.addWidget(self.hit_accuracy_value)
 
