@@ -1,13 +1,13 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import os
 from loguru import logger
-from UserTab import UserTab
+from tabs.RecentActivityTab import RecentActivityTab
 
 from functions import OsuStatUser
 from config import load_config
 
 from settings import SettingsWindow
-from tabs import RecentActivityTab, RecentScoreTab
+from tabs_main import RecentScoreTab
 from pathlib import Path
 
 VERSION = '0.0.5'
@@ -26,11 +26,23 @@ class MainWindow(QtWidgets.QMainWindow):
         self.show()
         self.setupConnections()
         logger.debug("Connections have been setup.")
-
-
-    def closeEvent(self, event):
-        logger.debug("Close Window Event Triggered.")
         
+
+    def load_tab_content(self):
+        # Show Recent Activity Tab
+        self.recent_activity_tab_content = RecentActivityTab(self)
+
+        logger.debug("Displayed Recent Activity Tab")
+
+        # Show Recent Scores Tab
+        self.recent_scores_tab_content = RecentScoreTab(self)
+        logger.debug("Displayed Recent Scores Tab")
+        
+        self.statusbar.showMessage("Data Refreshed")
+
+        # Show User Tab
+        # self.user_tab_content = UserTab(self)
+        # self.verticalLayout_5.addWidget(self.user_tab_content)
 
 
     def refresh(self):
@@ -47,21 +59,9 @@ class MainWindow(QtWidgets.QMainWindow):
             logger.debug("Removed Tab Contents")
         except:
             pass
-        # Show Recent Activity Tab
-        self.recent_activity_tab_content = RecentActivityTab(self)
-        self.verticalLayout_3.addWidget(
-            self.recent_activity_tab_content)
-        logger.debug("Displayed Recent Activity Tab")
 
-        # Show Recent Scores Tab
-        self.recent_scores_tab_content = RecentScoreTab(self)
-        self.verticalLayout_4.addWidget(
-            self.recent_scores_tab_content)
-        logger.debug("Displayed Recent Scores Tab")
-        self.statusbar.showMessage("Data Refreshed")
-
+        self.load_tab_content()
         self.refresh_obj = QtCore.QTimer()
-
         if not self.config.refresh_cooldown == 0:
             self.refresh_obj.setInterval(self.config.refresh_cooldown)
             logger.info(f"Refresh Cooldown set to {self.config.refresh_cooldown/1000} seconds")
@@ -149,22 +149,8 @@ class MainWindow(QtWidgets.QMainWindow):
                     self.default_user_class = OsuStatUser(self.config.api,self.config.default_user)
                     logger.debug("Created Default User Class")
 
-                    # Show Recent Activity Tab
-                    self.recent_activity_tab_content = RecentActivityTab(self)
-                    self.verticalLayout_3.addWidget(self.recent_activity_tab_content)
-                    logger.debug("Rendering Activity Tab")
+                    self.load_tab_content()
                     
-
-                    # Show Recent Scores Tab
-                    self.recent_scores_tab_content = RecentScoreTab(self)
-                    self.verticalLayout_4.addWidget(self.recent_scores_tab_content)
-                    logger.debug("Rendering Activity Tab")
-
-                    # Show User Tab
-                    self.user_tab_content = UserTab(self)
-                    self.verticalLayout_5.addWidget(self.user_tab_content)
-
-
                     # Enable Refresh Button
                     self.enable_refresh_button()
                     logger.debug("Enabled Refresh Button")
@@ -190,7 +176,6 @@ class MainWindow(QtWidgets.QMainWindow):
         logger.debug("Created Central Widget")
 
         self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
-        self.verticalLayout.setObjectName("verticalLayout")
     
         self.alert_frame = QtWidgets.QFrame(self.centralwidget)
         self.alert_frame.setMinimumSize(QtCore.QSize(100, 80))
@@ -199,18 +184,15 @@ class MainWindow(QtWidgets.QMainWindow):
         logger.debug("Created Alert Frame")
 
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.alert_frame)
-        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.label = QtWidgets.QLabel(self.alert_frame)
 
         self.label.setMaximumSize(QtCore.QSize(200, 50))
-        self.label.setObjectName("label")
         self.horizontalLayout_2.addWidget(self.label)
 
         self.label_2 = QtWidgets.QLabel(self.alert_frame)
         self.label_2.setMinimumSize(QtCore.QSize(0, 0))
         self.label_2.setStyleSheet("background:none;")
         self.label_2.setWordWrap(True)
-        self.label_2.setObjectName("label_2")
         self.horizontalLayout_2.addWidget(self.label_2)
 
         self.verticalLayout.addWidget(self.alert_frame)
@@ -220,19 +202,15 @@ class MainWindow(QtWidgets.QMainWindow):
         self.search_box.setMaximumSize(QtCore.QSize(16777215, 90))
         self.search_box.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.search_box.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.search_box.setObjectName("search_box")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.search_box)
 
         self.horizontalLayout.setContentsMargins(50, -1, 50, -1)
         self.horizontalLayout.setSpacing(20)
-        self.horizontalLayout.setObjectName("horizontalLayout")
 
         self.search_field = QtWidgets.QLineEdit(self.search_box)
-        self.search_field.setObjectName("search_field")
         self.horizontalLayout.addWidget(self.search_field)
 
         self.searchButton = QtWidgets.QPushButton(self.search_box)
-        self.searchButton.setObjectName("searchButton")
         self.horizontalLayout.addWidget(self.searchButton)
 
         self.verticalLayout.addWidget(self.search_box)
@@ -240,60 +218,46 @@ class MainWindow(QtWidgets.QMainWindow):
         # Tabs
 
         self.tabWidget = QtWidgets.QTabWidget(self.centralwidget)
-        self.tabWidget.setObjectName("tabWidget")
 
         self.recent_activity_tab = QtWidgets.QWidget()
-        self.recent_activity_tab.setObjectName("recent_activity_tab")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.recent_activity_tab)
         self.verticalLayout_3.setContentsMargins(0, 6, 0, 0)
-        self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.tabWidget.addTab(self.recent_activity_tab, "")
 
         self.recent_scores_tab = QtWidgets.QWidget()
-        self.recent_scores_tab.setObjectName("recent_scores_tab")
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.recent_scores_tab)
         self.verticalLayout_4.setContentsMargins(0, 6, 0, 0)
-        self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.tabWidget.addTab(self.recent_scores_tab, "")
 
         self.user_tab = QtWidgets.QWidget()
-        self.user_tab.setObjectName("user_tab")
         self.tabWidget.addTab(self.user_tab, "")
         self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.user_tab)
         self.verticalLayout_5.setContentsMargins(0, 6, 0, 0)
         self.tabWidget.addTab(self.user_tab, "")
 
         self.search_tab = QtWidgets.QWidget()
-        self.search_tab.setObjectName("search_tab")
         self.tabWidget.addTab(self.search_tab, "")
 
         self.verticalLayout.addWidget(self.tabWidget)
         self.setCentralWidget(self.centralwidget)
 
         self.refresh_button = QtWidgets.QPushButton(self.centralwidget)
-        self.refresh_button.setObjectName("refresh_button")
         self.verticalLayout.addWidget(self.refresh_button)
 
         # Menubar
 
         self.menubar = QtWidgets.QMenuBar(self)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 782, 38))
-        self.menubar.setObjectName("menubar")
 
         self.menuPreferences = QtWidgets.QMenu(self.menubar)
-        self.menuPreferences.setObjectName("menuPreferences")
         self.actionSettings = QtWidgets.QAction(self)
-        self.actionSettings.setObjectName("actionSettings")
         self.menuPreferences.addAction(self.actionSettings)
 
         self.menuAbout = QtWidgets.QMenu(self.menubar)
-        self.menuAbout.setObjectName("menuAbout")
         self.setMenuBar(self.menubar)
         self.actionGithub = QtWidgets.QAction(self)
-        self.actionGithub.setObjectName("actionGithub")
 
         self.actionAbout_OsuStatQt = QtWidgets.QAction(self)
-        self.actionAbout_OsuStatQt.setObjectName("actionAbout_OsuStatQt")
 
         self.menuAbout.addAction(self.actionGithub)
         self.menuAbout.addSeparator()
@@ -306,7 +270,6 @@ class MainWindow(QtWidgets.QMainWindow):
         # Statusbar
 
         self.statusbar = QtWidgets.QStatusBar(self)
-        self.statusbar.setObjectName("statusbar")
         self.setStatusBar(self.statusbar)
 
     def setupText(self):
