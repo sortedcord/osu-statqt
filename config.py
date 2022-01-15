@@ -28,6 +28,7 @@ class Config:
 
     def dump_config(self):
         with open("config.osustat", "wb") as w:
+            _api = self.api
             self.api = None
             self.default_user._api = None
 
@@ -37,6 +38,7 @@ class Config:
                 logger.error("Could not dump pickled object")
             else:
                 logger.info("Config Dumped successfully.")
+                self.api = _api
 
     def verify_credentials(self):
         logger.debug(f"Verifying Credentials {self.client_id}; {self.client_secret}")

@@ -130,7 +130,9 @@ class MainWindow(QMainWindow):
 
         # If credentials were valid
         if self.config.cred_verification_status == 'VERIFIED':
-            
+            # To refresh config.api
+            # self.config.verify_credentials()
+
             self.statusbar.showMessage("Credentials verified")
             logger.info("Credentials Verified")
 
