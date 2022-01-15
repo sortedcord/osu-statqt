@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import *
 
 from Components.settings import *
 from Components.css_files import scrollbar_style
-from Components.utility import MsgBox
+from Components.utility import CustomHLayout, CustomVLayout, MsgBox
 
 from config import Config, del_config_file
 # from functions import OsuStatUser
@@ -83,11 +83,11 @@ class SettingsWindow(QMainWindow):
 
         if mainWindow.config.cred_verification_status == 'VERIFIED':
 
-            if mainWindow.config.compact_default_user is None:
+            if mainWindow.config.default_user is None:
                 logger.debug("Change in default user detected")
                 self.save_default_user()
             else:
-                if mainWindow.config.compact_default_user.username != self.default_user_field.text():
+                if mainWindow.config.default_user.username != self.default_user_field.text():
                     logger.debug("Change in default user detected")
                     self.save_default_user()
             
@@ -154,13 +154,13 @@ class SettingsWindow(QMainWindow):
             MsgBox('Specified user not found. Try checking your spelling.')
         else:  # If user is found
             logger.success("Specified User found.")
-            mainWindow.config.compact_default_user = compact_user
+            mainWindow.config.default_user = compact_user
             logger.debug("Set Compact User")
 
             mainWindow.default_user_expand = compact_user.expand()
-            MsgBox(f"Default user has been set as {mainWindow.config.compact_default_user.username}", "information")
+            MsgBox(f"Default user has been set as {mainWindow.config.default_user.username}", "information")
 
-            self.default_user_field.setText(mainWindow.config.compact_default_user.username)
+            self.default_user_field.setText(mainWindow.config.default_user.username)
 
             mainWindow.enable_refresh_button()
     
@@ -205,9 +205,9 @@ class SettingsWindow(QMainWindow):
             logger.debug(f"Verify Credentials Button Visibility > {self.verify_credentials_button.isVisible}")
 
             # Load Default User
-            if mainWindow.config.compact_default_user is not None:
-                self.default_user_field.setText(mainWindow.compact_default_user.username)
-                logger.debug(f"Default User Field set to {mainWindow.compact_default_user.username}")
+            if mainWindow.config.default_user is not None:
+                self.default_user_field.setText(mainWindow.config.default_user.username)
+                logger.debug(f"Default User Field set to {mainWindow.config.default_user.username}")
             else:
                 logger.debug(f"Disabled Refresh Button on MainWindow.")
                 mainWindow.disable_refresh_button()
@@ -232,9 +232,8 @@ class SettingsWindow(QMainWindow):
         self.resize(800, 439)
         self.centralwidget = QWidget(self)
         self.setCentralWidget(self.centralwidget)
-        self.window_layout = QVBoxLayout(self.centralwidget)
-        self.window_layout.setContentsMargins(0, 0, 0, 0)
-        self.window_layout.setSpacing(0)
+        self.window_layout = CustomVLayout(self.centralwidget)
+
 
 
         # Top Title Bar
@@ -243,8 +242,7 @@ class SettingsWindow(QMainWindow):
         self.top_bar_frame.setMaximumSize(QtCore.QSize(16777215, 50))
 
         # Title Bar Layout
-        self.title_bar_layout = QHBoxLayout(self.top_bar_frame)
-        self.title_bar_layout.setSpacing(12)
+        self.title_bar_layout = CustomHLayout(self.top_bar_frame, (6,6,6,6), 12)
         self.window_layout.addWidget(self.top_bar_frame)
 
         # Title Bar Content
@@ -274,9 +272,7 @@ class SettingsWindow(QMainWindow):
         self.settings_scrollable_area.setWidget(self.settings_content_frame)
 
         # Settings Content Layout
-        self.settings_layout = QVBoxLayout(self.settings_content_frame)
-        self.settings_layout.setContentsMargins(0, 0, 0, 0)
-        self.settings_layout.setSpacing(5)
+        self.settings_layout = CustomVLayout(self.settings_content_frame, spacing=5)
 
         # Credentials Panel
         self.credentials_panel = SettingsPanel('Credentials')

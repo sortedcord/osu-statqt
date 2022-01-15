@@ -24,7 +24,7 @@ class RecentActivityTab(QWidget):
 
         logger.info(f"offset set to: {self.offset}")
         _count = 0
-        for recent_activity in mainWindow.config.api.user_recent_activity(user_id=mainWindow.config.compact_default_user.id, limit=mainWindow.config.panel_items, offset=self.offset):
+        for recent_activity in mainWindow.config.api.user_recent_activity(user_id=mainWindow.config.default_user.id, limit=mainWindow.config.panel_items, offset=self.offset):
             QApplication.processEvents()
             widget = RecentActivityItem(mainWindow, recent_activity)
             self.verticalLayout_2.addWidget(widget)

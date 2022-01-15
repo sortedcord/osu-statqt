@@ -27,7 +27,7 @@ class RecentActivityItem(QWidget):
 		self.horizontalLayout.addWidget(self.rank_score_label)
 
 		# Set Usrername
-		self.username = CustomLabel(self, color="rgb(210,160,184)", font_style="Bold", text=mainWindow.config.compact_default_user.username)
+		self.username = CustomLabel(self, color="rgb(210,160,184)", font_style="Bold", text=mainWindow.config.default_user.username)
 		self.horizontalLayout.addWidget(self.username)
 
 		# Set Event Description (Beatmap Name)

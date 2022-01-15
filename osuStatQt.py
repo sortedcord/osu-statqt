@@ -1,3 +1,5 @@
+VERSION = '0.0.5'
+
 from PyQt5 import QtCore, QtGui
 from PyQt5.QtWidgets import *
 
@@ -12,8 +14,6 @@ from pathlib import Path
 
 from tabs.RecentActivityTab import RecentActivityTab
 from tabs.RecentScoreTab import RecentScoreTab
-
-VERSION = '0.0.5'
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -130,6 +130,7 @@ class MainWindow(QMainWindow):
 
         # If credentials were valid
         if self.config.cred_verification_status == 'VERIFIED':
+            
             self.statusbar.showMessage("Credentials verified")
             logger.info("Credentials Verified")
 
@@ -137,8 +138,8 @@ class MainWindow(QMainWindow):
             logger.debug("Alert Frame Removed")
 
             # If config has default user set
-            if self.config.compact_default_user is not None:
-                    # self.default_user_expand = self.config.compact_default_user.expand()
+            if self.config.default_user is not None:
+                    # self.default_user_expand = self.config.default_user.expand()
                     # logger.debug("Expanded Default User Class")
 
                     self.load_tab_content()
