@@ -1,6 +1,9 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtGui
+from PyQt5.QtWidgets import *
+
 import os
 from loguru import logger
+from Components.utility import CustomHLayout, CustomLabel, CustomVLayout
 
 from functions import OsuStatUser
 from config import load_config
@@ -13,7 +16,7 @@ from tabs.RecentScoreTab import RecentScoreTab
 
 VERSION = '0.0.5'
 
-class MainWindow(QtWidgets.QMainWindow):
+class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()  
 
@@ -32,7 +35,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def load_tab_content(self):
         # Show Recent Activity Tab
         self.recent_activity_tab_content = RecentActivityTab(self)
-
+    
         logger.debug("Displayed Recent Activity Tab")
 
         # Show Recent Scores Tab
@@ -118,7 +121,6 @@ class MainWindow(QtWidgets.QMainWindow):
         logger.info("Showing Settings Window")
 
     def setupConnections(self):
-        self.refresh_button.setText("Loading...")
 
         self.default_user_class = None
         logger.debug(f"Default User Class set to {self.default_user_class}")
@@ -174,92 +176,77 @@ class MainWindow(QtWidgets.QMainWindow):
         self.resize(900, 700)
         self.setMinimumSize(870, 400)
         logger.debug(f"Set Window Size to 900,700 and minimum size to 870, 400")
-        self.centralwidget = QtWidgets.QWidget(self)
+        self.centralwidget = QWidget(self)
         logger.debug("Created Central Widget")
 
-        self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
+        self.verticalLayout = CustomVLayout(self.centralwidget, (6,6,6,6), spacing=6)
     
-        self.alert_frame = QtWidgets.QFrame(self.centralwidget)
+        self.alert_frame = QFrame(self.centralwidget)
         self.alert_frame.setMinimumSize(QtCore.QSize(100, 80))
-        self.alert_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.alert_frame.setFrameShadow(QtWidgets.QFrame.Raised)
         logger.debug("Created Alert Frame")
 
-        self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.alert_frame)
-        self.label = QtWidgets.QLabel(self.alert_frame)
+        self.horizontalLayout_2 = CustomHLayout(self.alert_frame, (6,6,6,6), 6)
+        self.label = CustomLabel(self.alert_frame, color='rgb(236,18,32)', padding=(1,12,1,1))
 
         self.label.setMaximumSize(QtCore.QSize(200, 50))
         self.horizontalLayout_2.addWidget(self.label)
 
-        self.label_2 = QtWidgets.QLabel(self.alert_frame)
-        self.label_2.setMinimumSize(QtCore.QSize(0, 0))
-        self.label_2.setStyleSheet("background:none;")
-        self.label_2.setWordWrap(True)
+        self.label_2 = CustomLabel(self.alert_frame, minSize=(0, 0))
         self.horizontalLayout_2.addWidget(self.label_2)
 
         self.verticalLayout.addWidget(self.alert_frame)
 
-        self.search_box = QtWidgets.QFrame(self.centralwidget)
+        self.search_box = QFrame(self.centralwidget)
         self.search_box.setMinimumSize(QtCore.QSize(0, 80))
         self.search_box.setMaximumSize(QtCore.QSize(16777215, 90))
-        self.search_box.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.search_box.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.horizontalLayout = QtWidgets.QHBoxLayout(self.search_box)
 
-        self.horizontalLayout.setContentsMargins(50, -1, 50, -1)
-        self.horizontalLayout.setSpacing(20)
+        self.horizontalLayout = CustomHLayout(self.search_box,(50, -1, 50, -1),20)
 
-        self.search_field = QtWidgets.QLineEdit(self.search_box)
+        self.search_field = QLineEdit(self.search_box)
         self.horizontalLayout.addWidget(self.search_field)
 
-        self.searchButton = QtWidgets.QPushButton(self.search_box)
+        self.searchButton = QPushButton(self.search_box)
         self.horizontalLayout.addWidget(self.searchButton)
 
         self.verticalLayout.addWidget(self.search_box)
 
         # Tabs
+        self.tabWidget = QTabWidget(self.centralwidget)
 
-        self.tabWidget = QtWidgets.QTabWidget(self.centralwidget)
+        self.recent_activity_tab = QWidget()
+        self.verticalLayout_3 = CustomVLayout(self.recent_activity_tab, (0, 6, 0, 0), 6)
+        self.tabWidget.addTab(self.recent_activity_tab, "Recent Activity")
 
-        self.recent_activity_tab = QtWidgets.QWidget()
-        self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.recent_activity_tab)
-        self.verticalLayout_3.setContentsMargins(0, 6, 0, 0)
-        self.tabWidget.addTab(self.recent_activity_tab, "")
+        self.recent_scores_tab = QWidget()
+        self.verticalLayout_4 = CustomVLayout(self.recent_scores_tab, (0, 6, 0, 0), 6)
+        self.tabWidget.addTab(self.recent_scores_tab, "Recent Score")
 
-        self.recent_scores_tab = QtWidgets.QWidget()
-        self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.recent_scores_tab)
-        self.verticalLayout_4.setContentsMargins(0, 6, 0, 0)
-        self.tabWidget.addTab(self.recent_scores_tab, "")
+        self.user_tab = QWidget()
+        self.verticalLayout_5 = CustomVLayout(self.user_tab, (0, 6, 0, 0), 6)
+        self.tabWidget.addTab(self.user_tab, "User")
 
-        self.user_tab = QtWidgets.QWidget()
-        self.tabWidget.addTab(self.user_tab, "")
-        self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.user_tab)
-        self.verticalLayout_5.setContentsMargins(0, 6, 0, 0)
-        self.tabWidget.addTab(self.user_tab, "")
-
-        self.search_tab = QtWidgets.QWidget()
-        self.tabWidget.addTab(self.search_tab, "")
+        self.search_tab = QWidget()
+        self.tabWidget.addTab(self.search_tab, "Search")
 
         self.verticalLayout.addWidget(self.tabWidget)
         self.setCentralWidget(self.centralwidget)
 
-        self.refresh_button = QtWidgets.QPushButton(self.centralwidget)
+        self.refresh_button = QPushButton(self.centralwidget)
         self.verticalLayout.addWidget(self.refresh_button)
 
         # Menubar
-
-        self.menubar = QtWidgets.QMenuBar(self)
+        self.menubar = QMenuBar(self)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 782, 38))
 
-        self.menuPreferences = QtWidgets.QMenu(self.menubar)
-        self.actionSettings = QtWidgets.QAction(self)
+        self.menuPreferences = QMenu(self.menubar)
+        self.actionSettings = QAction(self)
         self.menuPreferences.addAction(self.actionSettings)
 
-        self.menuAbout = QtWidgets.QMenu(self.menubar)
+        self.menuAbout = QMenu(self.menubar)
         self.setMenuBar(self.menubar)
-        self.actionGithub = QtWidgets.QAction(self)
+        self.actionGithub = QAction(self)
 
-        self.actionAbout_OsuStatQt = QtWidgets.QAction(self)
+        self.actionAbout_OsuStatQt = QAction(self)
 
         self.menuAbout.addAction(self.actionGithub)
         self.menuAbout.addSeparator()
@@ -270,25 +257,16 @@ class MainWindow(QtWidgets.QMainWindow):
         self.tabWidget.setCurrentIndex(0)
 
         # Statusbar
-
-        self.statusbar = QtWidgets.QStatusBar(self)
+        self.statusbar = QStatusBar(self)
         self.setStatusBar(self.statusbar)
 
     def setupText(self):
+        self.refresh_button.setText("Loading...")
         self.setWindowTitle("OsuStatQt")
         self.label.setText("You haven\'t setup credentials")
-        self.label_2.setText(
-            "In order for this application to work please go to the settings window (Preferences > Settings and enter the API credentials.")
+        self.label_2.setText("In order for this application to work please go to the settings window (Preferences > Settings and enter the API credentials.")
         self.search_field.setPlaceholderText("type to search")
         self.searchButton.setText("Search")
-        self.tabWidget.setTabText(
-            self.tabWidget.indexOf(self.recent_activity_tab), "Recent Activity")
-        self.tabWidget.setTabText(
-            self.tabWidget.indexOf(self.recent_scores_tab), "Recent Scores")
-        self.tabWidget.setTabText(
-            self.tabWidget.indexOf(self.user_tab), "User")
-        self.tabWidget.setTabText(
-            self.tabWidget.indexOf(self.search_tab), "Search")
         self.menuPreferences.setTitle("Preferences")
         self.actionSettings.setText("Settings")
         self.menuAbout.setTitle("Help")
@@ -407,14 +385,13 @@ class MainWindow(QtWidgets.QMainWindow):
 
 if __name__ == "__main__":
     import sys
-    app = QtWidgets.QApplication(sys.argv)
-    if os.path.exists('icon48x.ico'):
-        app.setWindowIcon(QtGui.QIcon('icon48x.ico'))
-    else:
-        app.setWindowIcon(QtGui.QIcon('Assets/Logo/icon48x.ico'))
+    app = QApplication(sys.argv)
+
 
     assetpath = Path(__file__).parent / "Assets"
     logger.info(f"Asset Path set as: {assetpath}")
+
+    app.setWindowIcon(QtGui.QIcon(f'{assetpath}/Logo/icon48x.ico'))
 
     try:
         QtGui.QFontDatabase.addApplicationFont(f"{assetpath}/Fonts/TorusPro-SemiBold.ttf")

@@ -5,6 +5,8 @@ from Components.css_files import scrollbar_style
 
 from loguru import logger
 
+from Components.utility import CustomVLayout
+
 
 
 
@@ -43,8 +45,7 @@ class RecentScoreTab(QtWidgets.QWidget):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
         self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 776, 350))
-        self.verticalLayout_2 = QtWidgets.QVBoxLayout(
-            self.scrollAreaWidgetContents)
+        self.verticalLayout_2 = CustomVLayout(self.scrollAreaWidgetContents, spacing=6)
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.verticalLayout.addWidget(self.scrollArea)
         self.scrollArea.setStyleSheet(scrollbar_style)

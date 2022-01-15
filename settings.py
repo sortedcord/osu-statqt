@@ -237,8 +237,6 @@ class SettingsWindow(QMainWindow):
         self.top_bar_frame = QFrame(self.centralwidget)
         self.top_bar_frame.setMinimumSize(QtCore.QSize(800, 49))
         self.top_bar_frame.setMaximumSize(QtCore.QSize(16777215, 50))
-        self.top_bar_frame.setFrameShape(QFrame.StyledPanel)
-        self.top_bar_frame.setFrameShadow(QFrame.Raised)
 
         # Title Bar Layout
         self.title_bar_layout = QHBoxLayout(self.top_bar_frame)
@@ -269,8 +267,6 @@ class SettingsWindow(QMainWindow):
         # Settings Content
         self.settings_content_frame = QFrame()
         self.settings_content_frame.setStyleSheet("border:none;")
-        self.settings_content_frame.setFrameShape(QFrame.StyledPanel)
-        self.settings_content_frame.setFrameShadow(QFrame.Raised)
         self.settings_scrollable_area.setWidget(self.settings_content_frame)
 
         # Settings Content Layout
@@ -334,7 +330,6 @@ class SettingsWindow(QMainWindow):
         self.osuStat_panel.form_frame_layout.setWidget(0, QFormLayout.LabelRole, self.refresh_cooldown_label)
 
         self.refresh_limit_combo = QComboBox()
-        self.refresh_limit_combo.setObjectName("refresh_limit_combo")
         self.refresh_limit_combo.addItem("")
         self.refresh_limit_combo.addItem("")
         self.refresh_limit_combo.addItem("")

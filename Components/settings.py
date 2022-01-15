@@ -9,8 +9,6 @@ class SettingsPanel(QFrame):
 
     def setupUi(self, title):
         # self.setMinimumSize(QtCore.QSize(798, 249))
-        self.setFrameShape(QFrame.StyledPanel)
-        self.setFrameShadow(QFrame.Raised)
 
         # Credentials Layout
         self.layout = QHBoxLayout(self)
@@ -29,8 +27,6 @@ class SettingsPanel(QFrame):
         # Credentials Form Frame
         self.form_frame = QFrame()
         self.form_frame.setMaximumSize(QtCore.QSize(16777215, 16777215))
-        self.form_frame.setFrameShape(QFrame.StyledPanel)
-        self.form_frame.setFrameShadow(QFrame.Raised)
 
         # Credentials Form Frame Layout
         self.form_frame_layout = QFormLayout(self.form_frame)

@@ -20,7 +20,6 @@ class RecentActivityItem(QWidget):
 		self.horizontalLayout = QHBoxLayout(self)
 		self.horizontalLayout.setContentsMargins(3, 3, 3, 3)
 		self.horizontalLayout.setSpacing(6)
-		self.horizontalLayout.setObjectName("horizontalLayout")
 
 		# Set RankScore Label (Grade)
 		self.rank_score_label = CustomLabel(self, maxSize=(30,14), minSize=(30,14))

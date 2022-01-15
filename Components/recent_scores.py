@@ -1,6 +1,7 @@
 
 from PyQt5 import QtCore, QtGui
 from PyQt5.QtWidgets import *
+from Components.utility import CustomSizePolicy, CustomVLayout
 
 from functions import get_time_elapsed
 
@@ -65,42 +66,29 @@ class RecentScoreItem(QWidget):
 	def show_UI(self):
 
 		# Set widget Layout
-		sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
-		sizePolicy.setHorizontalStretch(0)
-		sizePolicy.setVerticalStretch(0)
-		sizePolicy.setHeightForWidth(self.sizePolicy().hasHeightForWidth())
-		self.setSizePolicy(sizePolicy)
+		sizePolicy = CustomSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed, self)
 
 		# Set Size Constraints
 		self.setMinimumSize(QtCore.QSize(750, 60))
 		self.setMaximumSize(QtCore.QSize(16777215, 88))
-		self.verticalLayout = QVBoxLayout(self)
-		self.verticalLayout.setContentsMargins(0, 0, 0, 0)
-		self.verticalLayout.setSpacing(0)
-
+		
+		self.verticalLayout = CustomVLayout(self)
 
 		self.scorebox = QFrame(self)
 		self.scorebox.setMinimumSize(QtCore.QSize(0, 60))
 		self.scorebox.setMaximumSize(QtCore.QSize(16777215, 60))
-		self.scorebox.setFrameShape(QFrame.StyledPanel)
-		self.scorebox.setFrameShadow(QFrame.Raised)
 
 		self.horizontalLayout = QHBoxLayout(self.scorebox)
 		self.horizontalLayout.setContentsMargins(0, 0, 9, 0)
 		
 		self.innerscore_box = QFrame(self.scorebox)
-		self.innerscore_box.setFrameShape(QFrame.StyledPanel)
-		self.innerscore_box.setFrameShadow(QFrame.Raised)
 
 		self.horizontalLayout_2 = QHBoxLayout(self.innerscore_box)
 		self.horizontalLayout_2.setContentsMargins(-1, 4, 20, 4)
 		self.horizontalLayout_2.setSpacing(16)
 
 		self.rank_grade_label = QLabel(self.innerscore_box)
-		sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
-		sizePolicy.setHorizontalStretch(0)
-		sizePolicy.setVerticalStretch(0)
-		sizePolicy.setHeightForWidth(self.rank_grade_label.sizePolicy().hasHeightForWidth())
+		sizePolicy = CustomSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed, self.rank_grade_label)
 		self.rank_grade_label.setSizePolicy(sizePolicy)
 		self.rank_grade_label.setMaximumSize(QtCore.QSize(44, 16777215))
 		self.rank_grade_label.setText("")
@@ -111,18 +99,16 @@ class RecentScoreItem(QWidget):
 		self.beatmap_info_box.setSpacing(0)
 
 		self.beatmap_title = QLabel(self.innerscore_box)
-		sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-		sizePolicy.setHorizontalStretch(0)
-		sizePolicy.setVerticalStretch(0)
-		sizePolicy.setHeightForWidth(self.beatmap_title.sizePolicy().hasHeightForWidth())
+		sizePolicy = CustomSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed, self.beatmap_title)
 
-		self.beatmap_title.setSizePolicy(sizePolicy)
 		self.beatmap_title.setMaximumSize(QtCore.QSize(16777215, 30))
 		self.beatmap_title.setAlignment(QtCore.Qt.AlignBottom|QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft)
 		self.beatmap_info_box.addWidget(self.beatmap_title)
+
 		self.beatmap_subtext_label = QLabel(self.innerscore_box)
 		self.beatmap_subtext_label.setMinimumSize(QtCore.QSize(0, 25))
 		self.beatmap_info_box.addWidget(self.beatmap_subtext_label)
+
 		self.horizontalLayout_2.addLayout(self.beatmap_info_box)
 		spacerItem = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 		self.horizontalLayout_2.addItem(spacerItem)
@@ -132,12 +118,9 @@ class RecentScoreItem(QWidget):
 
 		self.horizontalLayout_2.addLayout(self.mod_list)
 		self.accuracy_label = QLabel(self.innerscore_box)
-		sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
-		sizePolicy.setHorizontalStretch(0)
-		sizePolicy.setVerticalStretch(0)
-		sizePolicy.setHeightForWidth(self.accuracy_label.sizePolicy().hasHeightForWidth())
-		self.accuracy_label.setSizePolicy(sizePolicy)
+		sizePolicy = CustomSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred, self.accuracy_label)
 		self.horizontalLayout_2.addWidget(self.accuracy_label)
+
 		self.weighted_pp_label = QLabel(self.innerscore_box)
 		sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
 		sizePolicy.setHorizontalStretch(0)
@@ -159,8 +142,6 @@ class RecentScoreItem(QWidget):
 		self.accuracy_box = QFrame(self)
 		self.accuracy_box.setMinimumSize(QtCore.QSize(0, 28))
 		self.accuracy_box.setMaximumSize(QtCore.QSize(16777215, 28))
-		self.accuracy_box.setFrameShape(QFrame.StyledPanel)
-		self.accuracy_box.setFrameShadow(QFrame.Raised)
 		self.horizontalLayout_3 = QHBoxLayout(self.accuracy_box)
 		self.horizontalLayout_3.setContentsMargins(30, 4, 30, 4)
 		self.accuracy_100_label = QLabel(self.accuracy_box)
