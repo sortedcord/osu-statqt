@@ -32,7 +32,7 @@ class RecentScoreItem(QWidget):
 			self.rank_grade_label.setPixmap(QtGui.QPixmap(f"{mainWindow.assetpath}/Rank_Grades/F.png"))
 		else:
 			_grade = str(score.rank).split("Grade.")[1]
-			self.rank_grade_label.setPixmap(QtGui.QPixmap(f"{mainWindow.assetpath}/Rank_Grades/{_grade}.png"))
+			self.rank_grade_label.setPixmap(QtGui.QPixmap(f"{mainWindow.assetpath}/Rank_Grades/{str(_grade).replace('X','SS')}.png"))
 		
 		# Show mods
 		mods = str(score.mods)

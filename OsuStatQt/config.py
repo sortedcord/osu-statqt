@@ -70,7 +70,7 @@ class Config:
                 logger.error("Cannot send request. Please check your network connectivity.")
             else:
                 self.cred_verification_status = "VERIFIED"
-                logger.error("Credentials Verified Successfully")
+                logger.success("Credentials Verified Successfully")
             logger.info(f"Credentials Verification status updated to {self.cred_verification_status} ")
 
 
