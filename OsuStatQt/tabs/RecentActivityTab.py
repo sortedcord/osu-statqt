@@ -1,59 +1,59 @@
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import QtCore
+from PyQt5.QtWidgets import *
+from loguru import logger
+from Components.RecentActivityItem import RecentActivityItem
 
-from Components.recent_scores import RecentScoreItem
 from Components.css_files import scrollbar_style
 
-from loguru import logger
-
-from Components.utility import CustomVLayout
-
-
-
-
-class RecentScoreTab(QtWidgets.QWidget):
+class RecentActivityTab(QWidget):
     def __init__(self, mainWindow):
         super().__init__()
+
         self.setupUi(mainWindow)
         self.offset = 0
         self.setupConnections(mainWindow)
 
-    def setupConnections(self, mainWindow):
-        _count = 0
-        for recent_score in mainWindow.config.api.user_scores(mainWindow.config.default_user.id, 'recent', str(int(mainWindow.config.show_failed_scores)), limit=mainWindow.config.panel_items, offset=self.offset):
-            QtWidgets.QApplication.processEvents()
-            widget = RecentScoreItem(mainWindow, recent_score)
-            self.verticalLayout_2.addWidget(widget)
-            _count += 1
-        
-        logger.debug(f"Created {_count} RecentScoreItem cards")
-        self.verticalLayout_2.addWidget(self.show_more_button)
-        self.show_more_button.clicked.connect(lambda: self.show_more_clicked(mainWindow))
-        
-
-        
     def show_more_clicked(self, mainWindow):
         self.verticalLayout_2.removeWidget(self.show_more_button)
         self.offset += 20
         self.setupConnections(mainWindow)
 
+    def setupConnections(self, mainWindow):
+        # print(mainWindow.config.api)
+        # exit()
+
+        logger.info(f"offset set to: {self.offset}")
+        _count = 0
+        for recent_activity in mainWindow.config.api.user_recent_activity(user_id=mainWindow.config.default_user.id, limit=mainWindow.config.panel_items, offset=self.offset):
+            QApplication.processEvents()
+            widget = RecentActivityItem(mainWindow, recent_activity)
+            self.verticalLayout_2.addWidget(widget)
+            _count += 1
+        
+        logger.debug(f"Created {_count} RecentActivity Cards")
+        self.verticalLayout_2.addWidget(self.show_more_button)
+        self.show_more_button.clicked.connect(lambda: self.show_more_clicked(mainWindow))
+
+
     def setupUi(self, mainWindow):
         self.resize(778, 352)
-        self.verticalLayout = QtWidgets.QVBoxLayout(self)
+        self.verticalLayout = QVBoxLayout(self)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
-        self.scrollArea = QtWidgets.QScrollArea(self)
-        self.scrollArea.setStyleSheet("")
+        self.scrollArea = QScrollArea(self)
         self.scrollArea.setWidgetResizable(True)
-        self.scrollAreaWidgetContents = QtWidgets.QWidget()
+        self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 776, 350))
-        self.verticalLayout_2 = CustomVLayout(self.scrollAreaWidgetContents, spacing=6)
+        self.verticalLayout_2 = QVBoxLayout(
+            self.scrollAreaWidgetContents)
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.verticalLayout.addWidget(self.scrollArea)
-        self.scrollArea.setStyleSheet(scrollbar_style)
 
-        self.show_more_button = QtWidgets.QPushButton(self.scrollAreaWidgetContents)
+        self.show_more_button = QPushButton(self.scrollAreaWidgetContents)
         self.show_more_button.setText("SHOW MORE")
-
-        self.setStyleSheet("""
+        
+        
+        self.scrollArea.setStyleSheet(scrollbar_style)
+        self.setStyleSheet("""background-color: #2A2327;
                            color:rgb(255,255,255);
                            font: 63 9pt "Torus Pro"; 
                            border: none;""")
@@ -66,6 +66,7 @@ class RecentScoreTab(QtWidgets.QWidget):
                 padding: 7px;
                 max-width:140px;
                 font: 63 9pt \"Torus Pro SemiBold\";
+                margin-top: 10px;
 
             }
             QPushButton:hover {
@@ -73,6 +74,7 @@ class RecentScoreTab(QtWidgets.QWidget):
             }
         """)
 
+        #Add to mainMenu
         try:
-            mainWindow.verticalLayout_4.addWidget(self)
+            mainWindow.verticalLayout_3.addWidget(self)
         except: pass

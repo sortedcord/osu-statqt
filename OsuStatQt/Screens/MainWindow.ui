@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>782</width>
+    <height>634</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: #1C1719;
+color:rgb(255,255,255);
+font: 63 9pt &quot;Torus Pro SemiBold&quot;;</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QFrame" name="alert_frame">
+      <property name="minimumSize">
+       <size>
+        <width>100</width>
+        <height>80</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QFrame {
+background:rgba(135, 0, 0, 70);
+border-radius: 30px;
+}</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="maximumSize">
+          <size>
+           <width>200</width>
+           <height>50</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background: none;
+font: 63 10pt &quot;Torus Pro SemiBold&quot;;
+border-style: none;
+border-right-style: solid;
+border-color: rgb(236,18,32);
+border-width: 3px;
+padding-right: 12px;</string>
+         </property>
+         <property name="text">
+          <string>You haven't setup credentials</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background:none;</string>
+         </property>
+         <property name="text">
+          <string>In order for this application to work please go to the settings window (Preferences &gt; Settings and enter the API credentials.</string>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QFrame" name="search_box">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>80</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>90</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QFrame{
+background-color: #46383E;
+border-radius: 7px;
+
+}
+QLineEdit {
+background-color: #46383E;
+}</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <property name="spacing">
+        <number>20</number>
+       </property>
+       <property name="leftMargin">
+        <number>50</number>
+       </property>
+       <property name="rightMargin">
+        <number>50</number>
+       </property>
+       <item>
+        <widget class="QLineEdit" name="search_field">
+         <property name="styleSheet">
+          <string notr="true">border-style:none;
+border-bottom-style: solid;
+border-color: gray;
+border-width: 2px;
+font: 63 14pt &quot;Torus Pro SemiBold&quot;;
+padding-bottom: 5px</string>
+         </property>
+         <property name="placeholderText">
+          <string>type to search</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="searchButton">
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+background-color: #AC396D;
+border:none;
+border-radius: 20px;
+font: 63 12pt &quot;Torus Pro SemiBold&quot;;
+padding: 10px;
+min-width:80px
+}
+
+QPushButton:hover {
+background-color: #FF66AB;
+
+}</string>
+         </property>
+         <property name="text">
+          <string>Search</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="styleSheet">
+       <string notr="true">QTabWidget:pane {
+border:none;
+}
+
+QTabBar::tab {
+background: #392E33;
+padding:12px;
+min-width: 100px;
+}
+
+QTabBar::tab::selected {
+background: rgb(172, 57, 109);
+
+}</string>
+      </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="recent_tab">
+       <attribute name="title">
+        <string>Recent</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_3"/>
+      </widget>
+      <widget class="QWidget" name="user_tab">
+       <attribute name="title">
+        <string>User</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="search_tab">
+       <attribute name="title">
+        <string>Search</string>
+       </attribute>
+      </widget>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="refresh_button">
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+background-color: #AC396D;
+border:none;
+border-radius: 7px;
+font: 63 12pt &quot;Torus Pro SemiBold&quot;;
+padding: 10px;
+min-width:80px
+}
+
+QPushButton:hover {
+background-color: #FF66AB;
+
+}</string>
+      </property>
+      <property name="text">
+       <string>Refresh</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>782</width>
+     <height>38</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QMenuBar {
+font: 63 10pt &quot;Torus Pro SemiBold&quot;;
+padding: 8px;
+background-color: rgb(172, 57, 109);
+}
+QMenuBar::item {
+	color: rgb(223, 223, 223)
+}
+QMenuBar::item:selected {
+    color: rgb(255,255,255);
+	background-color: rgb(172, 57, 109);
+}
+
+QMenu {
+	background-color:rgb(172, 57, 109);
+}
+
+QMenu::item {
+	background-color: transparent;
+}
+
+QMenu::item::selected {
+	background: #2a2327;
+}</string>
+   </property>
+   <widget class="QMenu" name="menuPreferences">
+    <property name="title">
+     <string>Preferences</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuAbout">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionGithub"/>
+    <addaction name="separator"/>
+    <addaction name="actionAbout_OsuStatQt"/>
+   </widget>
+   <addaction name="menuPreferences"/>
+   <addaction name="menuAbout"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionGithub">
+   <property name="text">
+    <string>Github</string>
+   </property>
+  </action>
+  <action name="actionAbout_OsuStatQt">
+   <property name="text">
+    <string>About OsuStatQt</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
