@@ -6,7 +6,7 @@ from Components.css_files import scrollbar_style
 from Components.utility import MsgBox
 
 from config import Config, del_config_file
-from functions import OsuStatUser
+# from functions import OsuStatUser
 import webbrowser
 from loguru import logger
 
@@ -83,9 +83,13 @@ class SettingsWindow(QMainWindow):
 
         if mainWindow.config.cred_verification_status == 'VERIFIED':
 
-            if mainWindow.config.default_user != self.default_user_field.text():
+            if mainWindow.config.compact_default_user is None:
                 logger.debug("Change in default user detected")
                 self.save_default_user()
+            else:
+                if mainWindow.config.compact_default_user.username != self.default_user_field.text():
+                    logger.debug("Change in default user detected")
+                    self.save_default_user()
             
             if mainWindow.config.refresh_cooldown != self.refresh_cooldown_values[self.refresh_limit_combo.currentIndex()]:
                 logger.debug("Change in refresh cooldown  detected")
@@ -143,20 +147,20 @@ class SettingsWindow(QMainWindow):
     def save_default_user(self):
         mainWindow = self.mainWindow
 
-        _id = OsuStatUser(mainWindow.config.api).search_user(self.default_user_field.text())
-
-        if _id == 0:  # If no user is found in Bancho
+        try:
+            compact_user = mainWindow.config.api.search(query=self.default_user_field.text()).users.data[0]
+        except:
             logger.error(f"{self.default_user_field.text()} was not found in Bancho")
             MsgBox('Specified user not found. Try checking your spelling.')
-
         else:  # If user is found
             logger.success("Specified User found.")
-            mainWindow.default_user_class = OsuStatUser(mainWindow.config.api, id=_id)
-            mainWindow.config.default_user = mainWindow.default_user_class.username
-            logger.success(f"Default user set as {mainWindow.default_user_class.username}")
-            MsgBox(f"Default user has been set as {mainWindow.default_user_class.username}", "information")
+            mainWindow.config.compact_default_user = compact_user
+            logger.debug("Set Compact User")
 
-            self.default_user_field.setText(mainWindow.default_user_class.username)
+            mainWindow.default_user_expand = compact_user.expand()
+            MsgBox(f"Default user has been set as {mainWindow.config.compact_default_user.username}", "information")
+
+            self.default_user_field.setText(mainWindow.config.compact_default_user.username)
 
             mainWindow.enable_refresh_button()
     
@@ -201,9 +205,9 @@ class SettingsWindow(QMainWindow):
             logger.debug(f"Verify Credentials Button Visibility > {self.verify_credentials_button.isVisible}")
 
             # Load Default User
-            if mainWindow.default_user_class is not None:
-                self.default_user_field.setText(mainWindow.default_user_class.username)
-                logger.debug(f"Default User Field set to {mainWindow.default_user_class.username}")
+            if mainWindow.config.compact_default_user is not None:
+                self.default_user_field.setText(mainWindow.compact_default_user.username)
+                logger.debug(f"Default User Field set to {mainWindow.compact_default_user.username}")
             else:
                 logger.debug(f"Disabled Refresh Button on MainWindow.")
                 mainWindow.disable_refresh_button()

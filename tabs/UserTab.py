@@ -69,7 +69,7 @@ class UserTab(QWidget):
         self.section1_layout = CustomHLayout(self.section1, (0, -1, -1, -1), 9)
 
 
-        self.profile_picture = CustomLabel(self.section1, image_url=f"https://a.ppy.sh/{mainWindow.default_user_class.id}", minSize=(128, 128), maxSize=(128, 128))
+        self.profile_picture = CustomLabel(self.section1, image_url=mainWindow.config.compact_default_user.avatar_url, minSize=(128, 128), maxSize=(128, 128))
         sizePolicy = CustomSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred, self.profile_picture)
         self.section1_layout.addWidget(self.profile_picture)
 

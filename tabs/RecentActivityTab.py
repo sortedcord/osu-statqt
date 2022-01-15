@@ -8,6 +8,7 @@ from Components.css_files import scrollbar_style
 class RecentActivityTab(QWidget):
     def __init__(self, mainWindow):
         super().__init__()
+
         self.setupUi(mainWindow)
         self.offset = 0
         self.setupConnections(mainWindow)
@@ -18,9 +19,12 @@ class RecentActivityTab(QWidget):
         self.setupConnections(mainWindow)
 
     def setupConnections(self, mainWindow):
+        # print(mainWindow.config.api)
+        # exit()
+
         logger.info(f"offset set to: {self.offset}")
         _count = 0
-        for recent_activity in mainWindow.config.api.user_recent_activity(user_id=mainWindow.default_user_class.id, limit=mainWindow.config.panel_items, offset=self.offset):
+        for recent_activity in mainWindow.config.api.user_recent_activity(user_id=mainWindow.config.compact_default_user.id, limit=mainWindow.config.panel_items, offset=self.offset):
             QApplication.processEvents()
             widget = RecentActivityItem(mainWindow, recent_activity)
             self.verticalLayout_2.addWidget(widget)

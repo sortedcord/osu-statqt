@@ -27,7 +27,7 @@ class RecentActivityItem(QWidget):
 		self.horizontalLayout.addWidget(self.rank_score_label)
 
 		# Set Usrername
-		self.username = CustomLabel(self, color="rgb(210,160,184)", font_style="Bold")
+		self.username = CustomLabel(self, color="rgb(210,160,184)", font_style="Bold", text=mainWindow.config.compact_default_user.username)
 		self.horizontalLayout.addWidget(self.username)
 
 		# Set Event Description (Beatmap Name)
@@ -46,16 +46,8 @@ class RecentActivityItem(QWidget):
 		self.horizontalLayout.addItem(spacerItem)
 
 		# Time Label
-		self.datetime_label = CustomLabel(self, color="rgb(129,112,121)")
+		self.datetime_label = CustomLabel(self, color="rgb(129,112,121)", text=get_time_elapsed(activity.created_at))
 		self.horizontalLayout.addWidget(self.datetime_label)
-
-
-		self.username.setText(mainWindow.default_user_class.username)
-
-		self.setStyleSheet("background-color: #2A2327;\n"
-"                           color:rgb(255,255,255);\n"
-"                           font: 63 9pt \"Torus Pro SemiBold\"; \n"
-"                           border: none;")
 
 		if type(activity) == ossapi.models.RankEvent:
 			self.event_description_label.setText(f" achieved rank # {activity.rank} on ")
@@ -82,7 +74,5 @@ class RecentActivityItem(QWidget):
 			self.rank_score_label.setPixmap(QtGui.QPixmap(None))
 		else:
 			self.event_description_label.setText(f" performed an unrecognized event.")
-		
-		
 
-		self.datetime_label.setText(get_time_elapsed(activity.created_at))
+		self.setStyleSheet("background-color: #2A2327;color:rgb(255,255,255);font: 63 9pt \"Torus Pro SemiBold\";border: none;")

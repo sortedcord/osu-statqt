@@ -7,14 +7,15 @@ import requests
 from loguru import logger
 
 class Config:
-    def __init__(self, client_id=None, client_secret=None, default_user=None):
+    def __init__(self, client_id=None, client_secret=None, compact_default_user=None):
 
         self.client_id = client_id
         self.client_secret = client_secret
 
         self.cred_verification_status = "UNVERIFIED"
-        self.default_user = default_user
         self.api = None
+        self.compact_default_user = None
+
 
         # OsuStat Specific
         self.refresh_cooldown = 15000
@@ -28,7 +29,7 @@ class Config:
     def dump_config(self):
         with open("config.osustat", "wb") as w:
             self.api = None
-            logger.debug(f"API Token set as {self.api}")
+            self.compact_default_user._api = None
 
             try: 
                 pkl.dump(self, w)

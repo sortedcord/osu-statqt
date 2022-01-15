@@ -52,7 +52,7 @@ class CustomHLayout(QHBoxLayout):
         self.setSpacing(spacing)
 
 class CustomLabel(QLabel):
-    def __init__(self, parent, text=None, color='white', font_size=10, font_style='', image_url=None, minSize=(0,0), maxSize=(16777215,16777215), padding=(1,1,1,1), wordwrap=True):
+    def __init__(self, parent, text=None, color='white', font_size=10, font_style='', image_url=None, minSize=(0,0), maxSize=(16777215,16777215), padding=(0,0,0,0), wordwrap=True, background='none'):
         super().__init__(parent)
 
         if text is not None:
@@ -60,8 +60,7 @@ class CustomLabel(QLabel):
 
         self.setStyleSheet(f"font: 75 {font_size}pt \"Torus Pro {font_style}\";\n"
                             f"color: {color}; \n"
-                            # T R B L
-                            f"background:  \n"
+                            f"background: {background}; \n"
                             f"padding: {padding[0]} {padding[1]} {padding[2]} {padding[3]};")
 
         if image_url is not None:

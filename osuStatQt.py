@@ -1,11 +1,10 @@
 from PyQt5 import QtCore, QtGui
 from PyQt5.QtWidgets import *
 
-import os
+# import os
 from loguru import logger
 from Components.utility import CustomHLayout, CustomLabel, CustomVLayout
 
-from functions import OsuStatUser
 from config import load_config
 
 from settings import SettingsWindow
@@ -121,15 +120,13 @@ class MainWindow(QMainWindow):
         logger.info("Showing Settings Window")
 
     def setupConnections(self):
-
-        self.default_user_class = None
-        logger.debug(f"Default User Class set to {self.default_user_class}")
-
         self.actionSettings.triggered.connect(self.showSettings)  # Settings Menu
         logger.debug("Connected settings menu to 'showSettings'")
 
         self.config = load_config()
         logger.debug("Config Loaded")
+
+        self.default_user_expand = None
 
         # If credentials were valid
         if self.config.cred_verification_status == 'VERIFIED':
@@ -140,18 +137,9 @@ class MainWindow(QMainWindow):
             logger.debug("Alert Frame Removed")
 
             # If config has default user set
-            if self.config.default_user is not None:
-                logger.debug(f"Searching for user {self.config.default_user}")
-                _uval = OsuStatUser(
-                    self.config.api).search_user(self.config.default_user)
-                
-                # If Default User is valid
-                if _uval != 0: 
-                    
-
-                    logger.info(f"{self.config.default_user} found on Bancho")
-                    self.default_user_class = OsuStatUser(self.config.api,self.config.default_user)
-                    logger.debug("Created Default User Class")
+            if self.config.compact_default_user is not None:
+                    # self.default_user_expand = self.config.compact_default_user.expand()
+                    # logger.debug("Expanded Default User Class")
 
                     self.load_tab_content()
                     
@@ -159,10 +147,6 @@ class MainWindow(QMainWindow):
                     self.enable_refresh_button()
                     logger.debug("Enabled Refresh Button")
                     self.refresh_button.setText("Refresh")
-                else:
-                    logger.error(f"{self.config.default_user} not found on Bancho")
-                    self.disable_refresh_button()
-                    logger.debug("Refresh Button Disabled")
 
             # If default user is not set
             else:
@@ -272,7 +256,6 @@ class MainWindow(QMainWindow):
         self.menuAbout.setTitle("Help")
         self.actionGithub.setText("Github")
         self.actionAbout_OsuStatQt.setText("About OsuStatQt")
-        
 
     def setupStyle(self):
         self.setStyleSheet("""
