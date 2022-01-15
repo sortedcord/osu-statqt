@@ -15,6 +15,7 @@ A lightweight desktop application to show you information about plays, scores an
 ![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/sortedcord/osu-statqt?include_prereleases&style=for-the-badge)
 ![GitHub last commit](https://img.shields.io/github/last-commit/sortedcord/osu-statqt?style=for-the-badge)
 ![GitHub issues](https://img.shields.io/github/issues/sortedcord/osu-statqt?label=ISSUES%20OPEN&style=for-the-badge)
+[![wakatime](https://wakatime.com/badge/user/6141c7ad-332a-45eb-b78f-57b7202343fc/project/b0f1cad2-0279-4d71-9d75-1d434ecf82bb.svg?style=for-the-badge)](https://wakatime.com/badge/user/6141c7ad-332a-45eb-b78f-57b7202343fc/project/b0f1cad2-0279-4d71-9d75-1d434ecf82bb)
 
 
 Currently, it is a passion project for me and I'm creating this to learn the pyQt framework and more stuff about Python. I plan on adding features to it with time and frequent releases as well until its fully complete or there are changes in osu API V2.
