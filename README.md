@@ -1,7 +1,7 @@
 <!-- Logo -->
 
 <p align="center">
-  <img width="500px" src="Assets/Logo/logo1x.png">
+  <img width="500px" src="docs/Images/logo1x.png">
 </p>
 
 # Osu!StatQt
