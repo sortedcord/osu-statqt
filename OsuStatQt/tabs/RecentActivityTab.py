@@ -131,27 +131,25 @@ class RecentActivityItem(QWidget):
 		if type(activity) == ossapi.models.RankEvent:
 			self.event_description_label.setText(f" achieved rank # {activity.rank} on ")
 			self.event_type.setText(f"{activity.beatmap.title} ")
-			
-			
 			self.rank_score_label.setPixmap(QtGui.QPixmap(f"{mainWindow.assetpath}/Rank_Grades/{str(activity.scoreRank).replace('X','SS')}.png"))
 
 		elif type(activity) == ossapi.models.RankLostEvent:
 			self.event_description_label.setText(f" has lost first place on ")
 			self.event_type.setText(f"{activity.beatmap.title} ")
-			self.gamemode_label.setText("(osu!)")
 			self.rank_score_label.setPixmap(QtGui.QPixmap(None))
 		
 		elif type(activity) == ossapi.models.UserSupportAgainEvent:
 			self.event_description_label.setText(f" has bought osu! supporter")
-			self.event_type.setText("")
-			self.gamemode_label.setText("")
 			self.rank_score_label.setPixmap(QtGui.QPixmap(None))
 		
 		elif 'Achievement' in str(type(activity)):
 			self.event_description_label.setText(f" unlocked the '{activity.achievement.name}' medal!")
-			self.event_type.setText("")
-			self.gamemode_label.setText("")
 			self.rank_score_label.setPixmap(QtGui.QPixmap(None))
+
+		elif 'BeatmapsetUpdateEvent' in str(type(activity)):
+			self.event_description_label.setText(f" updated the beatmap ")
+			self.event_type.setText(f"'{activity.beatmapset.title}'")
+
 		else:
 			self.event_description_label.setText(f" performed an unrecognized event.")
 
