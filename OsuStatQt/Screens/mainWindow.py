@@ -7,10 +7,11 @@ from loguru import logger
 
 from Components.controls import CustomLabel
 from Components.layouts import CustomHLayout, CustomVLayout
+from Screens.AboutWindow import AboutWindow
 
 from config import load_config
 
-from settings import SettingsWindow
+from Screens.SettingsWindow import SettingsWindow
 from pathlib import Path
 
 from tabs.RecentActivityTab import RecentActivityTab
@@ -20,7 +21,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()  
 
-        self.assetpath = Path(__file__).parent / "Assets"
+        self.assetpath = Path(__file__).parent.parent / "Assets"
 
         self.setupUi()
         self.setupText()
@@ -120,8 +121,14 @@ class MainWindow(QMainWindow):
         self.settingsWindow.show()
         logger.info("Showing Settings Window")
 
+    def showAboutWindow(self):
+        self.aboutWindow = AboutWindow(self)
+
     def setupConnections(self):
         self.actionSettings.triggered.connect(self.showSettings)  # Settings Menu
+
+        self.actionAbout_OsuStatQt.triggered.connect(self.showAboutWindow) # About Window
+
         logger.debug("Connected settings menu to 'showSettings'")
 
         self.config = load_config()
